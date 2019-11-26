@@ -54,4 +54,4 @@
 ### 项目运行 
 
 + `yarn`或者`cnpm i`或者`npm i`
-+ `nodemon app`或者`node app`
++ `npm start`
