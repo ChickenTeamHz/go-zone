@@ -6,7 +6,7 @@ import LoginPage from './routes/LoginPage/loginPage';
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
-      <div>
+      <div className="wrapper">
         <Route path="/" exact component={IndexPage} />
         <Route path="/login" exact component={LoginPage} />
       </div>
