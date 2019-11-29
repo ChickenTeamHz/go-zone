@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import styles from './loginPage.css'
+import styles from './index.css'
 
 function LoginPage() {
     return (
