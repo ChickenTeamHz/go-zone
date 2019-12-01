@@ -12,13 +12,12 @@ class HeadBar extends Component {
     }
     toLogin(type) {
         console.log(this.props)
-        // this.props.dispatch(routerRedux.push({
-        //     pathname: `/login?ha=545`,
-        //     query: {
-        //         type: type
-        //     }
-        // }))
-        this.props.history.push(`/login?type=${type}`)
+        this.props.dispatch(routerRedux.push({
+            pathname: `/login?ha=545`,
+            query: {
+                type: type
+            }
+        }))
     }
     render() {
         return (
