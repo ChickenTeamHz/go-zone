@@ -1,13 +1,17 @@
 import React from 'react';
-import { Router, Route, Switch } from 'dva/router';
+import { Router, Route } from 'dva/router';
 import IndexPage from './routes/IndexPage';
+import LoginPage from './routes/LoginPage';
+import HeaderBar from './components/HeadBar'
 
 function RouterConfig({ history }) {
   return (
     <Router history={history}>
-      <Switch>
+      <div className="wrapper">
+        <HeaderBar></HeaderBar>
         <Route path="/" exact component={IndexPage} />
-      </Switch>
+        <Route path="/login" exact component={LoginPage} />
+      </div>
     </Router>
   );
 }
