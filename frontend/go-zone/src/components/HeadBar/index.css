@@ -19,3 +19,17 @@
     font-weight: 700;
     cursor: pointer;
 }
+
+.head_right {
+    display: flex;
+    width: 10%;
+    height: 100%;
+    align-items: center;
+    color: #eee;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.login_btn {
+    font-size: 18px;
+}
