@@ -1,7 +1,7 @@
 import dynamic from 'dva/dynamic';
 
 import {Switch, Route, routerRedux, Redirect } from 'dva/router';
-
+import App from './App'
 
 const { ConnectedRouter } = routerRedux
 
@@ -24,19 +24,21 @@ function RouterConfig({ history, app }) {
 
   return(
     <ConnectedRouter history={history}>
-      <Switch>
-          {
-            routes.map(({ path, name, ...dynamics }, key) => {
-              return (
-                <Route 
-                  path={path} 
-                  key={key} 
-                  exact 
-                  component={dynamic({ app, ...dynamics })}/>
-              )
-            })
-          }
-      </Switch>
+      <App>
+        <Switch>
+            {
+              routes.map(({ path, name, ...dynamics }, key) => {
+                return (
+                  <Route 
+                    path={path} 
+                    key={key} 
+                    exact 
+                    component={dynamic({ app, ...dynamics })}/>
+                )
+              })
+            }
+        </Switch>
+      </App>
     </ConnectedRouter>
   )
 }
