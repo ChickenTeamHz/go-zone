@@ -10,9 +10,9 @@ class LoginPage extends Component {
         }
     }
     componentDidMount() {
-        this.setState({
-            loginType: Number(this.props.location.query.type)
-        })
+        // this.setState({
+        //     loginType: Number(this.props.location.query.type) || 1
+        // })
     }
     
     render() {
