@@ -1,43 +1,35 @@
-import React from 'react';
-import { Route, Switch, routerRedux } from 'dva/router';
-import RouteArr from './routes/routeConfig'
-import dynamic from 'dva/dynamic'
+import dynamic from 'dva/dynamic';
 
-
+import { Router } from 'dva/router';
 import HeaderBar from './components/HeadBar'
 
-const { ConnectedRouter } = routerRedux
+import IndexPage from './routes/IndexPage'
 
-function RouterConfig({ history, app }) {
-  let routes = RouteArr
+import IndexModel from './models/example'
 
-  return (
-    <ConnectedRouter history={history}>
-      <Switch>
-        <div>
-          {
-            routes.map(({ path, name, layout, ...dynamics }) => {
-              const Component = dynamic({ app, ...dynamics })
-              return (
-                <Route path={path} key={name} exact
-                  render={(props) => {
-                    if(layout) {
-                      return (
-                        <div>
-                          <HeaderBar/>
-                          <Component {...props} />
-                        </div>
-                      )
-                    }
-                    return (<Component {...props} />)
-                  }} />
-              )
-            })
-          }
-        </div>
-      </Switch>
-    </ConnectedRouter>
-  );
+export const newDynamic = (app,model,component) => {
+    return dynamic({
+        app,
+        models:() => model,
+        component
+    })
 }
 
-export default RouterConfig;
+
+
+function RouterConfig({ history, app }) {
+  const routes = [
+    {
+      title: 'index',
+      path: "/",
+      layout: HeaderBar,
+      name: 'IndexPage',
+      ...newDynamic(app, IndexModel, IndexPage)
+    }
+  ];
+
+  return <Router history={history} routes={routes} />;
+}
+
+
+export default RouterConfig
