@@ -10,9 +10,10 @@ class LoginPage extends Component {
         }
     }
     componentDidMount() {
-        // this.setState({
-        //     loginType: Number(this.props.location.query.type) || 1
-        // })
+        console.log(this)
+        this.setState({
+            loginType: Number(this.props.type) || 1
+        })
     }
     
     render() {
@@ -34,4 +35,8 @@ class LoginPage extends Component {
 LoginPage.propTypes = {
 };
 
-export default connect()(LoginPage);
+export default connect(
+    ({ global }) => ({
+        type: global.type
+    })
+)(LoginPage);

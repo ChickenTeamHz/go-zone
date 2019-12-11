@@ -1,6 +1,6 @@
 import dynamic from 'dva/dynamic';
 
-import {Switch, Route, routerRedux, Redirect } from 'dva/router';
+import {Switch, Route, routerRedux } from 'dva/router';
 import App from './App'
 
 const { ConnectedRouter } = routerRedux
@@ -17,7 +17,7 @@ function RouterConfig({ history, app }) {
     {
       path: "/login",
       name: 'LoginPage',
-      models: () => [import('./models/example')],
+      models: () => [import('./models/login')],
       component: () => import('./routes/LoginPage/index')
     }
   ];

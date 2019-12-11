@@ -11,13 +11,24 @@ class HeadBar extends Component {
         }
     }
     toLogin(type) {
-        console.log(this.props)
+        
+        console.log(this)
         this.props.dispatch(routerRedux.push({
             pathname: `/login`,
             query: {
                 type: type
             }
         }))
+        
+        // this.props.dispatch({
+        //     type: 'global/redirect'
+        // });
+    }
+    routerWillLeave(nextLocation) {
+        // 返回 false 会继续停留当前页面，
+        // 否则，返回一个字符串，会显示给用户，让其自己决定
+        if (true)
+          return '确认要离开？';
     }
     render() {
         return (
@@ -34,5 +45,5 @@ class HeadBar extends Component {
 
 HeadBar.propTypes = {
 };
-
+  
 export default connect()(HeadBar);
