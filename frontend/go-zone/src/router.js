@@ -11,34 +11,44 @@ function RouterConfig({ history, app }) {
     {
       path: "/",
       name: 'IndexPage',
+      layout: App,
       models: () => [import('./models/example')],
       component: () => import('./routes/IndexPage')
     },
     {
       path: "/login",
       name: 'LoginPage',
-      models: () => [import('./models/login')],
+      layout: App,
+      // models: () => [import('./models/login')],
       component: () => import('./routes/LoginPage/index')
     }
   ];
 
   return(
     <ConnectedRouter history={history}>
-      <App>
+      {/* <App> */}
         <Switch>
             {
-              routes.map(({ path, name, ...dynamics }, key) => {
+              routes.map(({ path, name, layout, ...dynamics }, key) => {
+                let Component = dynamic({ app, ...dynamics })
                 return (
                   <Route 
                     path={path} 
                     key={key} 
                     exact 
-                    component={dynamic({ app, ...dynamics })}/>
+                    render={(props) => {
+                      if (layout) {
+                        return (<App>
+                          <Component {...props}/>
+                        </App>)
+                      }
+                      return (<Component {...props}/>)
+                    }}/>
                 )
               })
             }
         </Switch>
-      </App>
+      {/* </App> */}
     </ConnectedRouter>
   )
 }

@@ -13,27 +13,28 @@ class HeadBar extends Component {
     toLogin(type) {
         
         console.log(this)
-        this.props.dispatch(routerRedux.push({
-            pathname: `/login`,
-            query: {
+        
+        this.props.dispatch({
+            type: 'login/changeState',
+            payload: {
                 type: type
             }
-        }))
-        
+        });
+
         // this.props.dispatch({
-        //     type: 'global/redirect'
+        //     type: 'login/toLoginPage'
         // });
+        this.props.dispatch(routerRedux.push('/login'))
+        
     }
-    routerWillLeave(nextLocation) {
-        // 返回 false 会继续停留当前页面，
-        // 否则，返回一个字符串，会显示给用户，让其自己决定
-        if (true)
-          return '确认要离开？';
+
+    toHome() {
+        this.props.dispatch(routerRedux.push('/'))
     }
     render() {
         return (
             <div className={ styles.head_bar }>
-                <div className={ styles.page_name }>Go-Zone</div>
+                <div className={ styles.page_name } onClick={ this.toHome.bind(this) }>Go-Zone</div>
                 <div className={ styles.head_right }>
                     <div className={ styles.login_btn } onClick={ this.toLogin.bind(this, 1) }>Login</div>
                     <div className={ styles.login_btn } onClick={ this.toLogin.bind(this, 2) }>Register</div>

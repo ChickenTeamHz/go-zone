@@ -36,7 +36,7 @@ LoginPage.propTypes = {
 };
 
 export default connect(
-    ({ global }) => ({
-        type: global.type
+    ({ login }) => ({
+        type: login.type
     })
 )(LoginPage);
