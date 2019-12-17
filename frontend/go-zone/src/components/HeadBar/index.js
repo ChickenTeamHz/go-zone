@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
-import styles from './index.css'
+import styles from './index.scss'
 
 class HeadBar extends Component {
     constructor(props) {
@@ -24,6 +24,7 @@ class HeadBar extends Component {
         // this.props.dispatch({
         //     type: 'login/toLoginPage'
         // });
+        
         this.props.dispatch(routerRedux.push('/login'))
         
     }
