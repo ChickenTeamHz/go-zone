@@ -22,3 +22,14 @@ body,
     font-size: 50px;
     color: #fff;
 }
+
+:global(.app_wrapper) {
+    font-family: Georgia, sans-serif;
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    background: url(./assets/top_img_index.jpg) no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+}

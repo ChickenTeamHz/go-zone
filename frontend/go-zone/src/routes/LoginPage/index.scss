@@ -1,0 +1,51 @@
+.login_page {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 100px;
+}
+
+.login_form {
+    width: 400px;
+    height: 300px;
+    padding: 40px;
+    background-color: #fff;
+}
+
+.login_title {
+    font-size: 50px;
+    color: #fff;
+    text-shadow: 3px 3px 3px #aaa;
+}
+
+.each_line {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form_label {
+    font-size: 22px;
+    color: #666;
+}
+
+.form_input {
+    display: block;
+    width: 200px;
+}
+
+.form_input:active {
+    border: none;
+}
+
+.button {
+    width: 120px;
+    height: 40px;
+    background-color: skyblue;
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
