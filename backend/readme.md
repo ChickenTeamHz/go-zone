@@ -18,7 +18,7 @@
 /index.js|主要的入口文件(引入一些第三方内容)
 /package.json|项目的包管理
 /lib|数据库表的操作
-/middleware 中间件
+/middleware|中间件
 
 + lib目录
 
