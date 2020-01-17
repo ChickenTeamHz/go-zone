@@ -1,5 +1,12 @@
+/*
+ * @ Author: Fairy
+ * @ Description: 用户表
+ * @ Last Modified by:  Fairy
+ * @ Last Modified time: 2020-01-13 18:38:53
+*/
 const mongoose = require('mongoose');
 var shortid = require('shortid');
+var moment = require('moment')
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -7,14 +14,40 @@ const UserSchema = new Schema({
     type: String,
     default: shortid.generate(),
   },
-  username: String, // 账号
+  username: {
+    type: String,
+    minlength:[1,'用户名不能为空！'],
+    maxLength:[15, '用户名长度不能超过15个字！'],
+    required: true,
+    trim: true,
+  }, // 账号
   name: String, // 昵称
   password: String, // 密码
-  logindate: Date, // 登录时间
+  createdAt: { // 创建时间
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: { // 更新时间
+    type: Date,
+    default: Date.now
+  },
+  loginTime: { // 登录时间
+    type: Date,
+    default: null,
+  },
+  avatar: String, // 用户头像
 });
 
 UserSchema.set('toJSON', { getters: true, virtuals: true });
 UserSchema.set('toObject', { getters: true, virtuals: true });
+
+UserSchema.path('createdAt').get(function (v) {
+  return moment(v).format("YYYY-MM-DD HH:mm:ss");
+});
+
+UserSchema.path('updatedAt').get(function (v) {
+  return moment(v).format("YYYY-MM-DD HH:mm:ss");
+});
 
 var User = mongoose.model("User", UserSchema);
 

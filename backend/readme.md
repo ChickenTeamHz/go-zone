@@ -12,10 +12,13 @@
 
 目录 | 说明
  :-: | :-:
+/bin|日志命令
+/core|日志配置文件、以及一些常用的公共文件
 /routes|路由地址，输出接口地址
 /index.js|主要的入口文件(引入一些第三方内容)
 /package.json|项目的包管理
 /lib|数据库表的操作
+/middleware 中间件
 
 + lib目录
 
@@ -24,6 +27,8 @@
 /controller|控制层相关文件(提供接口)
 /service|操作数据库
 /models|数据库模型(传统意义上的表结构) 
+/dao|操作数据库底层（封装一次）
+/utils|方法包
 
 ### 环境搭建
 
@@ -54,4 +59,10 @@
 ### 项目运行 
 
 + `yarn`或者`cnpm i`或者`npm i`
-+ `npm start`
++ `npm run log`(生成日志文件夹)
+```
+  npm run preinstall
+  npm run postinstall
+  npm start
+  (!!!每次npm更新后都需要)
+```

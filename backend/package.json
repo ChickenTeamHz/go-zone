@@ -5,16 +5,37 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "log": "nodemon bin/log",
+    "postinstall": "link-module-alias",
+    "preinstall": "command -v link-module-alias && link-module-alias clean || true"
   },
   "author": "Fairy & Chisfee",
   "license": "ISC",
   "dependencies": {
+    "crypto": "^1.0.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
-    "koa-bodyparser": "^4.2.1",
+    "koa-body": "^4.1.1",
+    "koa-jwt": "^3.6.0",
+    "koa-message-parameter": "^1.3.0",
     "koa-router": "^7.4.0",
     "koa2-cors": "^2.0.6",
+    "link-module-alias": "^1.2.0",
     "lodash": "^4.17.15",
-    "mongoose": "^5.7.12"
+    "log4js": "^6.1.0",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12",
+    "path": "^0.12.7",
+    "shortid": "^2.2.15",
+    "xss": "^1.0.6"
+  },
+  "_moduleAliases": {
+    "~service": "lib/service",
+    "~utils": "lib/utils",
+    "~ApiError": "core/error/ApiError.js",
+    "~controller": "lib/controller",
+    "~models": "lib/models"
   }
 }
