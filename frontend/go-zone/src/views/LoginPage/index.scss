@@ -9,14 +9,16 @@
 .login_form {
     width: 400px;
     height: 300px;
-    padding: 40px;
+    padding: 40px 0;
     background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px #333;
 }
 
 .login_title {
     font-size: 50px;
     color: #fff;
-    text-shadow: 3px 3px 3px #aaa;
+    text-shadow: 3px 3px 3px #333;
 }
 
 .each_line {
@@ -48,4 +50,22 @@
     line-height: 40px;
     border-radius: 20px;
     margin-top: 20px;
+}
+
+.resetMB {
+    margin-bottom: 10px;
+}
+
+.code {
+    display: inline-block;
+    height: 33px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    line-height: 32px;
+    margin-left: 10%;
+    margin-top: -2px;
+    font-size: 24px;
+    font-weight: bolder;
+    background-color: #49b1f5;
+    color: #fff;
 }

@@ -1,7 +1,7 @@
 import dynamic from 'dva/dynamic';
 
 import {Switch, Route, routerRedux } from 'dva/router';
-import App from './App'
+import MainLayout from './layouts/MainLayout'
 
 const { ConnectedRouter } = routerRedux
 
@@ -11,14 +11,14 @@ function RouterConfig({ history, app }) {
     {
       path: "/",
       name: 'IndexPage',
-      layout: App,
-      models: () => [import('./models/example')],
+      layout: MainLayout,
+      // models: () => [import('./models/example')],
       component: () => import('./routes/IndexPage')
     },
     {
       path: "/login",
       name: 'LoginPage',
-      layout: App,
+      layout: MainLayout,
       // models: () => [import('./models/login')],
       component: () => import('./routes/LoginPage/index')
     }
@@ -38,9 +38,9 @@ function RouterConfig({ history, app }) {
                     exact 
                     render={(props) => {
                       if (layout) {
-                        return (<App>
+                        return (<MainLayout>
                           <Component {...props}/>
-                        </App>)
+                        </MainLayout>)
                       }
                       return (<Component {...props}/>)
                     }}/>
