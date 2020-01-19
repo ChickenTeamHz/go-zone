@@ -1,4 +1,9 @@
 import { routerRedux } from 'dva/router'
+import service from '../services/index'
+
+const { 
+  UserService
+}  = service
 
 export default {
 
@@ -15,6 +20,11 @@ export default {
   },
 
   effects: {
+    * login({ payload }, { call }) {
+      console.log(UserService)
+      const res = yield call(UserService.login, payload);
+      console.log(res)
+    },
      // 路由跳转
      * toLoginPage ({ payload }, { put }) {
        console.log(333)

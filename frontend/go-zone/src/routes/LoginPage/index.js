@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'dva'
 import styles from './index.scss'
 
+@connect(({ login }) => ({ login }))
+
 class LoginPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
             form: {
-                userName: '',
-                passWord: '',
-                email: ''
+                username: 'go',
+                password: '123456',
             }
         }
 
@@ -20,8 +21,7 @@ class LoginPage extends Component {
         this.setState({ 
             form:{
                 userName: '',
-                passWord: '',
-                email: ''
+                passWord: ''
             }
         })
     }
@@ -39,58 +39,65 @@ class LoginPage extends Component {
     }
 
     subForm() {
+        this.props.dispatch({
+            type: 'login/login',
+            payload: this.state.form
+        }).then(res => {
 
+        })
     }
 
     componentDidMount() {
-        
+        console.log(this.props)
     }
     
     render() {
         let form = this.state.form
+        let { type } = this.props.login
         return (
             <div className={ styles.login_page }>
                 <p className={ styles.login_title }>
                     {
-                        this.props.type === 1 ?  'Login': 'Register'
+                        type === 1 ?  'Login': 'Register'
                     }
                 </p>
                 <div className={styles.login_form}>
-                    <p className={ styles.each_line }>
+                    <div className={ styles.each_line }>
                         <span className={ styles.form_label }>Username:</span>
                         <input 
-                            name="userName"
-                            value={form.userName} 
+                            name="username"
+                            value={form.username} 
                             className={ styles.form_input } 
                             onChange={this.handleChange}
                             type="text"/>
-                    </p>
-                    <p className={ styles.each_line }>
+                    </div>
+                    <div className={ styles.each_line }>
                         <span className={ styles.form_label }>Password:</span>
                         <input 
-                            name="passWord"
-                            value={form.passWord} 
+                            name="password"
+                            value={form.password} 
                             className={ styles.form_input } 
                             onChange={this.handleChange}
                             type="text"/>
-                    </p>
-                    <p className={ styles.each_line }>
-                        <span className={ styles.form_label }>Email:</span>
+                    </div>
+                    <div className={ styles.each_line }>
+                        <span className={ styles.form_label }>code:</span>
                         <input 
                             name="email"
                             value={form.email} 
                             className={ styles.form_input } 
                             onChange={this.handleChange}
                             type="text"/>
-                    </p>
-                    <p className={ styles.each_line }>
+                        {/* <span>dfs</span> */}
+                    </div>
+                    <div className={ styles.each_line }>
                         <div className={ styles.button} onClick={this.resetForm.bind(this)}>Reset</div>
                         <div className={ styles.button} onClick={this.subForm.bind(this)} >
                             {
-                                this.props.type === 1 ?  'Login': 'Register'
+                                type === 1 ?  'Login': 'Register'
                             }
                         </div>
-                    </p>
+                    </div>
                 </div>
             </div>
         );
@@ -100,8 +107,9 @@ class LoginPage extends Component {
 LoginPage.propTypes = {
 };
 
-export default connect(
-    ({ login }) => ({
-        type: login.type
-    })
-)(LoginPage);
+// export default connect(
+//     ({ login }) => ({
+//         type: login.type
+//     })
+// )(LoginPage);
+export default connect()(LoginPage)

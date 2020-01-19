@@ -1,11 +1,11 @@
 const host = process.env.DB_HOST || 'localhost';
-const dbName = process.env.DB_NAME || 'go-zone';
+const dbName = process.env.DB_NAME || 'gozone';
 const user = process.env.DB_USER || 'go';
 const password = process.env.DB_PASSWORD || '123456';
 const port = process.env.DB_PORT || '27017';
 
 const DBConfig = {
-  baseUrl: `mongodb://${user}:${password}@${host}:${port}/${dbName}`,
+  baseUrl: `mongodb://${user}:${password}@${host}:${port}/${dbName}?authSource=admin`,
 };
 
 const jwtSecret = 'gozone'

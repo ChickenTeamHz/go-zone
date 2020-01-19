@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 全局默认配置
-axios.defaults.baseURL = '';
+axios.defaults.baseURL = '/api';
 axios.defaults.timeout = 10000;
 
 function transformUrl(url, id) {
@@ -61,7 +61,7 @@ const Delete = (url, parmas, others) => {
       });
   });
 };
-const post = (url, params, others) => {
+const post = (url, params, others = {}) => {
   return new Promise((resolve, reject) => {
     axios.post(transformUrl(url, others.id), params)
       .then(res => {
@@ -75,7 +75,7 @@ const post = (url, params, others) => {
   });
 };
 
-const put = (url, params, others) => {
+const put = (url, params, others = {}) => {
   return new Promise((resolve, reject) => {
     axios.put(transformUrl(url, others.id), params)
       .then(res => {
