@@ -13,20 +13,19 @@ function RouterConfig({ history, app }) {
       name: 'IndexPage',
       layout: MainLayout,
       // models: () => [import('./models/example')],
-      component: () => import('./routes/IndexPage')
+      component: () => import('./views/IndexPage')
     },
     {
       path: "/login",
       name: 'LoginPage',
       layout: MainLayout,
       // models: () => [import('./models/login')],
-      component: () => import('./routes/LoginPage/index')
+      component: () => import('./views/LoginPage/index')
     }
   ];
 
   return(
     <ConnectedRouter history={history}>
-      {/* <App> */}
         <Switch>
             {
               routes.map(({ path, name, layout, ...dynamics }, key) => {
@@ -48,7 +47,6 @@ function RouterConfig({ history, app }) {
               })
             }
         </Switch>
-      {/* </App> */}
     </ConnectedRouter>
   )
 }

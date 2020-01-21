@@ -15,8 +15,6 @@ class LoginPage extends Component {
 			},
 			code: ''
 		}
-
-		this.handleChange = this.handleChange.bind(this)
 	}
 
 	componentDidMount() {
@@ -44,18 +42,6 @@ class LoginPage extends Component {
 		})
 	}
 
-	handleChange(event) {
-		const target = event.target;
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		const name = target.name;
-
-		this.setState({
-			form: {
-				[name]: value
-			}
-		})
-	}
-
 	subForm() {
 		let { type } = this.props.login
 		let effectsType = 'login/login'
@@ -69,6 +55,18 @@ class LoginPage extends Component {
 			payload: this.state.form
 		}).then(res => {
 
+		})
+	}
+
+	handleInput = (e) => {
+		let target = e.target
+		let key = target.name
+
+		this.setState({
+			form: {
+				...this.state.form,
+				[key]: target.value
+			}
 		})
 	}
 
@@ -90,14 +88,17 @@ class LoginPage extends Component {
 				<div className={styles.login_form}>
 					<Form>
 						<Form.Item className={styles.resetMB} {...formItemLayout} label={"用户名"}>
-							<Input placeholder="请输入用户名" />
+							<Input name="username" placeholder="请输入用户名" onChange={this.handleInput}/>
 						</Form.Item>
 						<Form.Item className={styles.resetMB} {...formItemLayout} label={"密码"}>
-							<Input placeholder="请输入密码" />
+							<Input type="password" name="password" placeholder="请输入密码" onChange={this.handleInput} />
 						</Form.Item>
-						<Form.Item className={styles.resetMB} {...formItemLayout} label={"确认密码"}>
-							<Input placeholder="确认密码" />
-						</Form.Item>
+						{
+							type === 1 ? '' : 
+							<Form.Item className={styles.resetMB} {...formItemLayout} label={"确认密码"}>
+								<Input type="password" placeholder="确认密码" />
+							</Form.Item>
+						}
 						<Form.Item className={styles.resetMB} {...formItemLayout} label={"验证码"}>
 							<Input style={{ width: '60%' }} placeholder="请输入验证码" />
 							<span onClick={this.getVerifyCode} className={styles.code} style={{ width: '30%' }}>{this.state.code}</span>
