@@ -38,7 +38,7 @@ class HeadBar extends Component {
                 <div className={ styles.page_name } onClick={ this.toHome.bind(this) }>Go-Zone</div>
                 <div className={ styles.head_right }>
                     <div className={ styles.login_btn } onClick={ this.toLogin.bind(this, 1) }>Login</div>
-                    <div className={ styles.login_btn } onClick={ this.toLogin.bind(this, 2) }>Register</div>
+                    <div className={ styles.login_btn } onClick={ this.toLogin.bind(this, 0) }>Register</div>
                 </div>
             </div>
         );
