@@ -22,11 +22,17 @@ export default {
   effects: {
     * login({ payload }, { call }) {
       const res = yield call(UserService.login, payload);
-      return res
+      if (res.code === 0) {
+        let token = res.data.token
+        window.sessionStorage.setItem('token', token)
+      } else {
+        return res.code
+      }
+      
     },
     * register({ payload }, { call }) {
       const res = yield call(UserService.register, payload);
-      return res
+      return res.code
     },
      // 路由跳转
      * toLoginPage ({ payload }, { put }) {

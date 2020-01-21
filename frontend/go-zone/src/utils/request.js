@@ -16,7 +16,6 @@ function transformUrl(url, id) {
 axios.interceptors.request.use(config => {
   let newConfig = config;
   newConfig.headers['token'] = sessionStorage.getItem('token')
-  newConfig.headers['user'] = sessionStorage.getItem('name')
   return newConfig;
 });
 
