@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva'
 import HeaderBar from '../components/HeadBar'
 
-class MainLayout extends Component {
+class BasicLayout extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,7 +22,7 @@ class MainLayout extends Component {
   }
 }
 
-MainLayout.propTypes = {
+BasicLayout.propTypes = {
 };
 
-export default connect()(MainLayout);
+export default connect()(BasicLayout);

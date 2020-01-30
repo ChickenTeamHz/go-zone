@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva'
-import styles from './index.scss'
+import styles from './login.scss'
 import { Form, Button, Input } from 'antd'
 
 const passWordReg = /(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^[^\s\u4e00-\u9fa5]{6,15}$/
