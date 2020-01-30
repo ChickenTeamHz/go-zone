@@ -39,11 +39,7 @@ const menuData = [
       {
         name: '注册',
         path: 'register',
-      },
-      {
-        name: '注册结果',
-        path: 'register-result',
-      },
+      }
     ],
   },
 ];
