@@ -39,9 +39,19 @@ const menuData = [
       {
         name: '注册',
         path: 'register',
-      }
+      },
     ],
   },
+  {
+    name:'博客',
+    path: 'blog',
+    children: [
+      {
+        name: '博客首页',
+        path: 'index',
+      }
+    ]
+  }
 ];
 
 function formatter(data, parentPath = '/', parentAuthority) {

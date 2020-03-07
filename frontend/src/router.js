@@ -15,6 +15,7 @@ function RouterConfig({ history, app }) {
 
   const Login = routerData['/user/login'].component;
   const Register = routerData['/user/register'].component;
+  const Blog = routerData['/blog/index'].component;
 
   return (
     <ConnectedRouter history={history}>
@@ -23,6 +24,7 @@ function RouterConfig({ history, app }) {
             <BasicLayout>
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/blog" component={Blog} />
             </BasicLayout>
           </Switch>
       </RouterToUrlQuery>

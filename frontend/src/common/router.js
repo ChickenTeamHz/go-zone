@@ -99,6 +99,9 @@ export const getRouterData = app => {
     },
     '/user/register': {
       component: dynamicWrapper(app, ['login'], () => import('../routes/User/Register')),
+    },
+    '/blog/index': {
+      component: dynamicWrapper(app, ['blog'], () => import('../routes/Blog/Index')),
     }
   };
   // Get name from ./menu.js or just set it in the router data.
@@ -135,5 +138,6 @@ export const getRouterData = app => {
     };
     routerData[path] = router;
   });
+  console.log(routerData)
   return routerData;
 };

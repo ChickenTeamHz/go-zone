@@ -135,8 +135,16 @@ class LoginPage extends Component {
 		const { getFieldDecorator } = this.props.form;
 
 		const formItemLayout = {
-			labelCol: { span: 6 },
-			wrapperCol: { span: 16 },
+			labelCol: {
+				span: 6
+			},
+			wrapperCol: {
+				span: 15
+			},
+		};
+
+		const tailLayout = {
+			wrapperCol: { offset: 2, span: 16 },
 		};
 
 		return (
@@ -147,8 +155,8 @@ class LoginPage extends Component {
 					}
 				</p>
 				<div className={styles.login_form}>
-					<Form onSubmit={this.subForm.bind(this)}>
-						<Form.Item className={styles.resetMB} {...formItemLayout} label={"用户名"}>
+					<Form {...formItemLayout} onSubmit={this.subForm.bind(this)}>
+						<Form.Item className={styles.resetMB} label={"用户名"}>
 							{getFieldDecorator('username', {
 								rules: [
 									{ required: true, message: '请输入用户名!' },
@@ -160,7 +168,7 @@ class LoginPage extends Component {
 								<Input name="username" placeholder="请输入用户名" onChange={this.handleInput}/>
 							)}
 						</Form.Item>
-						<Form.Item className={styles.resetMB} {...formItemLayout} label={"密码"}>
+						<Form.Item className={styles.resetMB} label={"密码"}>
 							{getFieldDecorator('password', {
 								rules: [
 									{ required: true, message: '请输入密码!' },
@@ -174,7 +182,7 @@ class LoginPage extends Component {
 						</Form.Item>
 						{
 							type === 1 ? '' : 
-							<Form.Item className={styles.resetMB} {...formItemLayout} label={"确认密码"}>
+							<Form.Item className={styles.resetMB} label={"确认密码"}>
 								{getFieldDecorator('confirmDirty', {
 									rules: [
 										{ required: !type, message: '请确认密码!' },
@@ -187,7 +195,7 @@ class LoginPage extends Component {
 								)}
 							</Form.Item>
 						}
-						<Form.Item required className={styles.resetMB} {...formItemLayout} label={"验证码"}>
+						<Form.Item required className={styles.resetMB} label={"验证码"}>
 							{getFieldDecorator('code', {
 									rules: [
 										{
@@ -199,11 +207,11 @@ class LoginPage extends Component {
 							)}
 							<span onClick={this.getVerifyCode} className={styles.code} style={{ width: '30%' }}>{this.state.code}</span>
 						</Form.Item>
-						<Form.Item>
-							<Button onClick={this.resetForm.bind(this)}>
+						<Form.Item {...tailLayout}>
+							{/* <Button onClick={this.resetForm.bind(this)}>
 								重置
-							</Button>
-							<Button htmlType="submit" style={{marginLeft:70, backgroundColor: '#49b1f5',color: '#fff'}} >
+							</Button> */}
+							<Button htmlType="submit" style={{backgroundColor: '#49b1f5',color: '#fff'}} >
 								{
 									type === 1 ? '登录' : '注册'
 								}

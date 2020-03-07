@@ -28,6 +28,7 @@ body,
     font-family: Georgia, sans-serif;
     height: 100vh;
     width: 100%;
+    padding-top: 60px;
     text-align: center;
     background: url(./assets/top_img_index.jpg) no-repeat;
     background-attachment: fixed;
