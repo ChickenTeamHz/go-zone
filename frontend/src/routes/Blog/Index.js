@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva'
+import BlogWrapper from '../../components/Blog/blogWrapper'
 
 @connect(({ blog }) => ({ blog }))
 
@@ -17,7 +18,7 @@ class Blog extends Component {
 
   render() {
     return (
-      <div>我是博客页面</div>
+      <BlogWrapper />
     )
   }
 }
