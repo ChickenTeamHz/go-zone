@@ -1,0 +1,64 @@
+.content {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+.learnMore {
+  display: flex;
+  position: fixed;
+  right: 40px;
+  top: 10px;
+  z-index: 16;
+  cursor: pointer;
+  justify-content: start;
+  align-items: center;
+  .text {
+    color: #151515;
+    font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 11px;
+    font-weight: 400;
+    margin-right: 20px;
+  }
+  .icon span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color:#151515;
+    transition: all ease .2s;
+    &:nth-child(2) {
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+  }
+  .icon:hover {
+    span {
+     &:first-child{
+        transform: translateY(-2px);
+     }
+     &:last-child {
+       transform: translateY(2px);
+     }
+    }
+  }
+}
+
+.toTop {
+  position: fixed;
+  right: 40px;
+  bottom: 10px;
+  z-index: 16;
+}
+
+.wrap {
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}

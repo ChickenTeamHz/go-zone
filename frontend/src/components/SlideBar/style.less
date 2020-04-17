@@ -1,0 +1,61 @@
+.slideBar {
+  background-color: @primary-color;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  right: -3px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 400ms ease;
+  width: 240px;
+  height: 100vh;
+  right: -240px;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  overflow-x: hidden;
+  &.show {
+    transform: translate(-240px);
+  }
+
+  .close {
+    font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 400;
+    margin-right: 20px;
+    float: right;
+    padding-top: 10px;
+    cursor: pointer;
+  }
+
+  a {
+    color: rgba(255,255,255,0.85);
+    position: relative;
+    &:hover {
+      color: #fff;
+      &::before {
+        content: '';
+        height: 20px;
+        width: 2px;
+        background-color: #fff;
+        display: inline-block;
+        position: absolute;
+        left: -10px;
+        top: 0px;
+      }
+    }
+  }
+
+  .bar {
+    padding-top: 20vh;
+    li {
+      line-height: 50px;
+      list-style-type:none;
+    }
+  }
+  .childBar {
+    padding-left: 20px;
+  }
+}
