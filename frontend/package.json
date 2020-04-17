@@ -1,4 +1,7 @@
 {
+  "name": "go-zone",
+  "version": "1.0.0",
+  "description": "only for study",
   "private": true,
   "scripts": {
     "start": "umi dev",
