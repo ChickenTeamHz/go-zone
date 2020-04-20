@@ -5,7 +5,7 @@ const password = process.env.DB_PASSWORD || '123456';
 const port = process.env.DB_PORT || '27017';
 
 const DBConfig = {
-  baseUrl: `mongodb://${user}:${password}@${host}:${port}/${dbName}?authSource=admin`,
+  baseUrl: `mongodb://${user}:${password}@${host}:${port}/${dbName}`,
 };
 
 const jwtSecret = 'gozone'
