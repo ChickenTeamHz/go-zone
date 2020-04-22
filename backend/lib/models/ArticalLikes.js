@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const ArticalLikesSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   user: { // 点赞用户id
     type: String,

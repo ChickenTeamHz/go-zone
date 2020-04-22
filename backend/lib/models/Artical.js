@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
 const ArticalSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   user: { // 用户id
     type: String,

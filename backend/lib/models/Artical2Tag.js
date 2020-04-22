@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const Artical2TagSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   artical: { // 用户id
     type: String,

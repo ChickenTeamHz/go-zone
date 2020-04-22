@@ -65,8 +65,10 @@ module.exports = {
       const {
         username,
         password,
+        confirmPassword,
+        nickname,
       } = ctx.request.body; 
-      const errInfo = verify(ctx,'register',{ username, password }); 
+      const errInfo = verify(ctx,'register',{ username, password, nickname }); 
       if (!_.isEmpty(errInfo)) {
         throw new ApiError(null,errInfo)
       }
@@ -77,11 +79,17 @@ module.exports = {
           name: 'INVALID_PARAM',
         });
       }
+      if(confirmPassword !== password){
+        throw new ApiError(null,{
+          code: 100000,
+          message: '输入的两次密码不一致！',
+          name: 'INVALID_PARAM',
+        });
+      }
       const newPassword = encrypt(password);
       const res = await UserService.find(ctx,{
         query: {
         username,
-        password: newPassword,
       }});
       if(res){
         throw new ApiError(null,{ message: '账号已存在！', code: 409 });
@@ -89,6 +97,7 @@ module.exports = {
       await UserService.create({
         username,
         password:newPassword,
+        nickname,
       });
       ctx.body = {};
     }catch(err) {

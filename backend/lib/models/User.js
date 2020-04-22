@@ -12,16 +12,14 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   username: {
     type: String,
-    minlength:[1,'用户名不能为空！'],
-    maxLength:[15, '用户名长度不能超过15个字！'],
     required: true,
     trim: true,
   }, // 账号
-  name: String, // 昵称
+  nickname: String, // 昵称
   password: String, // 密码
   createdAt: { // 创建时间
     type: Date,

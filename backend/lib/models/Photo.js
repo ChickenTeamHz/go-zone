@@ -1,8 +1,8 @@
 /*
  * @Author: Fairy
  * @Description: 相册表
- * @Last Modified by:  Fairy
- * @Last Modified time: 2020-01-13 18:38:34
+ * @Last Modified by: Fairy
+ * @Last Modified time: 2020-04-22 16:28:04
 */
 const mongoose = require('mongoose');
 var shortid = require('shortid');
@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
 const PhotoSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   user: { // 用户id
     type: String,

@@ -1,8 +1,8 @@
 /*
  * @Author: Fairy
  * @Description: 操作mongodb封装方法
- * @Last Modified by:  Fairy
- * @Last Modified time: 2020-01-10 17:18:57
+ * @Last Modified by: Fairy
+ * @Last Modified time: 2020-04-22 16:23:30
 */
 
 const shortid = require('shortid');

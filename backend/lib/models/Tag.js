@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const TagSchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   title: String // 标签名称
 });

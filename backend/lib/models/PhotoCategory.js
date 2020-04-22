@@ -11,7 +11,7 @@ const Schema = mongoose.Schema;
 const PhotoCategorySchema = new Schema({
   _id: {
     type: String,
-    default: shortid.generate(),
+    default: shortid.generate,
   },
   title: String // 类别名称
 });
