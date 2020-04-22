@@ -21,28 +21,19 @@ module.exports = {
         username,
         password,
       } = ctx.request.body;
-      const errInfo = verify(ctx,'register',{ username, password }); 
-      if (!_.isEmpty(errInfo)) {
-        throw new ApiError(null,errInfo)
-      }
-      if(!verifyPasswrod(password)) {
-        throw new ApiError(null,{
-          code: 100000,
-          message: '密码格式错误！',
-          name: 'INVALID_PARAM',
-        });
-      }
       const newPassword = encrypt(password);
       const user = await UserService.find(ctx,{
         query: {
           username,
-          password: newPassword,
         },
-        files:'-password -loginTime',
+        files: 'password',
       });
       if(_.isEmpty(user)) {
         throw new ApiError('ACCOUNT_NOT_EXIST');
-      } 
+      }
+      if(user.password !== newPassword) {
+        throw new ApiError('BAD_CREDENTIALS');
+      }
       await UserService.update(ctx,user._id, {
         loginTime: Date.now(),
       })
@@ -82,7 +73,7 @@ module.exports = {
       if(confirmPassword !== password){
         throw new ApiError(null,{
           code: 100000,
-          message: '输入的两次密码不一致！',
+          message: '两次输入的密码不一致！',
           name: 'INVALID_PARAM',
         });
       }

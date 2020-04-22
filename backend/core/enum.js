@@ -2,7 +2,7 @@
  * @Author: Fairy
  * @Description: code码
  * @Last Modified by: Fairy
- * @Last Modified time: 2020-04-22 15:15:28
+ * @Last Modified time: 2020-04-22 16:35:40
 */
 
 
@@ -30,7 +30,7 @@ const CODE_ENUM = {
   * 100000-100099 用户相关状态码
   ************************************************/
   ACCOUNT_DISABLE: getRes(100001, '账号不可用'),
-  BAD_CREDENTIALS: getRes(100002, '用户名或密码错误'),
+  BAD_CREDENTIALS: getRes(100002, '密码错误'),
   ACCOUNT_NOT_EXIST: getRes(100003, '用户不存在'),
   ACCOUNT_FAILED_RETRY_LIMIT: getRes(100004, '用户登录失败，重试已达上限。'),
   ACCOUNT_INVALID: getRes(100005, '登录失效，请重新登陆'),
