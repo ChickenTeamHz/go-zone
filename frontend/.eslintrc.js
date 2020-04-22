@@ -1,17 +1,16 @@
 module.exports = {
+  root: true,
+  extends: [require.resolve('@umijs/fabric/dist/eslint')],
+  plugins: [
+    'react-hooks',
+  ],
   env: {
     browser: true,
     node: true,
+    commonjs: true,
     es6: true,
     mocha: true,
-    jest: true,
-    jasmine: true
   },
-  parser: 'babel-eslint',
-  extends: ['airbnb', 'prettier','eslint-config-umi'],
-  plugins: [
-    'react-hooks'
-  ],
   // rules中的值0、1、2分别表示不开启检查、警告、错误
   rules: {
     'react/jsx-no-bind': [0], // //JSX中不允许使用箭头函数和bind
@@ -57,7 +56,6 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': [0], // 是否强制验证空元素使用属性
     'jsx-a11y/no-noninteractive-element-interactions': [0],
     'jsx-a11y/click-events-have-key-events': [0],
-    'jsx-a11y/anchor-is-valid': [0],
     'jsx-a11y/label-has-associated-control': [0], // 控件必须与文本标签相关联
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-else-return': [0], // 禁止 if 语句中有 return 之后有 else
@@ -72,14 +70,11 @@ module.exports = {
     'radix': [0], // parseInt默认进制不需要添加
     'require-yield': [1], // generator 需要有 yield
     'react-hooks/rules-of-hooks': 'error', // 检查 Hook 的规则
-    'react-hooks/exhaustive-deps': 'warn' // 检查 effect 的依赖
-  },
-  parserOptions: {
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true,
-    },
-  },
-  settings: {
-    polyfills: ['fetch', 'promises'],
+    'react-hooks/exhaustive-deps': 'warn', // 检查 effect 的依赖
+    'jsx-a11y/control-has-associated-label': [0],
+    'react/jsx-filename-extension': [1, { "extensions": [".js", ".jsx"] }],
+    'prefer-promise-reject-errors': [0],
+    'jsx-a11y/anchor-has-content': [0],
+    'jsx-a11y/anchor-is-valid': [0],
   },
 }

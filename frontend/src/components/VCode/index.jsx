@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styles from './style.less';
 
 function getState(){
@@ -38,8 +38,7 @@ export default function useVCode() {
     function renderCanvas() {
       const canvas = document.getElementById('bgi')
       const ctx = canvas.getContext('2d')
-      canvas.height = canvas.height
-      // ctx.clearRect(0, 0, canvas.width(), canvas.height())
+      ctx.height = canvas.height
       ctx.strokeStyle = `rgb(${getRandom(100,10,3).toString()})`
       for( let i = 0; i< 7; i+=1 ) {
         ctx.lineTo(getRandom(200,0),getRandom(200,10))
@@ -49,7 +48,11 @@ export default function useVCode() {
     }
     renderCanvas();
   },[state]);
- console.log(1)
+
+  const freshCode = useCallback(()=>{
+    setState(getState);
+  },[]);
+
   const Content = () => {
     return (
       <div className={styles.vcode}>
@@ -69,14 +72,12 @@ export default function useVCode() {
             </div>
           ))}
         </div>
-        <a
-          onClick={() => {
-            setState(getState())
-          }}
+        <span
+          onClick={freshCode}
           className={`link ${styles.refresh}`}
         >
           看不清?点击刷新
-        </a>
+        </span>
       </div>
     )
   };
@@ -84,5 +85,6 @@ export default function useVCode() {
   return {
     data: getData(state.data),
     Content,
+    freshCode,
   }
 }

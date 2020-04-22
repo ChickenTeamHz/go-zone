@@ -14,11 +14,11 @@ export default {
           path: '/user/login',
           component: '../pages/User/Login',
         },
-        // {
-        //   name: 'register',
-        //   path: '/user/register',
-        //   component: './pages/User/register',
-        // },
+        {
+          name: 'register',
+          path: '/user/register',
+          component: '../pages/User/Register',
+        },
       ],
     },
     {
@@ -34,6 +34,7 @@ export default {
   alias: {
     '@': resolve(__dirname, './src'),
     "assets": resolve(__dirname,"./src/assets"),
+    "utils": resolve(__dirname,"./src/utils"),
   },
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
@@ -61,4 +62,25 @@ export default {
   theme: {
     '@primary-color': '#333',
   },
+  proxy: {
+    '/api': {
+      target: 'http://localhost:3000',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
+  chainWebpack(config) {
+    config.module
+      .rule('eslint')
+        .use('eslint-loader')
+        .tap(options => ({
+          ...options,
+          baseConfig: {
+            extends: [require.resolve('@umijs/fabric/dist/eslint')],
+          },
+          ignore: false,
+          eslintPath: require.resolve('eslint'),
+          useEslintrc: true,
+        }))
+  }
 }

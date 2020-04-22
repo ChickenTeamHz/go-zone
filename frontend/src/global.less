@@ -42,11 +42,27 @@ body {
 
 a {
   transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+  &:hover {
+    color:rgba(79, 79, 79, 0.85);
+  }
 }
 
 .link {
   color: #1890FF;
+  cursor: pointer;
   &:hover {
     color: #40a9ff;
+  }
+}
+
+.a {
+  transition: all 0.3s cubic-bezier(0.25, 0.5, 0.5, 0.9);
+  color: #333;
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  &:hover {
+    color:rgba(79, 79, 79, 0.85);
   }
 }
