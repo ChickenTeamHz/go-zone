@@ -54,7 +54,7 @@ app.use(koaMessageParameter(app));
 app.use(koajwt({
   secret: jwtSecret
 }).unless({
-  path:['/user/login','/user/register']
+  path:['/user/login','/user/register','/user/reset']
 }));
 
 

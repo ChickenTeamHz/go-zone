@@ -4,7 +4,7 @@ const {
 
 const ApiError = require('~ApiError');
 const { verify, verifyPasswrod } = require('~utils/validate');
-const { encrypt } = require('~utils/util');
+const { encrypt, randomPass } = require('~utils/util');
 const xss = require("xss");
 const _ = require('lodash');
 const { sign } = require('jsonwebtoken');
@@ -82,7 +82,7 @@ module.exports = {
         query: {
         username,
       }});
-      if(res){
+      if(!_.isEmpty(res)){
         throw new ApiError(null,{ message: '账号已存在！', code: 409 });
       }
       await UserService.create({
@@ -94,6 +94,38 @@ module.exports = {
     }catch(err) {
       throw err;
     }
+  },
+
+  /**
+   * 重置密码
+   * @param {*} ctx 
+   */
+  async resetPassword (ctx) {
+     try {
+       const {
+         username,
+         nickname,
+       } = ctx.request.body;
+       const res = await UserService.find(ctx,{
+        query: {
+        username,
+        nickname,
+       }});
+       console.log(res);
+       if(_.isEmpty(res)){
+         throw new ApiError('ACCOUNT_NOT_EXIST');
+       }
+       const password = randomPass();
+       await UserService.update(ctx, res._id, {
+         password: encrypt(password),
+       });
+       ctx.body = {
+         password,
+       }
+
+     }catch(err) {
+       throw err;
+     }
   }
 }
 
