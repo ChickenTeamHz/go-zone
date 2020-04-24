@@ -1,4 +1,4 @@
-import { fetchLogin, fetchRegister } from '../services/api';
+import { fetchLogin, fetchRegister, fetchForgetRegister } from '../services/api';
 
 export default {
   namespace: 'user',
@@ -17,6 +17,13 @@ export default {
         return Promise.resolve('注册成功')
       }
       return Promise.reject(response.message || '注册失败');
+    },
+    *fetchForgetRegister({ payload }, { call }) {
+      const response = yield call(fetchForgetRegister, payload);
+      if(response && response.code === 0){
+        return Promise.resolve(response.data || {})
+      }
+      return Promise.reject(response.message || '提交失败');
     },
   },
 };

@@ -3,7 +3,7 @@ import { Button, Form, Input, message, Popover } from 'antd';
 import { router } from 'umi';
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { useToggle } from '@umijs/hooks';
-import { useDva } from 'utils/utils';
+import { useDva } from 'utils/hooks';
 import styles from './style.less';
 import { PATTERN } from '../../common/pattern';
 

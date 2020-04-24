@@ -76,5 +76,6 @@ module.exports = {
     'prefer-promise-reject-errors': [0],
     'jsx-a11y/anchor-has-content': [0],
     'jsx-a11y/anchor-is-valid': [0],
+    '@typescript-eslint/no-unused-vars': [1],
   },
 }

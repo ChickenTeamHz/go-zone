@@ -6,7 +6,7 @@ function getState(){
   return {
     data: getRandom(109,48,4),
     rotate: getRandom(75,-75,4),
-    fz: getRandom(16,28,4),
+    fz: getRandom(16,22,4),
     color: [getRandom(100,255,3),getRandom(100,255,4),getRandom(100,255,3),getRandom(100,255,3)],
   }
 }

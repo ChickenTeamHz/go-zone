@@ -1,14 +1,26 @@
-import React from 'react';
-import { Button, Form, Input, message } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, message, Alert, Modal } from 'antd';
 import { router } from 'umi';
 import { UserOutlined, LockOutlined, ArrowRightOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
-import { useDva } from 'utils/utils';
+import { useDva, useModal, useResetFormOnCloseModal } from 'utils/hooks';
 import styles from './style.less';
 import useVCode from '../../components/VCode';
 
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 14 },
+};
+
 export default function() {
   const VCode = useVCode();
-  const { dispatch, loadings: { loading } } = useDva({loading: 'user/fetchLogin'});
+  const ResetPassModal = useModal();
+  const [showPass, setShowPass] = useState(false);
+  const [pass,setPass] = useState(null);
+  const { dispatch, loadings: { loading, passLoading } } = useDva({loading: 'user/fetchLogin', passLoading: 'user/fetchForgetRegister'});
+  const [ form ] = Form.useForm();
+
+  useResetFormOnCloseModal({ form, visible: ResetPassModal.visible })
+
   const onFinish = values => {
     const { username, password, code } = values;
     message.config({
@@ -37,6 +49,24 @@ export default function() {
     });
   };
 
+  const handleClose = () => {
+    setShowPass(false);
+  }
+
+  const handleOk = () => {
+    form.validateFields().then(values => {
+      dispatch({
+        type: 'user/fetchForgetRegister',
+        payload: values,
+      }).then(data => {
+        const { password } = data;
+        setPass(password);
+        setShowPass(true);
+        ResetPassModal.hideModal();
+      })
+    })
+  }
+
   return (
     <div className={styles.login}>
       <Form
@@ -44,6 +74,16 @@ export default function() {
         className={styles.form}
         onFinish={onFinish}
       >
+        {showPass ? (
+          <Alert
+            message={`重置密码成功！您的初始密码为: ${pass}`}
+            type="success"
+            showIcon
+            closable
+            afterClose={handleClose}
+            style={{ top: '-20px',userSelect: 'text' }}
+          />
+        ):null}
         <Form.Item
           name="username"
         >
@@ -79,8 +119,8 @@ export default function() {
           <VCode.Content />
         </div>
         <Form.Item>
-          <div style={{ textAlign: 'right' }} className="a">
-            忘记密码？
+          <div style={{ textAlign: 'right' }}>
+            <a onClick={()=> ResetPassModal.showModal()}>忘记密码？</a>
           </div>
         </Form.Item>
         <Form.Item>
@@ -92,6 +132,37 @@ export default function() {
         </Form.Item>
       </Form>
       <a className={styles.toRegister} onClick={()=> router.replace('/user/register')}>立即注册 <ArrowRightOutlined /></a>
+      <Modal {...ResetPassModal.modalProps} title="忘记密码" onOk={handleOk} confirmLoading={passLoading} okText="提交">
+        <>
+          <div style={{ fontSize: 14, fontWeight: '600', marginBottom: 24 }}>如果您忘记密码了，您可以输入用户名和昵称，来获取一个可以登录的密码，但记得登录成功之后，去修改密码哦~</div>
+          <Form form={form} name="reset-password" {...formItemLayout}>
+            <Form.Item
+              name="username"
+              label="用户名"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入用户名',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="nickname"
+              label="昵称"
+              rules={[
+                {
+                  required: true,
+                  message: '请输入昵称',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Form>
+        </>
+      </Modal>
     </div>
   );
 }

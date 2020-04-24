@@ -2,7 +2,7 @@ import { useToggle } from '@umijs/hooks';
 import React, { useState } from 'react';
 import { CaretRightOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './style.less';
-import { useBodyScroll } from '../../utils/utils';
+import { useBodyScroll } from '../../utils/hooks';
 
 export default function ({ menuData = [], handleClose = ()=> {}, visible = false }) {
   const { state: fold, toggle } = useToggle(false);

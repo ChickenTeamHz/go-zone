@@ -17,3 +17,11 @@ export async function fetchRegister(params) {
   })
 }
 
+// 忘记密码
+export async function fetchForgetRegister(params) {
+  return request(`${HOST}/user/reset`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
