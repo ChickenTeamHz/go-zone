@@ -4,7 +4,7 @@ import { router } from 'umi';
 import { UserOutlined, LockOutlined, ArrowRightOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { useDva, useModal, useResetFormOnCloseModal } from 'utils/hooks';
 import styles from './style.less';
-import useVCode from '../../components/VCode';
+import { useVCodeProps, VCode} from '../../components/VCode';
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -12,7 +12,7 @@ const formItemLayout = {
 };
 
 export default function() {
-  const VCode = useVCode();
+  const VCodeProps = useVCodeProps();
   const ResetPassModal = useModal();
   const [showPass, setShowPass] = useState(false);
   const [pass,setPass] = useState(null);
@@ -35,9 +35,9 @@ export default function() {
       message.error('图形校验码不能为空！');
       return;
     }
-    if(code !== VCode.data) {
+    if(code !== VCodeProps.data) {
       message.error('图形校验码错误！');
-      VCode.freshCode();
+      VCodeProps.freshCode();
       return;
     }
     dispatch({
@@ -116,7 +116,7 @@ export default function() {
               autoComplete="off"
             />
           </Form.Item>
-          <VCode.Content />
+          <VCode state={VCodeProps.state} freshCode={VCodeProps.freshCode} data={VCodeProps.data} />
         </div>
         <Form.Item>
           <div style={{ textAlign: 'right' }}>
