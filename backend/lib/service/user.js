@@ -17,12 +17,12 @@ class UserService {
     async find(ctx, {
         query = {},
         populate = [],
-        files = null
+        filters = null
     } = {}) {
         return _item(ctx, UserModel, {
             query,
             populate,
-            files: files ? files : '-password',
+            filters: filters ? filters : '-password',
         })
     }
 

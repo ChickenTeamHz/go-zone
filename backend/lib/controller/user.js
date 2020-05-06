@@ -4,7 +4,7 @@ const {
 
 const ApiError = require('~ApiError');
 const { verify, verifyPasswrod } = require('~utils/validate');
-const { encrypt, randomPass } = require('~utils/util');
+const { encrypt, randomPass, verifyToken } = require('~utils/util');
 const xss = require("xss");
 const _ = require('lodash');
 const { sign } = require('jsonwebtoken');
@@ -26,7 +26,7 @@ module.exports = {
         query: {
           username,
         },
-        files: 'password',
+        filters: 'password',
       });
       if(_.isEmpty(user)) {
         throw new ApiError('ACCOUNT_NOT_EXIST');
@@ -40,7 +40,6 @@ module.exports = {
       const token = sign({id: user._id, username }, jwtSecret, {expiresIn: jwtTime });
       ctx.body = {
         token,
-        user,
       };
     }catch(err) {
       throw err;
@@ -126,6 +125,24 @@ module.exports = {
      }catch(err) {
        throw err;
      }
-  }
+  },
+
+  /**
+   * 获取用户信息
+   * @param {*} ctx 
+   */
+  async getOne (ctx) {
+    try {
+      const { id } = verifyToken(ctx);
+      const res = await UserService.find(ctx,{
+       query: {
+        _id: id,
+        },
+      });
+      ctx.body = res
+    }catch(err) {
+      throw err;
+    }
+ }
 }
 

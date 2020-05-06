@@ -2,7 +2,7 @@
  * @Author: Fairy
  * @Description: 操作mongodb封装方法
  * @Last Modified by: Fairy
- * @Last Modified time: 2020-04-22 16:54:25
+ * @Last Modified time: 2020-05-06 14:32:06
 */
 
 const shortid = require('shortid');
@@ -13,14 +13,14 @@ const _ = require('lodash')
  * @method list
  * @param Model 模型
  * @param {} pageQuery { pageNum, pageSize, searchReg, isPaging, skip } 
- * @param {} { sort, files, query, serachKeys, populate}
+ * @param {} { sort, filters, query, serachKeys, populate}
  */
 
 exports._list = async (Model, pageQuery, {
     sort = {
         date: -1
     },
-    files = null,
+    filters = null,
     query = {},
     searchKeys = [],
     populate = []
@@ -46,7 +46,7 @@ exports._list = async (Model, pageQuery, {
     let skipNum = skip ? skip : ((Number(pageNum)) - 1) * Number(pageSize); // 要跳过的文档数
 
     /** 条件筛选 */
-    if (searchkey && searchKeys) {
+    if (searchReg && searchKeys) {
         if (searchKeys instanceof Array && searchKeys.length > 0) {
             let searchStr = [];
             for (let i = 0; i < searchKeys.length; i++) {
@@ -68,9 +68,9 @@ exports._list = async (Model, pageQuery, {
 
     /** 查表获取数据 */
     if (isPaging || pageQuery.pageSize > 0) {
-        items = await Model.find(query, files).skip(skipNum).limit(pageSize).sort(sort).populate(populate).exec();
+        items = await Model.find(query, filters).skip(skipNum).limit(pageSize).sort(sort).populate(populate).exec();
     } else {
-        items = await Model.find(query, files).skip(skipNum).sort(sort).populate(populate).exec();
+        items = await Model.find(query, filters).skip(skipNum).sort(sort).populate(populate).exec();
     }
 
     count = await Model.count(query).exec(); // 文档条数
@@ -128,14 +128,14 @@ exports._create = async (Model, payload) => {
  * @return {{}} Promise object
  */
 exports._item = async (ctx, Model, {
-    files = null, // 投影参数
+    filters = null, // 投影参数
     query = {},
     populate = []
 } = {}) => {
     if (query._id && !shortid.isValid(query._id)) {
         ctx.throw(400,'参数异常');
     }
-    return await Model.findOne(query, files).populate(populate).exec();
+    return await Model.findOne(query, filters).populate(populate).exec();
 }
 
 /**

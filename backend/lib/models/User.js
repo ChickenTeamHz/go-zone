@@ -33,7 +33,10 @@ const UserSchema = new Schema({
     type: Date,
     default: null,
   },
-  avatar: String, // 用户头像
+  avatar: { // 用户头像
+    type: String,
+    default: null,
+  },
 });
 
 UserSchema.set('toJSON', { getters: true, virtuals: true });
