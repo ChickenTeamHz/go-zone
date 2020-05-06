@@ -1,10 +1,11 @@
 import { useToggle } from '@umijs/hooks';
 import React, { useState } from 'react';
 import { CaretRightOutlined, UpOutlined, DownOutlined } from '@ant-design/icons';
+import { Avatar } from 'antd';
 import styles from './style.less';
 import { useBodyScroll } from '../../utils/hooks';
 
-export default function ({ menuData = [], handleClose = ()=> {}, visible = false }) {
+export default function ({ menuData = [], handleClose = ()=> {}, visible = false, avatar }) {
   const { state: fold, toggle } = useToggle(false);
   const [selectKey, setSelectKey] = useState(0);
   const handleSelect = (key) => {
@@ -33,6 +34,7 @@ export default function ({ menuData = [], handleClose = ()=> {}, visible = false
   return (
     <div className={`${styles.slideBar} ${visible ? styles.show : ''}`}>
       <div className={styles.close} onClick={()=>handleClose()}>CLOSE <CaretRightOutlined /></div>
+      <Avatar src={avatar} size={128} className={styles.avatar} />
       <ul className={styles.bar}>
         {menuData.map((val,index) => (
           <li className={styles.parent} key={val.link}>

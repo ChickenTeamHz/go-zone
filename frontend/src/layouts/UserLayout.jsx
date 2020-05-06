@@ -1,21 +1,18 @@
 // import { Link } from 'umi';
 // import { connect } from 'dva';
-import React from 'react';
+import React,{ useEffect } from 'react';
 import styles from './UserLayout.less';
 import Logo from '../components/Logo';
+import { clearToken } from '../utils/authToken';
 
 export default function UserLayout(props){
-  // const {
-  //   route = {
-  //     routes: [],
-  //   },
-  // } = props;
-  // const { routes = [] } = route;
+
+  useEffect(()=> {
+    clearToken();
+  },[]);
+  
   const {
     children,
-    // location = {
-    //   pathname: '',
-    // },
   } = props;
   return (
     <div className={`${styles.content} animated fadeIn slow`}>

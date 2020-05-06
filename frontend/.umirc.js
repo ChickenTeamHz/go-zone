@@ -23,12 +23,17 @@ export default {
     },
     {
       path: '/',
-      component: '../layouts/BasicLayout',
+      component: '../layouts/SecurityLayout',
       routes: [
-        { path: '/', component: '../pages/index' },
-        { path: '/home', component: '../pages/Home'}
+        {
+          path: '/',
+          component: '../layouts/BasicLayout',
+          routes: [
+            { path: '/', component: '../pages/Home' },
+          ]
+        },
       ]
-    }
+    },
   ],
 
   alias: {

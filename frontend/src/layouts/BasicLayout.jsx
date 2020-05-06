@@ -7,9 +7,13 @@ import styles from './BasicLayout.less';
 import SlideBar from '../components/SlideBar';
 import { menuData } from '../common/menu';
 import Logo from '../components/Logo';
+import { useDva } from '../utils/hooks';
+import avatarDefault from '../assets/avatar.jpg';
 
 function LearnMore() {
   const { state:visible, toggle } = useToggle(false);
+  const { data: { user: { currentUser }}} = useDva({},['user']);
+  const avatar = currentUser.avatar || avatarDefault;
   return (
     <>
       <div className={styles.learnMore} onClick={()=> toggle(true)}>
@@ -20,7 +24,7 @@ function LearnMore() {
           <span />
         </div>
       </div>
-      <SlideBar menuData={menuData} handleClose={()=> toggle(false)} visible={visible} />
+      <SlideBar menuData={menuData} handleClose={()=> toggle(false)} visible={visible} avatar={avatar}/>
     </>
   )
 }

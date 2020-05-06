@@ -1,6 +1,7 @@
 import { extend } from 'umi-request';
 import { notification, message } from 'antd';
-import { router }from 'umi';
+import { router } from 'umi';
+import { getToken, clearToken } from './authToken';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -32,6 +33,7 @@ const errorHandler = error => {
       maxCount: 1,
     });
     message.error('登录过期，请重新登录');
+    clearToken();
     router.replace({
       pathname: '/user/login',
     });
@@ -57,10 +59,10 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use((url, options) => {
-  // const tokenOptions = getProjectToken() ? { Authorization: `cyfx-${getProjectToken()}` } : {};
+  const tokenOptions = getToken() ? { Authorization: `Bearer ${getToken()}` } : {};
   const newOptions = { ...options };
   newOptions.headers = {
-    // ...tokenOptions,
+    ...tokenOptions,
     ...newOptions.headers,
   };
   newOptions.data = options.data || options.body || {};

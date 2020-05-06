@@ -1,5 +1,5 @@
 export const menuData = [{
-  link: '/home',
+  link: '/',
   desc: 'Home',
 },{
   link: '/blog',
@@ -15,6 +15,9 @@ export const menuData = [{
   link: '/album',
   desc: 'My Album',
 },{
-  link: '/account',
-  desc: 'Account',
+  link: '/profile',
+  desc: 'Profile',
+},{
+  link: '/user/login',
+  desc: 'Sign Out',
 }]

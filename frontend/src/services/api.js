@@ -25,3 +25,7 @@ export async function fetchForgetRegister(params) {
   })
 }
 
+// 获取用户信息
+export async function fecthProfile(){
+  return request(`${HOST}/user/profile`);
+}
