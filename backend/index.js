@@ -38,11 +38,11 @@ app.use(async (ctx,next) => {
   try{
       await next();
       ms = new Date() - start;
-      // logUtil.logResponse(ctx, ms);
+      logUtil.logResponse(ctx, ms);
   }catch(err){
       ms = new Date() - start;
       //记录异常日志
-      // logUtil.logError(ctx, err, ms);
+      logUtil.logError(ctx, err, ms);
   }
 });
 
