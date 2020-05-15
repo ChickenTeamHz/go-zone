@@ -24,7 +24,7 @@ function LearnMore() {
           <span />
         </div>
       </div>
-      <SlideBar menuData={menuData} handleClose={()=> toggle(false)} visible={visible} avatar={avatar}/>
+      <SlideBar menuData={menuData} handleClose={()=> toggle(false)} visible={visible} avatar={avatar} name={currentUser.nickname} />
     </>
   )
 }

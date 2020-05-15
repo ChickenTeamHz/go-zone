@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'dva';
  */
 export function useBodyScroll(){
   const showScroll = useCallback(()=> {
-    document.body.style.overflowY = 'scroll';
+    document.body.style.overflowY = 'auto';
   },[]);
   const hideScroll = useCallback(()=> {
     document.body.style.overflowY = 'hidden';

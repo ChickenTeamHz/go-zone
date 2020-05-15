@@ -30,8 +30,16 @@ export default {
           component: '../layouts/BasicLayout',
           routes: [
             { path: '/', component: '../pages/Home' },
+            { path: '/album', component: '../pages/Album' },
+            { path: '/profile', component: '../pages/Profile' },
+            {
+              component: '../pages/404',
+            }
           ]
         },
+        {
+          component: '../pages/404',
+        }
       ]
     },
   ],

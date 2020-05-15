@@ -29,3 +29,27 @@ export async function fetchForgetRegister(params) {
 export async function fecthProfile(){
   return request(`${HOST}/user/profile`);
 }
+
+// 更新用户信息
+export async function fetchUpdateUser(params) {
+  return request(`${HOST}/user`,{
+    method: 'PUT',
+    body: params,
+  })
+}
+
+// 更新用户密码信息
+export async function fetchUpdatePassword(params) {
+  return request(`${HOST}/user/password`,{
+    method: 'PUT',
+    body: params,
+  })
+}
+
+// 更换头像
+export async function fetchUpdateAvatar(params) {
+  return request(`${HOST}/user/avatar`,{
+    method: 'POST',
+    body: params,
+  })
+}

@@ -5,7 +5,7 @@ import { Avatar } from 'antd';
 import styles from './style.less';
 import { useBodyScroll } from '../../utils/hooks';
 
-export default function ({ menuData = [], handleClose = ()=> {}, visible = false, avatar }) {
+export default function ({ menuData = [], handleClose = ()=> {}, visible = false, avatar, name }) {
   const { state: fold, toggle } = useToggle(false);
   const [selectKey, setSelectKey] = useState(0);
   const handleSelect = (key) => {
@@ -34,7 +34,10 @@ export default function ({ menuData = [], handleClose = ()=> {}, visible = false
   return (
     <div className={`${styles.slideBar} ${visible ? styles.show : ''}`}>
       <div className={styles.close} onClick={()=>handleClose()}>CLOSE <CaretRightOutlined /></div>
-      <Avatar src={avatar} size={128} className={styles.avatar} />
+      <div className={styles.account}>
+        <Avatar src={avatar} size={128} className={styles.avatar} />
+        <div className={styles.name}>{name}</div>
+      </div>
       <ul className={styles.bar}>
         {menuData.map((val,index) => (
           <li className={styles.parent} key={val.link}>

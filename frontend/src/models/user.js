@@ -1,5 +1,5 @@
 import { router } from 'umi';
-import { fetchLogin, fetchRegister, fetchForgetRegister, fecthProfile } from '../services/api';
+import { fetchLogin, fetchRegister, fetchForgetRegister, fecthProfile, fetchUpdateUser, fetchUpdatePassword, fetchUpdateAvatar } from '../services/api';
 import { getPageQuery } from '../utils/utils';
 import { setToken } from '../utils/authToken';
 
@@ -57,6 +57,35 @@ export default {
           type: 'saveCurrentUser',
           payload: response.data || {},
         })
+        return Promise.resolve();
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    *fetchUpdateUser({ payload }, { call, put }) {
+      const response = yield call(fetchUpdateUser, payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'saveCurrentUser',
+          payload: response.data || {},
+        });
+        return Promise.resolve();
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    *fetchUpdatePassword({ payload }, { call }) {
+      const response = yield call(fetchUpdatePassword, payload);
+      if(response && response.code === 0) {
+        return Promise.resolve();
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    *fetchUpdateAvatar({ payload }, { call, put }) {
+      const response = yield call(fetchUpdateAvatar, payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'saveCurrentUser',
+          payload: response.data || {},
+        });
         return Promise.resolve();
       }
       return Promise.reject(response.message || '请求失败');
