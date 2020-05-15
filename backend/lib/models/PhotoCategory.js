@@ -5,7 +5,7 @@
  * @ Last Modified time: 2020-01-13 18:39:19
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const PhotoCategorySchema = new Schema({
@@ -20,6 +20,6 @@ PhotoCategorySchema.set('toJSON', { getters: true, virtuals: true });
 PhotoCategorySchema.set('toObject', { getters: true, virtuals: true });
 
 
-var PhotoCategory = mongoose.model("PhotoCategory", PhotoCategorySchema);
+const PhotoCategory = mongoose.model("PhotoCategory", PhotoCategorySchema);
 
 module.exports = PhotoCategory;

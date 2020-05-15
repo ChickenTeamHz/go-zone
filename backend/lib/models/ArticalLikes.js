@@ -5,7 +5,7 @@
  * @ Last Modified time: 2020-01-13 18:56:53
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const ArticalLikesSchema = new Schema({
@@ -30,6 +30,6 @@ const ArticalLikesSchema = new Schema({
 ArticalLikesSchema.set('toJSON', { getters: true, virtuals: true });
 ArticalLikesSchema.set('toObject', { getters: true, virtuals: true });
 
-var ArticalLikes = mongoose.model("ArticalLikes", ArticalLikesSchema);
+const ArticalLikes = mongoose.model("ArticalLikes", ArticalLikesSchema);
 
 module.exports = ArticalLikes;

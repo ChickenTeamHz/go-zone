@@ -5,7 +5,7 @@
  * @ Last Modified time: 2020-01-13 18:47:22
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const ArticalCategorySchema = new Schema({
@@ -19,6 +19,6 @@ const ArticalCategorySchema = new Schema({
 ArticalCategorySchema.set('toJSON', { getters: true, virtuals: true });
 ArticalCategorySchema.set('toObject', { getters: true, virtuals: true });
 
-var ArticalCategory = mongoose.model("ArticalCategory", ArticalCategorySchema);
+const ArticalCategory = mongoose.model("ArticalCategory", ArticalCategorySchema);
 
 module.exports = ArticalCategory;

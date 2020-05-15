@@ -2,7 +2,7 @@
  * @Author: Fairy
  * @Description: 操作mongodb封装方法
  * @Last Modified by: Fairy
- * @Last Modified time: 2020-05-06 14:32:06
+ * @Last Modified time: 2020-05-11 16:52:04
 */
 
 const shortid = require('shortid');
@@ -196,7 +196,10 @@ exports._safeDelete = async (ctx, Model, ids = []) => {
  * @param  {[type]} data    [修改数据]
  */
 exports._update = async (ctx, Model, _id, data, {
-    query = {}
+    query = {},
+    options = {
+      new: true,
+    },
 } = {}) => {
     if (_id) {
         query = _.assign({}, query, {
@@ -215,7 +218,7 @@ exports._update = async (ctx, Model, _id, data, {
     }
     return await Model.findOneAndUpdate(query, {
         $set: data
-    });
+    },options);
 }
 
 /**

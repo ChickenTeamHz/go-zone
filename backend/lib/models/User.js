@@ -5,8 +5,10 @@
  * @ Last Modified time: 2020-01-13 18:38:53
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
-var moment = require('moment')
+const shortid = require('shortid');
+const moment = require('moment');
+const qs = require('~utils/upload');
+
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -50,6 +52,10 @@ UserSchema.path('updatedAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-var User = mongoose.model("User", UserSchema);
+UserSchema.path('avatar').get(function (v) {
+  return qs.config.origin + v;
+});
+
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;

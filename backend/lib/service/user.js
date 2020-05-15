@@ -32,8 +32,8 @@ class UserService {
     }
 
     // 修改用户
-    async update(ctx, _id, payload) {
-        return _update(ctx, UserModel, _id, payload);
+    async update(ctx, _id, payload, { filters = '' } = {}) {
+        return _update(ctx, UserModel, _id, payload, { options: { select: filters, new: true }});
     }
 
 }

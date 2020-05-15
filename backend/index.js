@@ -14,7 +14,9 @@ require('./core/global')
 
 const app = new Koa()
 // 解析post请求
-app.use(koaBody())
+app.use(koaBody({
+  multipart: true,  // 允许上传多个文件
+}))
 
  
 // 处理跨域的配置
@@ -36,11 +38,11 @@ app.use(async (ctx,next) => {
   try{
       await next();
       ms = new Date() - start;
-      logUtil.logResponse(ctx, ms);
+      // logUtil.logResponse(ctx, ms);
   }catch(err){
       ms = new Date() - start;
       //记录异常日志
-      logUtil.logError(ctx, err, ms);
+      // logUtil.logError(ctx, err, ms);
   }
 });
 

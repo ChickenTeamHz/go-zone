@@ -4,10 +4,11 @@ const {
 
 const ApiError = require('~ApiError');
 const { verify, verifyPasswrod } = require('~utils/validate');
-const { encrypt, randomPass, verifyToken } = require('~utils/util');
+const { encrypt, randomPass, verifyToken, formatBase64File } = require('~utils/util');
 const xss = require("xss");
 const _ = require('lodash');
 const { sign } = require('jsonwebtoken');
+const qn = require('~utils/upload');
 const { jwtSecret, jwtTime } = require('../../db/config');
 
 module.exports = {
@@ -110,7 +111,6 @@ module.exports = {
         username,
         nickname,
        }});
-       console.log(res);
        if(_.isEmpty(res)){
          throw new ApiError('ACCOUNT_NOT_EXIST');
        }
@@ -143,6 +143,132 @@ module.exports = {
     }catch(err) {
       throw err;
     }
- }
+ },
+
+/**
+ * 更新用户信息
+ * @param {*} ctx 
+ */
+ async updateUser(ctx) {
+   try {
+    const values = ctx.request.body; 
+    const { id } = verifyToken(ctx);
+    const errInfo = verify(ctx,'updateUser',{ ...values }); 
+    if (!_.isEmpty(errInfo)) {
+      throw new ApiError(null,errInfo)
+    }
+    const res = await UserService.update(ctx,id,
+      { 
+        ...values,
+        updatedAt: Date.now(),
+      },
+      {
+        filters: '-password'
+      });
+    if(_.isEmpty(res)) {
+      throw new ApiError('ACCOUNT_NOT_EXIST');
+    }
+    ctx.body = res;
+   }catch(err) {
+     throw err;
+   }
+ },
+/**
+ * 修改密码
+ * @param {*} ctx 
+ */
+  async updatePassword (ctx) {
+    try {
+      const {
+        password,
+        newPassword,
+        confirmPassword,
+      } = ctx.request.body; 
+      const { id } = verifyToken(ctx);
+      const errInfo = verify(ctx,'updateUser',{ password: newPassword }); 
+      if (!_.isEmpty(errInfo)) {
+        throw new ApiError(null,errInfo)
+      }
+      if(!verifyPasswrod(newPassword)) {
+        throw new ApiError(null,{
+          code: 100000,
+          message: '密码格式错误！',
+          name: 'INVALID_PARAM',
+        });
+      }
+      if(confirmPassword !== newPassword){
+        throw new ApiError(null,{
+          code: 100000,
+          message: '两次输入的密码不一致！',
+          name: 'INVALID_PARAM',
+        });
+      }
+      const user = await UserService.find(ctx,{
+        query: {
+          _id: id,
+        },
+        filters: 'password',
+      });
+      if(user.password !== encrypt(password)) {
+        throw new ApiError('BAD_CREDENTIALS');
+      }
+      const res = await UserService.update(ctx,id,
+        { 
+          password: encrypt(newPassword),
+          updatedAt: Date.now(),
+        },
+        {
+          filters: '-password'
+        });
+
+      if(_.isEmpty(res)) {
+        throw new ApiError('ACCOUNT_NOT_EXIST');
+      }
+      ctx.body = {};
+    }catch(err) {
+      throw err;
+    }
+  },
+
+   /**
+   * 上传头像
+   * @param {*} ctx 
+   */
+  async updateAvatar (ctx) {
+    try {
+      const {
+        imgBase,
+        suffix,
+      } = ctx.request.body;
+      const { id } = verifyToken(ctx);
+      if (imgBase && suffix) {
+        const fileProps = formatBase64File(imgBase, suffix);
+        const result = await qn.upFile(fileProps.filePath,fileProps.fileName);
+        if (result) {
+          const res = await UserService.update(ctx,id,
+            { 
+              avatar: result.key,
+              updatedAt: Date.now(),
+            },
+            {
+              filters: '-password'
+            });
+          if(_.isEmpty(res)) {
+            throw new ApiError('ACCOUNT_NOT_EXIST');
+          }
+          ctx.body = res;
+        } else {
+          throw new ApiError(null,{
+            code: 100000,
+            message: '上传失败',
+          });
+        }
+      } else {
+        ctx.throw(400,'参数异常！');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 

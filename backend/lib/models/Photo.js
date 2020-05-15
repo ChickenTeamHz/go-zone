@@ -5,8 +5,8 @@
  * @Last Modified time: 2020-04-22 16:28:04
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
-var moment = require('moment')
+const shortid = require('shortid');
+const moment = require('moment')
 const Schema = mongoose.Schema;
 
 const PhotoSchema = new Schema({
@@ -39,6 +39,6 @@ PhotoSchema.path('createdAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-var Photo = mongoose.model("Photo", PhotoSchema);
+const Photo = mongoose.model("Photo", PhotoSchema);
 
 module.exports = Photo;

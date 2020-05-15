@@ -5,7 +5,7 @@
  * @ Last Modified time: 2020-01-13 18:49:51
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const ArticalCommentSchema = new Schema({
@@ -31,6 +31,6 @@ const ArticalCommentSchema = new Schema({
 ArticalCommentSchema.set('toJSON', { getters: true, virtuals: true });
 ArticalCommentSchema.set('toObject', { getters: true, virtuals: true });
 
-var ArticalComment = mongoose.model("ArticalComment", ArticalCommentSchema);
+const ArticalComment = mongoose.model("ArticalComment", ArticalCommentSchema);
 
 module.exports = ArticalComment;

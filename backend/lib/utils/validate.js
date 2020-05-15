@@ -7,17 +7,33 @@
 
 const  { PATTERN } = require('../../core/enum');
 
+
+function getSomeRule(rule, params) {
+  if(params && params instanceof Object) {
+    const r = {};
+    Object.keys(params).forEach(key => {
+      r[key] = rule[key];
+    });
+    return r;
+  }
+  return rule;
+}
+
 exports.verify = (ctx,controlName, params = null) => {
   let rule = '';
   switch (controlName) {
       case 'register':
           rule = this.registerRule;
           break;
+      case 'updateUser':
+        rule = getSomeRule(this.registerRule, params);
+        break;
       default:
           break;
   }
   return ctx.verifyParams(rule,params);
 }
+
 
 
 exports.registerRule = {

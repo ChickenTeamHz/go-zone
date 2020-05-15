@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-var modelsPath = path.resolve(__dirname, './');
+const modelsPath = path.resolve(__dirname, './');
 
 fs.readdirSync(modelsPath).forEach(function (name) {
     if (path.extname(name) !== '') {

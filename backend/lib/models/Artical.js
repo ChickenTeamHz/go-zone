@@ -5,8 +5,8 @@
  * @ Last Modified time: 2020-01-13 18:41:26
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
-var moment = require('moment')
+const shortid = require('shortid');
+const moment = require('moment')
 const Schema = mongoose.Schema;
 
 const ArticalSchema = new Schema({
@@ -58,6 +58,6 @@ ArticalSchema.path('updatedAt').get(function (v) {
 });
 
 
-var Artical = mongoose.model("Artical", ArticalSchema);
+const Artical = mongoose.model("Artical", ArticalSchema);
 
 module.exports = Artical;

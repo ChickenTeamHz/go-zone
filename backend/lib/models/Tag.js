@@ -5,7 +5,7 @@
  * @ Last Modified time: 2020-01-13 18:43:39
 */
 const mongoose = require('mongoose');
-var shortid = require('shortid');
+const shortid = require('shortid');
 const Schema = mongoose.Schema;
 
 const TagSchema = new Schema({
@@ -19,6 +19,6 @@ const TagSchema = new Schema({
 TagSchema.set('toJSON', { getters: true, virtuals: true });
 TagSchema.set('toObject', { getters: true, virtuals: true });
 
-var Tag = mongoose.model("Tag", TagSchema);
+const Tag = mongoose.model("Tag", TagSchema);
 
 module.exports = Tag;
