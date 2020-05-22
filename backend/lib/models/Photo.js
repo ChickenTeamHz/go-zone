@@ -1,8 +1,8 @@
 /*
  * @Author: Fairy
- * @Description: 相册表
+ * @Description: 图片表
  * @Last Modified by: Fairy
- * @Last Modified time: 2020-04-22 16:28:04
+ * @Last Modified time: 2020-05-15 16:20:41
 */
 const mongoose = require('mongoose');
 const shortid = require('shortid');
@@ -14,13 +14,9 @@ const PhotoSchema = new Schema({
     type: String,
     default: shortid.generate,
   },
-  user: { // 用户id
+  album: { // 相册类别id
     type: String,
-    ref: 'User',
-  },
-  photoCategory: { // 相册类别id
-    type: String,
-    ref: 'PhotoCotegory',
+    ref: 'Album',
   },
   createdAt: { // 创建时间
     type: Date,

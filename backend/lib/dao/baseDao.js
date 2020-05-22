@@ -2,7 +2,7 @@
  * @Author: Fairy
  * @Description: 操作mongodb封装方法
  * @Last Modified by: Fairy
- * @Last Modified time: 2020-05-11 16:52:04
+ * @Last Modified time: 2020-05-22 17:35:01
 */
 
 const shortid = require('shortid');
@@ -16,10 +16,8 @@ const _ = require('lodash')
  * @param {} { sort, filters, query, serachKeys, populate}
  */
 
-exports._list = async (Model, pageQuery, {
-    sort = {
-        date: -1
-    },
+exports._list = async (Model, pageQuery = {}, {
+    sort = {},
     filters = null,
     query = {},
     searchKeys = [],
@@ -36,10 +34,7 @@ exports._list = async (Model, pageQuery, {
     let items = [];
     let count = 0;
     query = query || {};
-    sort = !_.isEmpty(sort) ? sort : {
-        date: -1
-    };
-
+    sort = !_.isEmpty(sort) ? sort : {};
     /** 分页数据处理 */
     pageNum = Number(pageNum) || 1;
     pageSize = Number(pageSize) || 10;

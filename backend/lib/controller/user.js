@@ -23,7 +23,7 @@ module.exports = {
         password,
       } = ctx.request.body;
       const newPassword = encrypt(password);
-      const user = await UserService.find(ctx,{
+      const user = await UserService.findOne(ctx,{
         query: {
           username,
         },
@@ -78,7 +78,7 @@ module.exports = {
         });
       }
       const newPassword = encrypt(password);
-      const res = await UserService.find(ctx,{
+      const res = await UserService.findOne(ctx,{
         query: {
         username,
       }});
@@ -106,7 +106,7 @@ module.exports = {
          username,
          nickname,
        } = ctx.request.body;
-       const res = await UserService.find(ctx,{
+       const res = await UserService.findOne(ctx,{
         query: {
         username,
         nickname,
@@ -134,7 +134,7 @@ module.exports = {
   async getOne (ctx) {
     try {
       const { id } = verifyToken(ctx);
-      const res = await UserService.find(ctx,{
+      const res = await UserService.findOne(ctx,{
        query: {
         _id: id,
         },
@@ -203,7 +203,7 @@ module.exports = {
           name: 'INVALID_PARAM',
         });
       }
-      const user = await UserService.find(ctx,{
+      const user = await UserService.findOne(ctx,{
         query: {
           _id: id,
         },

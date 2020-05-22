@@ -14,7 +14,7 @@ const {
 class UserService {
 
     // 查找用户
-    async find(ctx, {
+    async findOne(ctx, {
         query = {},
         populate = [],
         filters = null

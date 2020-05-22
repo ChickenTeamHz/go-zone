@@ -6,6 +6,7 @@
 */
 const mongoose = require('mongoose');
 const shortid = require('shortid');
+const moment = require('moment');
 const Schema = mongoose.Schema;
 
 const ArticalCommentSchema = new Schema({
@@ -26,10 +27,18 @@ const ArticalCommentSchema = new Schema({
     type: String,
     default: '',
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 ArticalCommentSchema.set('toJSON', { getters: true, virtuals: true });
 ArticalCommentSchema.set('toObject', { getters: true, virtuals: true });
+ArticalCommentSchema.path('createdAt').get(function (v) {
+  return moment(v).format("YYYY-MM-DD HH:mm:ss");
+});
+
 
 const ArticalComment = mongoose.model("ArticalComment", ArticalCommentSchema);
 

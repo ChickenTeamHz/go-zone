@@ -53,7 +53,7 @@ UserSchema.path('updatedAt').get(function (v) {
 });
 
 UserSchema.path('avatar').get(function (v) {
-  return qs.config.origin + v;
+  return v ? qs.config.origin + v : null;
 });
 
 const User = mongoose.model("User", UserSchema);

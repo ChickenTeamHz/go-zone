@@ -10,12 +10,14 @@ var responseFormatter = () => {
         ctx.body = {
           code: err.code,
           message: err.message,
+          data: {},
         }
       }else {
         ctx.status = err.statusCode || err.status || 500;
         ctx.body = {
           message: err.message || '服务器出错，请稍后再试',
           code: err.code || ctx.status || 500,
+          data: {},
         }
       }
       throw err;

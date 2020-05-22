@@ -28,6 +28,9 @@ exports.verify = (ctx,controlName, params = null) => {
       case 'updateUser':
         rule = getSomeRule(this.registerRule, params);
         break;
+      case 'album':
+        rule = this.albumRule;
+        break;
       default:
           break;
   }
@@ -61,6 +64,19 @@ exports.registerRule = {
   },
 }
 
+
+exports.albumRule = {
+  name: {
+    type: 'string',
+    max: [10,'相册名称不能超过10位！'],
+    required: true,
+    message: '相册名称不能为空',
+  },
+  coverPath: {
+    type: 'string',
+    message: '相册封面不能为空',
+  },
+}
 /**
  * 校验密码
  */

@@ -6,6 +6,7 @@
 */
 const mongoose = require('mongoose');
 const shortid = require('shortid');
+const moment = require('moment');
 const Schema = mongoose.Schema;
 
 const ArticalLikesSchema = new Schema({
@@ -25,10 +26,17 @@ const ArticalLikesSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 ArticalLikesSchema.set('toJSON', { getters: true, virtuals: true });
 ArticalLikesSchema.set('toObject', { getters: true, virtuals: true });
+ArticalLikesSchema.path('createdAt').get(function (v) {
+  return moment(v).format("YYYY-MM-DD HH:mm:ss");
+});
 
 const ArticalLikes = mongoose.model("ArticalLikes", ArticalLikesSchema);
 

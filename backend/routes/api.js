@@ -1,6 +1,7 @@
 const {
   UserController,
   UploadController,
+  AlbumController,
 } = require('~controller');
 
 const apiRoute = (router) => {
@@ -16,5 +17,9 @@ const apiRoute = (router) => {
   router.post('/user/avatar',UserController.updateAvatar);
   router.post('/upload/file',UploadController.uploadFile);
   router.post('/upload/base64',UploadController.upLoadBase64File);
+  router.post('/albums',AlbumController.create);
+  router.get('/albums',AlbumController.getList);
+  router.delete('/albums/:id',AlbumController.removeOne);
+  router.put('/albums/:id',AlbumController.update);
 }
 module.exports = apiRoute;
