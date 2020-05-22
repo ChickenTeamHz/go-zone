@@ -1,0 +1,44 @@
+.albumCard {
+  width: 322px;
+  border: 1px solid #eee;
+  padding: 12px;
+  box-sizing: content-box;
+  margin: 0 12px 48px 12px;
+  cursor: pointer;
+  &:hover {
+    border-style: dashed;
+  }
+  > img {
+    width: 320px;
+    height: 180px;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+  > div {
+    display: flex;
+    font-size: 16px;
+    color: #aaa;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    .name {
+      max-width: 220px;
+      margin-right: 12px;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+    :global {
+      span.anticon:hover {
+        color: #bbb;
+      }
+    }
+  }
+}
+
+.boxList {
+  display: flex;
+  flex-wrap: wrap;
+}

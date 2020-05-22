@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import { Upload, message, Spin, Icon } from 'antd';
+import { Upload, message, Spin } from 'antd';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import styles from './index.less';
 import useCropModal from './useCropModal';
 import { getToken } from '../../utils/authToken';
-
-// function  fetchBase64Request = params => {
-//   return request(`${HOST}/upload/base64/image`, {
-//     method: 'POST',
-//     body: params,
-//   });
-// };
+import { fetchBase64Request } from '../../services/api';
+import HOST from '../../services/host';
 
 /**
  * 自定义上传图片（支持裁剪）
  * @param {*} param0
  */
-export default function ({
+export default function({
   needCrop = true,  // 需要裁剪
   className,
   cropRatio = 16 / 9,
   width = 188,
   height = 106,
   onChange = () => {}, // 图片上传文件改变表单值
-  fetchBase64Request = () => {},
-  action = '',
+  action = `${HOST}/upload/file`,
   value,
   tokenOptions = getToken() ? { Authorization: `Bearer ${getToken()}` } : {},
 }){
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImgUrl] = useState(value || null);
+  const [imageUrl, setImgUrl] = useState((value && value.url) || null);
 
   function triggerImgChange({key, url}) {
     setImgUrl(url);
-    return onChange && onChange(key);
+    return onChange && onChange({key,url});
   }
 
   const cropModal = useCropModal({
@@ -43,8 +38,8 @@ export default function ({
   })
 
   useEffect(()=>{
-    if(!imageUrl)  {
-      setImgUrl(value);
+    if(!imageUrl && value)  {
+      setImgUrl(value.url);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[value]);
@@ -112,12 +107,12 @@ export default function ({
   };
 
   const strClass = classNames(styles.CustomUpload, className);
-  const spinIcon = <Icon type="loading" style={{ fontSize: 24, color: '#666' }} />;
+  const spinIcon = <LoadingOutlined style={{ fontSize: 24, color: '#666' }} />;
   const uploadImg = val => {
     return (
-      <div className={styles.icon}>
+      <div className={styles.icon} style={{ width, height }}>
         <div>
-          <Icon type={loading ? 'loading' : 'upload'} className={styles.imgcss} />
+          <PlusOutlined className={styles.imgcss}/>
           <div className={styles.title}>{val}</div>
         </div>
       </div>
@@ -145,6 +140,7 @@ export default function ({
           )}
         </Spin>
       </Upload>
+      {cropModal.content}
     </div>
   )
 }

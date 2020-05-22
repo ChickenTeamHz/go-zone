@@ -1,7 +1,10 @@
 import React from 'react';
 import styles from './index.less';
 
-export default function() {
+export default function({spinning = true}) {
+  if(spinning === false) {
+    return null;
+  }
   return (
     <div className={styles.loader}>
       <div className={styles.liner}>

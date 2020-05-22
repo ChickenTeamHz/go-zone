@@ -53,3 +53,39 @@ export async function fetchUpdateAvatar(params) {
     body: params,
   })
 }
+
+// 上传文件
+export async function fetchBase64Request(params) {
+  return request(`${HOST}/upload/base64`, {
+    method: 'POST',
+    body: params,
+  });
+};
+
+// 创建相册
+export async function fetchCreateAlbum(params) {
+  return request(`${HOST}/albums`,{
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 获取相册内容
+export async function fetchAlbumList() {
+  return request(`${HOST}/albums`);
+}
+
+// 删除相册
+export async function fetchDeleteAlbum(id) {
+  return request(`${HOST}/albums/${id}`,{
+    method: 'DELETE',
+  });
+}
+
+// 修改相册
+export async function fetchUpdateAlbum(id,params) {
+  return request(`${HOST}/albums/${id}`,{
+    method: 'PUT',
+    body: params,
+  });
+}
