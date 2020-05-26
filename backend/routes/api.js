@@ -2,6 +2,7 @@ const {
   UserController,
   UploadController,
   AlbumController,
+  PhotoController,
 } = require('~controller');
 
 const apiRoute = (router) => {
@@ -21,5 +22,9 @@ const apiRoute = (router) => {
   router.get('/albums',AlbumController.getList);
   router.delete('/albums/:id',AlbumController.removeOne);
   router.put('/albums/:id',AlbumController.update);
+  router.post('/albums/:id/photos',PhotoController.create);
+  router.get('/albums/:id/photos',PhotoController.getList);
+  router.delete('/albums/:id/photos',PhotoController.remove);
+  router.put('/albums/:id/photos',PhotoController.updateMany);
 }
 module.exports = apiRoute;

@@ -8,7 +8,7 @@ global.checkCurrentId = (ids) => {
      return shortid.isValid(ids);
   }
   if (ids instanceof Array  && ids.length > 0) {
-    for (let i = 0; i < idsArr.length; i++) {
+    for (let i = 0; i < ids.length; i++) {
       if (!shortid.isValid(ids[i])) {
         idState = false;
         break;

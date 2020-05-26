@@ -101,7 +101,6 @@ module.exports = {
           name,
           coverPath,
         });
-      console.log(res);
       ctx.body = {};
     }catch(err) {
       throw err;
