@@ -89,3 +89,33 @@ export async function fetchUpdateAlbum(id,params) {
     body: params,
   });
 }
+
+// 上传相册照片
+export async function fetchUploadPhotos(id, params) {
+  return request(`${HOST}/albums/${id}/photos`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
+// 获取相册照片
+export async function fetchPhotos(id) {
+  return request(`${HOST}/albums/${id}/photos`)
+}
+
+// 删除相册照片
+export async function fetchDeletePhotos(id, params) {
+  return request(`${HOST}/albums/${id}/photos`,{
+    method: 'DELETE',
+    body: params,
+  })
+}
+
+// 移动相册照片
+export async function fetchMovePhotos(id, params) {
+  return request(`${HOST}/albums/${id}/photos`,{
+    method: 'PUT',
+    body: params,
+  })
+}
+

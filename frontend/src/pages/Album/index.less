@@ -42,3 +42,73 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+
+.photoTop {
+  display: flex;
+  align-items: center;
+  > img {
+    width: 182px;
+    height: 102px;
+    border: 2px dashed #eee;
+    padding: 5px;
+  }
+  > div {
+    margin-left: 12px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #666;
+  }
+}
+
+.photos {
+  :global {
+    .ant-alert-info {
+      background-color: #eee;
+      border: 1px solid #eee;
+    }
+  }
+  ul {
+    li {
+      list-style-type:none;
+      float: left;
+      list-style: none;
+      padding: 5px;
+      margin-right: 5px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      position: relative;
+      .imgIcon {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        top: -2px;
+        left: -2px;
+        z-index: 100;
+        background: #fff;
+        border-radius: 50%;
+        &.notSelect {
+          border: 2px solid #bbb;
+        }
+        &.select {
+          font-size: 24px;
+          color: #35AD3B;
+        }
+      }
+      img {
+        width: 168px;
+        height: 94.5px;
+      }
+    }
+  }
+}
+
+.selectName {
+  img {
+    // height: 40px;
+    width: 40px;
+  }
+}

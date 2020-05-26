@@ -1,9 +1,22 @@
-import { fetchCreateAlbum, fetchAlbumList, fetchDeleteAlbum, fetchUpdateAlbum } from '../services/api';
+import {
+  fetchCreateAlbum,
+  fetchAlbumList,
+  fetchDeleteAlbum,
+  fetchUpdateAlbum,
+  fetchUploadPhotos,
+  fetchPhotos,
+  fetchDeletePhotos,
+  fetchMovePhotos,
+} from '../services/api';
 
 export default {
   namespace: 'album',
   state: {
     list: [],
+    detail: {
+      album: {},
+      photoList: [],
+    },
   },
   effects: {
     *fetchCreateAlbum({ payload },{ call }) {
@@ -38,6 +51,38 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    *fetchUploadPhotos({ payload }, { call }) {
+      const response = yield call(fetchUploadPhotos, ...payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('上传成功');
+      }
+      return Promise.reject(response.message || '上传失败');
+    },
+    *fetchPhotos({ payload },{ call, put }) {
+      const response = yield call(fetchPhotos, payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'savePhotoList',
+          payload: response.data || {},
+        })
+        return Promise.resolve();
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    *fetchDeletePhotos({ payload }, { call }) {
+      const response = yield call(fetchDeletePhotos, ...payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('删除成功');
+      }
+      return Promise.reject(response.message || '删除失败');
+    },
+    *fetchMovePhotos({ payload }, { call }) {
+      const response = yield call(fetchMovePhotos, ...payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('移动照片成功');
+      }
+      return Promise.reject(response.message || '移动照片失败');
+    },
   },
   reducers: {
     saveList(state, { payload }) {
@@ -45,6 +90,16 @@ export default {
         ...state,
         list: payload || [],
       };
+    },
+    savePhotoList(state, { payload }) {
+      const { album = {}, photoList = []} = payload;
+      return {
+        ...state,
+        detail: {
+          album,
+          photoList,
+        },
+      }
     },
   },
 };

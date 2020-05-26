@@ -26,7 +26,8 @@
     "react-cropper": "^1.3.0",
     "react-dom": "^16.8.6",
     "react-scroll": "^1.7.16",
-    "umi-request": "^1.2.19"
+    "umi-request": "^1.2.19",
+    "viewerjs": "^1.5.0"
   },
   "devDependencies": {
     "@umijs/fabric": "^2.0.8",
