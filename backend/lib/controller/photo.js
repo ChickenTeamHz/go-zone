@@ -4,13 +4,7 @@ const {
 } = require('~service');
 
 const ApiError = require('~ApiError');
-const { verify, verifyPasswrod } = require('~utils/validate');
-const { encrypt, randomPass, verifyToken, formatBase64File } = require('~utils/util');
-const xss = require("xss");
 const _ = require('lodash');
-const { sign } = require('jsonwebtoken');
-const qn = require('~utils/upload');
-const { jwtSecret, jwtTime } = require('../../db/config');
 
 module.exports = {
   /**
@@ -23,6 +17,18 @@ module.exports = {
         imgKeys
       } = ctx.request.body; 
       const { id } = ctx.params;
+      const res = await AlbumService.findOne(ctx, {
+        query: {
+          _id: id,
+        },
+        filters: '-user'
+      });
+      if(_.isEmpty(res)) {
+        throw new ApiError(null,{
+          code: '100000',
+          message: '相册不存在！',
+        })
+      };
       const data = imgKeys.map(item => {
         return {
           album: id,

@@ -1,15 +1,12 @@
 const {
-  AlbumService
+  AlbumService,
+  PhotoService,
 } = require('~service');
 
 const ApiError = require('~ApiError');
-const { verify, verifyPasswrod } = require('~utils/validate');
-const { encrypt, randomPass, verifyToken, formatBase64File } = require('~utils/util');
-const xss = require("xss");
+const { verify } = require('~utils/validate');
+const { verifyToken } = require('~utils/util');
 const _ = require('lodash');
-const { sign } = require('jsonwebtoken');
-const qn = require('~utils/upload');
-const { jwtSecret, jwtTime } = require('../../db/config');
 
 module.exports = {
   /**
@@ -62,6 +59,7 @@ module.exports = {
   async removeOne(ctx) {
     try {
       const { id } = ctx.params;
+      await PhotoService.removes(ctx,id,'album');
       const res = await AlbumService.removes(ctx,id);
       if(res.n === 0) {
         throw new ApiError(null, {
