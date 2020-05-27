@@ -107,6 +107,25 @@ module.exports = {
         toAlbumId,
         imgIds,
       } = ctx.request.body; 
+      const { id } = ctx.params;
+      if(id === toAlbumId) {
+        throw new ApiError(null,{
+          code: '100000',
+          message: '移动的相册必须是其他相册！'
+        })
+      }
+      const album = await AlbumService.findOne(ctx, {
+        query: {
+          _id: toAlbumId,
+        },
+        filters: '-user'
+      });
+      if(_.isEmpty(album)) {
+        throw new ApiError(null,{
+          code: '100000',
+          message: '相册不存在！',
+        })
+      };
       const res = await PhotoService.updateMany(ctx,imgIds,
         { 
           album: toAlbumId,

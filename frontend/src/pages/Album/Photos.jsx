@@ -165,7 +165,8 @@ export default function({
 
   const handleMove = () => {
     if(!toAlbumId) {
-      message.error('请选择相册！')
+      message.error('请选择相册！');
+      return;
     }
     const imgIds = [];
     Object.keys(operateList).forEach(item => {
