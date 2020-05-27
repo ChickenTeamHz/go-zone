@@ -9,6 +9,7 @@ import styles from './index.less';
 
 import 'viewerjs/dist/viewer.css';
 import Loading from '../../components/Loading';
+import GoBack from '../../components/GoBack';
 
 function SelectIcon({ status, handleClick = () => {}, value }) {
   if(status) {
@@ -195,6 +196,7 @@ export default function({
 
   return (
     <div className="box">
+      <GoBack />
       <Card bordered={false} style={{ minHeight: 650 }}>
         <div className={styles.photoTop}>
           <img src={album.coverPathUrl} alt="album" />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { CaretUpOutlined } from '@ant-design/icons';
 import { animateScroll as scroll } from 'react-scroll';
-import { useToggle } from '@umijs/hooks';
+import { useToggle, useScroll } from '@umijs/hooks';
 import styles from './BasicLayout.less';
 import SlideBar from '../components/SlideBar';
 import { menuData } from '../common/menu';
@@ -44,12 +44,13 @@ function ToTop() {
 
 function BasicLayout(props) {
   const { children } = props;
+  const [scrollEle] = useScroll(document);
   return (
     <div className={`${styles.content} animated fadeIn slow`}>
       <Logo />
       <LearnMore />
       <div className={styles.main}>{children}</div>
-      <ToTop />
+      {scrollEle.top > 0 ? <ToTop /> : null}
     </div>
   );
 }
