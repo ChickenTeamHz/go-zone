@@ -3,6 +3,7 @@ import { Card, Button, message, Divider, Alert, Modal, Select } from 'antd';
 import { useDva, useModal, useBodyScroll } from 'utils/hooks';
 import { CloudUploadOutlined, CheckCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import Viewer from 'viewerjs';
+import { useUnmount } from '@umijs/hooks';
 import PhotoUpload from './component/PhotoUpload';
 import styles from './index.less';
 
@@ -72,6 +73,12 @@ export default function({
     getAlbumList();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
+
+  useUnmount(() => {
+    dispatch({
+      type: 'album/clearDetail',
+    })
+  })
 
 
   /**
@@ -194,7 +201,9 @@ export default function({
             <h3>{album.name}</h3>
             <div>
               <Button type="primary" onClick={handleUpload}><CloudUploadOutlined /> 上传照片</Button>
-              <Button style={{ marginLeft: 12 }} onClick={handleOperate}>{operate ? '取消批量操作':'批量操作'}</Button>
+              {photoList && photoList.length > 0 ? (
+                <Button style={{ marginLeft: 12 }} onClick={handleOperate}>{operate ? '取消批量操作':'批量操作'}</Button>
+              ):null}
             </div>
           </div>
         </div>
@@ -211,6 +220,9 @@ export default function({
                 </div>
               )}
             />
+          ):null}
+          {photoList && photoList.length === 0 ? (
+            <div className={styles.empty}>现在还是空空如也~快去上传照片吧^_^</div>
           ):null}
           <div>
             <ul ref={photoRef}>

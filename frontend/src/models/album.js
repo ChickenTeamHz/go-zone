@@ -19,6 +19,7 @@ export default {
     },
   },
   effects: {
+    // 创建相册
     *fetchCreateAlbum({ payload },{ call }) {
       const response = yield call(fetchCreateAlbum,payload);
       if(response && response.code === 0) {
@@ -26,6 +27,7 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 获取相册列表
     *fetchAlbumList(_,{ call, put }) {
       const response = yield call(fetchAlbumList);
       if(response && response.code === 0) {
@@ -37,6 +39,7 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 删除相册
     *fetchDeleteAlbum({ payload }, { call }) {
       const response = yield call(fetchDeleteAlbum, payload);
       if(response && response.code === 0) {
@@ -44,6 +47,7 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 更新相册
     *fetchUpdateAlbum({ payload }, { call }) {
       const response = yield call(fetchUpdateAlbum, ...payload);
       if(response && response.code === 0) {
@@ -51,6 +55,7 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 上传照片
     *fetchUploadPhotos({ payload }, { call }) {
       const response = yield call(fetchUploadPhotos, ...payload);
       if(response && response.code === 0) {
@@ -58,17 +63,19 @@ export default {
       }
       return Promise.reject(response.message || '上传失败');
     },
+    // 获取相册照片
     *fetchPhotos({ payload },{ call, put }) {
       const response = yield call(fetchPhotos, payload);
       if(response && response.code === 0) {
         yield put ({
-          type: 'savePhotoList',
+          type: 'saveDetail',
           payload: response.data || {},
         })
         return Promise.resolve();
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 删除照片
     *fetchDeletePhotos({ payload }, { call }) {
       const response = yield call(fetchDeletePhotos, ...payload);
       if(response && response.code === 0) {
@@ -76,6 +83,7 @@ export default {
       }
       return Promise.reject(response.message || '删除失败');
     },
+    // 移动照片
     *fetchMovePhotos({ payload }, { call }) {
       const response = yield call(fetchMovePhotos, ...payload);
       if(response && response.code === 0) {
@@ -91,13 +99,22 @@ export default {
         list: payload || [],
       };
     },
-    savePhotoList(state, { payload }) {
+    saveDetail(state, { payload }) {
       const { album = {}, photoList = []} = payload;
       return {
         ...state,
         detail: {
           album,
           photoList,
+        },
+      }
+    },
+    clearDetail(state) {
+      return {
+        ...state,
+        detail: {
+          album: {},
+          photoList: [],
         },
       }
     },

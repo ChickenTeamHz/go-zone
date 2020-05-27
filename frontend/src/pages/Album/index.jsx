@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Button, Divider, Input, Modal, Form, message, Popconfirm } from 'antd';
 import { HeartTwoTone, CloudUploadOutlined, EditOutlined, DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import { router } from 'umi';
+import { useMount } from '@umijs/hooks';
 import Upload from '../../components/Upload';
 import styles from './index.less';
 import { useModal, useDva } from '../../utils/hooks';
@@ -21,7 +22,12 @@ function AlbumCard({ item, handleDelete, handleEdit }) {
         <div className={styles.name} onClick={()=> router.push(`/album/${item.id}/photos`)}>{item.name}</div>
         <EditOutlined style={{ marginLeft: 8, cursor: 'pointer' }} onClick={handleEdit} />
         <Popconfirm
-          title="确定删除该相册吗"
+          title={(
+            <div>
+              <h3>确认删除该相册吗</h3>
+              <p>一旦删除，相册里的照片将无法恢复</p>
+            </div>
+          )}
           okText="确定"
           cancelText="取消"
           icon={<QuestionCircleOutlined style={{ color: 'red' }}/>}
@@ -56,10 +62,7 @@ export default function() {
     });
   };
 
-  useEffect(()=>{
-    getList();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  useMount(getList);
 
   const handleModalVisible = (t, item = {}) => {
     setType(t);
@@ -130,11 +133,15 @@ export default function() {
         </div>
         <p style={{ marginTop: 24, color: 'rgba(0,0,0,0.45)' }}><HeartTwoTone twoToneColor="#eb2f96" /> 欢迎来到你的T台啊~快上传点照片给自己多留点回忆吧！！！</p>
         <Divider />
-        <div className={styles.boxList}>
-          {list.map(item => (
-            <AlbumCard item={item} key={item.id} handleDelete={() => handleDelete(item.id)} handleEdit={()=>handleModalVisible(modalType.edit, item)}/>
-          ))}
-        </div>
+        {list && list.length === 0 ? (
+          <div className={styles.empty}>现在还是空空如也~快去创建相册吧^_^</div>
+        ):(
+          <div className={styles.boxList}>
+            {list.map(item => (
+              <AlbumCard item={item} key={item.id} handleDelete={() => handleDelete(item.id)} handleEdit={()=>handleModalVisible(modalType.edit, item)}/>
+            ))}
+          </div>
+        )}
       </Card>
       <Modal
         {...modalParams.modalProps}
