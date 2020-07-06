@@ -1,0 +1,39 @@
+.head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  :global {
+    .anticon, button {
+      margin-left: 24px;
+      cursor: pointer;
+    }
+  }
+}
+
+.categoryBox {
+  .box {
+    border-bottom: 1px solid #d9d9d9;
+    padding: 1px 4px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    line-height: 30px;
+    height: 32px;
+    padding-left: 15px;
+    span.placeholder {
+      color: rgba(0, 0, 0, 0.65);
+      opacity: 0.4;
+    }
+  }
+  :global {
+    .ant-tag, input {
+      margin-top: 12px;
+    }
+    .ant-tag-checkable {
+      border: 1px dashed #b8b8b8;
+    }
+    .ant-tag-checkable-checked {
+      border: 1px solid rgba(0, 0, 0, 0.65);
+      background-color: rgba(0, 0, 0, 0.65);
+    }
+  }
+}

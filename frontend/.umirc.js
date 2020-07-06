@@ -31,6 +31,16 @@ export default {
           routes: [
             { path: '/', component: '../pages/Home' },
             {
+              path: '/blog',
+              routes: [{
+                path: '/blog',
+                redirect: '/blog/create',
+              },{
+                path: '/blog/create',
+                component: '../pages/Blog/Create',
+              }]
+            },
+            {
               path: '/album',
               routes: [{
                 path: '/album',

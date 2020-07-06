@@ -31,6 +31,9 @@ exports.verify = (ctx,controlName, params = null) => {
       case 'album':
         rule = this.albumRule;
         break;
+      case 'artical':
+        rule = getSomeRule(this.articleRule, params);
+        break;
       default:
           break;
   }
@@ -77,6 +80,43 @@ exports.albumRule = {
     message: '相册封面不能为空',
   },
 }
+
+exports.articleRule = {
+  title: {
+    type: 'string',
+    max: [100,'文章标题不能超过100位！'],
+    required: true,
+    message: '文章标题不能为空',
+  },
+  coverPath: {
+    type: 'string',
+    require: true,
+    message: '相册封面不能为空',
+  },
+  tags: {
+    type: 'array',
+    min: [1,'至少添加一个标签！'],
+    max: [5,'最多添加5个标签！'],
+    itemType: 'string',
+    require: true,
+    message: '标签不能为空',
+  },
+  category: {
+    type: 'string',
+    require: true,
+    message: '分类专栏不能为空',
+  },
+  content: {
+    type: 'string',
+    require: true,
+    message: '文章内容不能为空',
+  },
+  public: {
+    type: 'boolean',
+    require: true,
+  },
+}
+
 /**
  * 校验密码
  */

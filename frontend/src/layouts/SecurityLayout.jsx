@@ -32,7 +32,7 @@ export default function(props) {
   }
 
   if ((!isLogin && loading) || !isReady) {
-    return <Loading />;
+    return <Loading spinning />;
   }
 
   if (!isLogin && window.location.pathname !== '/user/login') {

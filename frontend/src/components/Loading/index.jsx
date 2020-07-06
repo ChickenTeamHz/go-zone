@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from './index.less';
 
-export default function({spinning = true}) {
-  if(spinning === false) {
+export default function({spinning}) {
+  if(!spinning) {
     return null;
   }
   return (

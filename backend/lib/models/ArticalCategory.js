@@ -15,6 +15,10 @@ const ArticalCategorySchema = new Schema({
     default: shortid.generate,
   },
   title: String, // 类别名称
+  user: { // 用户id
+    type: String,
+    ref: 'User',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -3,6 +3,9 @@ const {
   UploadController,
   AlbumController,
   PhotoController,
+  ArticalController,
+  TagController,
+  ArticalCategoryController,
 } = require('~controller');
 
 const apiRoute = (router) => {
@@ -26,5 +29,9 @@ const apiRoute = (router) => {
   router.get('/albums/:id/photos',PhotoController.getList);
   router.delete('/albums/:id/photos',PhotoController.remove);
   router.put('/albums/:id/photos',PhotoController.updateMany);
+  router.post('/articals',ArticalController.create);
+  router.post('/articals/:id/draft',ArticalController.save);
+  router.get('/tags',TagController.getList);
+  router.get('/categorys',ArticalCategoryController.getList);
 }
 module.exports = apiRoute;

@@ -6,10 +6,10 @@ const qn = {};
 //要上传的空间名
 
 qn.config = {
-  bucket: 'gozone',
+  bucket: 'go-zone',
   accessKey :'Gq_GMW0pWIAEca9QsADchD_whjcDCIoQZtO2AIQd',
   secretKey : 'EbHPxIgBgewEVb6P5r3f9yz50ExUSaGrwDTxfV8i',
-  origin: 'http://qa93151fl.bkt.clouddn.com/'
+  origin: 'http://qbt2psh9i.bkt.clouddn.com/'
 }
 
 // （获取七牛上传token）

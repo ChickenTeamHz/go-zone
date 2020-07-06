@@ -119,3 +119,39 @@ export async function fetchMovePhotos(id, params) {
   })
 }
 
+// 上传图片
+export async function fetchUploadImg(file) {
+  const formData = new FormData();
+  formData.append('file', file)
+  return request(`${HOST}/upload/file`, {
+    method: 'POST',
+    body: formData,
+    requestType: 'form',
+  })
+}
+
+// 发布文章
+export async function fetchCreateArtical(params) {
+  return request(`${HOST}/articals`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
+// 保存文章到草稿箱
+export async function fetchSaveArtical(id, params) {
+  return request(`${HOST}/articals/${id}/draft`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
+// 获取标签列表
+export async function fetchTagList() {
+  return request(`${HOST}/tags`)
+}
+
+// 获取分类列表
+export async function fetchCategoryList() {
+  return request(`${HOST}/categorys`)
+}

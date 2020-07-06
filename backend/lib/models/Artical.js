@@ -6,7 +6,8 @@
 */
 const mongoose = require('mongoose');
 const shortid = require('shortid');
-const moment = require('moment')
+const moment = require('moment');
+const qs = require('~utils/upload');
 const Schema = mongoose.Schema;
 
 const ArticalSchema = new Schema({
@@ -40,9 +41,17 @@ const ArticalSchema = new Schema({
     type: Number,
     default: 0,
   },
+  publish: { // 是否发布
+    type: Boolean,
+    default: false,
+  },
   public: { // 是否公开
     type: Boolean,
-    default: true,
+    default: false,
+  },
+  coverPath: { // 封面照片
+    type: String,
+    default: null,
   },
 });
 
@@ -57,6 +66,9 @@ ArticalSchema.path('updatedAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
+ArticalSchema.virtual('coverPathUrl').get(function () {
+  return this.coverPath ? qs.config.origin + this.coverPath : null;
+});
 
 const Artical = mongoose.model("Artical", ArticalSchema);
 
