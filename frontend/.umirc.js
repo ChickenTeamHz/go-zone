@@ -38,6 +38,9 @@ export default {
               },{
                 path: '/blog/create',
                 component: '../pages/Blog/Create',
+              },{
+                path: '/blog/:articalId',
+                component: '../pages/Blog/Detail',
               }]
             },
             {

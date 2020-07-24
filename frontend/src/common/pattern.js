@@ -14,6 +14,7 @@
   EN_NUM: 字母+数字,
   EMAIL: 邮箱地址
   CREDIT_CODE: 统一社会信用代码,
+  EMOJI: 表情
  */
 export const PATTERN = {
   EN: /^[A-Za-z]+$/,
@@ -31,4 +32,5 @@ export const PATTERN = {
   EN_NUM: /^[a-zA-Z0-9]+$/,
   EMAIL: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
   CREDIT_CODE:/^[A-Z0-9]{18}$/,
+  EMOJI: /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f\ude80-\udeff])|[\u2600-\u2B55]/g,
 };

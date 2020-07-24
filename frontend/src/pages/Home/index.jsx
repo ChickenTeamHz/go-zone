@@ -1,23 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Space, List, Avatar, Input } from 'antd';
 import { MessageOutlined, LikeOutlined, CalendarOutlined } from '@ant-design/icons';
+
 import styles from './style.less';
-
-const listData = [];
-for (let i = 0; i < 23; i+=1) {
-  listData.push({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    name: '张三',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    createAt: '2020-22-22',
-  });
-}
-
+import { useDva } from '../../utils/hooks';
+import { router } from 'umi';
 
 const { Search } = Input;
 
 export default function() {
+  const { 
+    dispatch, 
+    loadings: { loading },
+    data: { blog: { list = {} }},
+  } = useDva({loading: 'blog/fetchArticals'}, ['blog']);
+
+  const { items: listData = [], total = 0 } = list;
+
+  const [pageNum, setPageNum] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const getList = () => {
+    dispatch({
+      type: 'blog/fetchArticals',
+      payload: {
+        public: true,
+        pageNum,
+        pageSize,
+      },
+    });
+  };
+
+  useEffect(() => {
+    getList()
+  },[pageNum, pageSize])
+
   const IconText = ({ icon, text }) => (
     <Space>
       {React.createElement(icon)}
@@ -39,36 +56,48 @@ export default function() {
           <List
             itemLayout="vertical"
             size="large"
+            loading={loading}
+            locale={{
+              emptyText: '还没有文章发布哦~',
+            }}
             pagination={{
-              onChange: page => {
-                console.log(page);
+              onChange: (p, pSize) => {
+                setPageNum(p)
+                setPageSize(pSize)
               },
-              pageSize: 3,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              current: pageNum,
+              pageSize,
+              total,
             }}
             dataSource={listData}
             renderItem={item => (
               <List.Item
                 key={item.title}
                 actions={[
-                  <IconText icon={LikeOutlined} text="156" key="list-vertical-like-o" />,
-                  <IconText icon={MessageOutlined} text="2" key="list-vertical-message" />,
+                  <IconText icon={LikeOutlined} text={item?.likes} key="list-vertical-like-o" />,
+                  <IconText icon={MessageOutlined} text={item?.comments} key="list-vertical-message" />,
                 ]}
                 extra={
-                  <img
-                    width={188}
-                    height={106}
-                    alt="logo"
-                    src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
-                  />
+                  item.coverPathUrl && (
+                    <img
+                      width={188}
+                      height={106}
+                      alt="logo"
+                      src={item.coverPathUrl}
+                    />
+                  )
                 }
+                onClick={() => router.push(`/blog/${item.id}`)}
               >
                 <List.Item.Meta
-                  avatar={<Avatar src={item.avatar} />}
-                  title={<a href={item.href}>{item.title}</a>}
+                  avatar={<Avatar src={item?.user?.avatar} />}
+                  title={<a href={item.href}>{item?.title}</a>}
                   description={(
                     <div>
-                      <span>{item.name}</span>
-                      <span style={{ marginLeft: 12 }}><CalendarOutlined /> {item.createAt}</span>
+                      <span>{item?.user?.nickname}</span>
+                      <span style={{ marginLeft: 12 }}><CalendarOutlined /> {item?.updatedAt}</span>
                     </div>
                   )}
                 />

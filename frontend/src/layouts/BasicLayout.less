@@ -3,6 +3,25 @@
   width: 100%;
   min-height: 100vh;
 }
+.edit {
+  position: fixed;
+  right: 133px;
+  top: 10px;
+  z-index: 16;
+  cursor: pointer;
+  color: #151515;
+  font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-size: 18px;
+  border: 1px solid rgba(0,0,0,0.85);
+  padding: 0 12px;
+  color: rgba(0,0,0,0.55);
+  &:hover {
+    opacity: 0.75;
+  }
+}
 .learnMore {
   display: flex;
   position: fixed;
@@ -19,7 +38,7 @@
     letter-spacing: 1px;
     font-size: 11px;
     font-weight: 400;
-    margin-right: 20px;
+    margin-right: 8px;
   }
   .icon span {
     display: block;

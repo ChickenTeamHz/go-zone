@@ -1,11 +1,14 @@
 import {
-  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList,
+  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail,
 } from '../services/api';
 
 export default {
   namespace: 'blog',
   state: {
-    list: [],
+    list: {
+      items: [],
+      total: 0,
+    },
     detail: {},
     tags: [],
     categorys: [],
@@ -59,12 +62,36 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 获取文章列表
+    *fetchArticals({ payload },{ call, put }) {
+      const response = yield call(fetchArticals, payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'saveList',
+          payload: response.data || {},
+        })
+        return Promise.resolve('请求成功');
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    // 获取文章详情
+    *fetchArticalDetail({ payload },{ call, put }) {
+      const response = yield call(fetchArticalDetail, ...payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'saveDetail',
+          payload: response.data || {},
+        })
+        return Promise.resolve('请求成功');
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
   },
   reducers: {
     saveList(state, { payload }) {
       return {
         ...state,
-        list: payload || [],
+        list: payload || {},
       };
     },
     saveTags(state, { payload }) {
@@ -80,22 +107,15 @@ export default {
       }
     },
     saveDetail(state, { payload }) {
-      const { album = {}, photoList = []} = payload;
       return {
         ...state,
-        detail: {
-          album,
-          photoList,
-        },
+        detail: payload,
       }
     },
     clearDetail(state) {
       return {
         ...state,
-        detail: {
-          album: {},
-          photoList: [],
-        },
+        detail: {},
       }
     },
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
-import { CaretUpOutlined } from '@ant-design/icons';
+import { CaretUpOutlined, FormOutlined } from '@ant-design/icons';
 import { animateScroll as scroll } from 'react-scroll';
 import { useToggle, useScroll } from '@umijs/hooks';
 import styles from './BasicLayout.less';
@@ -9,6 +9,7 @@ import { menuData } from '../common/menu';
 import Logo from '../components/Logo';
 import { useDva } from '../utils/hooks';
 import avatarDefault from '../assets/avatar.jpg';
+import { router } from 'umi';
 
 function LearnMore() {
   const { state:visible, toggle } = useToggle(false);
@@ -42,12 +43,23 @@ function ToTop() {
   )
 }
 
+
 function BasicLayout(props) {
-  const { children } = props;
+  const { children, location: { pathname } } = props;
   const [scrollEle] = useScroll(document);
+
+  const handleCreateBlog = () => {
+    router.push('/blog/create')
+  }
+
   return (
     <div className={`${styles.content} animated fadeIn slow`}>
       <Logo />
+      {pathname !== '/blog/create' && (
+        <div className={styles.edit} onClick={handleCreateBlog}>
+          <FormOutlined /> 写博客
+        </div>
+      )}
       <LearnMore />
       <div className={styles.main}>{children}</div>
       {scrollEle.top > 0 ? <ToTop /> : null}

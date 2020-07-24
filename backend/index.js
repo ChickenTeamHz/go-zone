@@ -62,8 +62,8 @@ app.use(koajwt({
 
 
 // 继续触发error事件
-app.on('error',() => {
-  console.error('server error', err.message);
+app.on('error',err => {
+  console.error('server error', err && err.message);
   console.error(err);
 });
 

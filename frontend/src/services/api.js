@@ -1,5 +1,7 @@
+import { stringify } from 'qs';
 import request from '../utils/request';
 import HOST from './host';
+
 
 // 登录
 export async function fetchLogin(params) {
@@ -154,4 +156,14 @@ export async function fetchTagList() {
 // 获取分类列表
 export async function fetchCategoryList() {
   return request(`${HOST}/categorys`)
+}
+
+// 获取文章列表
+export async function fetchArticals(params) {
+  return request(`${HOST}/articals?${stringify(params)}`)
+}
+
+// 获取文章信息
+export async function fetchArticalDetail(id, params) {
+  return request(`${HOST}/articals/${id}?${stringify(params)}`)
 }

@@ -121,7 +121,7 @@ export default function () {
     const values = {
       content: value,
       title,
-      coverPath,
+      coverPath: coverPath && coverPath.key || null,
     }
     if(!title || !value) {
       message.error('文章标题和内容不能为空！');
@@ -171,7 +171,7 @@ export default function () {
       const payload = {
         content: value,
         title,
-        coverPath,
+        coverPath: coverPath && coverPath.key || null,
         articleId,
         ...values,
       };

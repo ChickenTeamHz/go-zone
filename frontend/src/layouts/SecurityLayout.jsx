@@ -2,6 +2,8 @@ import React, { useState, useEffect} from 'react';
 import { Redirect } from 'umi';
 import { stringify } from 'qs';
 import { useDva } from 'utils/hooks';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN'
 import { getToken } from '../utils/authToken';
 import Loading from '../components/Loading';
 
@@ -38,6 +40,6 @@ export default function(props) {
   if (!isLogin && window.location.pathname !== '/user/login') {
     return <Redirect to={`/user/login?${queryString}`} />;
   }
-  return children;
+  return <ConfigProvider locale={zhCN}>{children}</ConfigProvider>;
 }
 

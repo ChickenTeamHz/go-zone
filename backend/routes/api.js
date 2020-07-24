@@ -33,5 +33,7 @@ const apiRoute = (router) => {
   router.post('/articals/:id/draft',ArticalController.save);
   router.get('/tags',TagController.getList);
   router.get('/categorys',ArticalCategoryController.getList);
+  router.get('/articals',ArticalController.getList);
+  router.get('/articals/:id',ArticalController.getOne);
 }
 module.exports = apiRoute;
