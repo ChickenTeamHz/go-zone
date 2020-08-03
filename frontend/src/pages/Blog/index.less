@@ -53,6 +53,16 @@
     margin: 0 auto;
     display: block;
   }
+  .comments {
+    .inputBox {
+      background-color: rgba(226, 228, 226,0.2);
+      padding: 12px;
+      > div {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+  }
   .extra {
     position: fixed;
     top: 30%;
@@ -65,6 +75,9 @@
       cursor: pointer;
       &:hover {
         opacity: 0.75;
+      }
+      &.likes {
+        background-color: rgba(120, 187, 123, 0.45);
       }
     }
   }

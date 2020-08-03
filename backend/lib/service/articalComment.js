@@ -21,14 +21,16 @@ class ArticalCommentService {
         query = {},
         searchKeys = [],
         populate = [],
-        filters = null
+        filters = null,
+        sort = {},
     } = {}) {
 
         let listdata = _list(ArticalCommentModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
-            filters
+            filters,
+            sort,
         });
         return listdata;
     }

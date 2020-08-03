@@ -21,14 +21,16 @@ class ArticalLikesService {
         query = {},
         searchKeys = [],
         populate = [],
-        filters = null
+        filters = null,
+        sort = {},
     } = {}) {
 
         let listdata = _list(ArticalLikesModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
-            filters
+            filters,
+            sort,
         });
         return listdata;
     }
@@ -52,8 +54,8 @@ class ArticalLikesService {
     }
 
     // 修改
-    async update(ctx, _id, payload, { filters = '' } = {}) {
-        return _update(ctx, ArticalLikesModel, _id, payload, { options: { select: filters, new: true }});
+    async update(ctx, _id, payload, { filters = '', ...options } = {}) {
+        return _update(ctx, ArticalLikesModel, _id, payload, { options: { select: filters, new: true, ...options }});
     }
 
     // 删除

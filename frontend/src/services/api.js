@@ -167,3 +167,29 @@ export async function fetchArticals(params) {
 export async function fetchArticalDetail(id, params) {
   return request(`${HOST}/articals/${id}?${stringify(params)}`)
 }
+
+// 获取文章用户点赞情况
+export async function fetchArticalLikes(params) {
+  return request(`${HOST}/articals-likes?${stringify(params)}`)
+}
+
+// 点赞
+export async function fetchUpdateArticalLikes(params) {
+  return request(`${HOST}/articals-likes`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
+// 评论
+export async function fetchCreateComment(params) {
+  return request(`${HOST}/articals-comments`,{
+    method: 'POST',
+    body: params,
+  })
+}
+
+// 获取评论信息
+export async function fetchArticalComments(params) {
+  return request(`${HOST}/articals-comments?${stringify(params)}`)
+}

@@ -20,14 +20,16 @@ class Artical2TagService {
         query = {},
         searchKeys = [],
         populate = [],
-        filters = null
+        filters = null,
+        sort = {},
     } = {}) {
 
         let listdata = _list(Artical2TagModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
-            filters
+            filters,
+            sort,
         });
         return listdata;
     }

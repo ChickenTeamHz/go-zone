@@ -202,12 +202,16 @@ module.exports = {
 						},
 					],
 					filters: "-deleted -publish",
+					sort: {
+						updatedAt: -1,
+					}
 				}
       );
       let items = [];
       for(let item of res.items) {
         const likes = await ArticalLikesService.count({
-          artical: item.id,
+					artical: item.id,
+					liked: true,
         })
         const comments = await ArticalCommentService.count({
           artical: item.id,
@@ -283,7 +287,7 @@ module.exports = {
 	async getOne(ctx) {
 		try {
       const { id } = ctx.params;
-      const { isEdit = false } = ctx.query
+      const { isEdit = false, hasReading = false } = ctx.query
 			const res = await ArticalService.findOne(ctx, {
 				query: {
 					_id: id,
@@ -298,7 +302,8 @@ module.exports = {
       });
       if(!isEdit) {
         const likes = await ArticalLikesService.count({
-          artical: id,
+					artical: id,
+					liked: true,
         })
         const comments = await ArticalCommentService.count({
           artical: id,
@@ -307,10 +312,12 @@ module.exports = {
           ...res.toJSON(),
           likes,
           comments,
-        }
-        ArticalService.update(ctx,id, {
-          reading: item.reading + 1
-        })
+				}
+				if(!hasReading) {
+					ArticalService.update(ctx,id, {
+						reading: item.reading + 1
+					})
+				}
         ctx.body = item
       }else {
         ctx.body = res

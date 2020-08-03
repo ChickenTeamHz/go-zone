@@ -1,5 +1,5 @@
 import {
-  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail,
+  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail, fetchUpdateArticalLikes, fetchArticalLikes, fetchCreateComment, fetchArticalComments,
 } from '../services/api';
 
 export default {
@@ -12,6 +12,7 @@ export default {
     detail: {},
     tags: [],
     categorys: [],
+    comments: [],
   },
   effects: {
     // 上传图片
@@ -86,6 +87,42 @@ export default {
       }
       return Promise.reject(response.message || '请求失败');
     },
+    // 获取文章用户点赞情况
+    *fetchArticalLikes({ payload },{ call, put }) {
+      const response = yield call(fetchArticalLikes, payload);
+      if(response && response.code === 0) {
+        return Promise.resolve(response.data || {});
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
+    // 点赞
+    *fetchUpdateArticalLikes({ payload },{ call }) {
+      const response = yield call(fetchUpdateArticalLikes,payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('点赞成功');
+      }
+      return Promise.reject(response.message || '点赞失败');
+    },
+    // 评论
+    *fetchCreateComment({ payload },{ call }) {
+      const response = yield call(fetchCreateComment,payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('评论成功');
+      }
+      return Promise.reject(response.message || '评论失败');
+    },
+    // 获取评论内容
+    *fetchArticalComments({ payload }, { call, put }) {
+      const response = yield call(fetchArticalComments, payload);
+      if(response && response.code === 0) {
+        yield put({
+          type: 'saveComments',
+          payload: response.data || [],
+        })
+        return Promise.reject('获取评论内容成功'); 
+      }
+      return Promise.reject(response.message || '获取评论内容失败'); 
+    },
   },
   reducers: {
     saveList(state, { payload }) {
@@ -112,10 +149,17 @@ export default {
         detail: payload,
       }
     },
+    saveComments(state, { payload }) {
+      return {
+        ...state,
+        comments: payload,
+      }
+    },
     clearDetail(state) {
       return {
         ...state,
         detail: {},
+        comments: [],
       }
     },
   },

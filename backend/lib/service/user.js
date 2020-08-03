@@ -17,7 +17,7 @@ class UserService {
     async findOne(ctx, {
         query = {},
         populate = [],
-        filters = null
+        filters = null,
     } = {}) {
         return _item(ctx, UserModel, {
             query,

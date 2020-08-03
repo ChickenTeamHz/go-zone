@@ -6,7 +6,10 @@ const {
   ArticalController,
   TagController,
   ArticalCategoryController,
+  ArticalLikesController,
+  ArticalCommentController,
 } = require('~controller');
+const ArticalComment = require('~models/ArticalComment');
 
 const apiRoute = (router) => {
   router.get('/',(ctx, next)=>{
@@ -35,5 +38,10 @@ const apiRoute = (router) => {
   router.get('/categorys',ArticalCategoryController.getList);
   router.get('/articals',ArticalController.getList);
   router.get('/articals/:id',ArticalController.getOne);
+  router.post('/articals-likes',ArticalLikesController.LikeOne);
+  router.get('/articals-likes',ArticalLikesController.isLike);
+  router.post('/articals-comments',ArticalCommentController.comment);
+  router.get('/articals-comments',ArticalCommentController.getList);
+  router.delete('/artical-comments/:commentId',ArticalCommentController.removes)
 }
 module.exports = apiRoute;

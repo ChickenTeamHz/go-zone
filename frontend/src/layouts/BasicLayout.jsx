@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from 'antd';
+import { router } from 'umi';
 import { CaretUpOutlined, FormOutlined } from '@ant-design/icons';
 import { animateScroll as scroll } from 'react-scroll';
 import { useToggle, useScroll } from '@umijs/hooks';
@@ -9,7 +10,6 @@ import { menuData } from '../common/menu';
 import Logo from '../components/Logo';
 import { useDva } from '../utils/hooks';
 import avatarDefault from '../assets/avatar.jpg';
-import { router } from 'umi';
 
 function LearnMore() {
   const { state:visible, toggle } = useToggle(false);

@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const shortid = require('shortid');
 const moment = require('moment');
 const Schema = mongoose.Schema;
+moment.locale("zh-cn")
 
 const ArticalCommentSchema = new Schema({
   _id: {
@@ -23,20 +24,29 @@ const ArticalCommentSchema = new Schema({
     ref: 'Artical',
   },
   content: String, // 评论内容
-  parentId: { // 父评论id
+  parentId: { // 父评论Id
     type: String,
-    default: '',
+    default: null,
+  },
+  replyUser: { // 回复人
+    type: String,
+    ref: 'User',
+    default: null,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
+  root: {
+    type: Number,
+    default: 0,
+  }
 });
 
 ArticalCommentSchema.set('toJSON', { getters: true, virtuals: true });
 ArticalCommentSchema.set('toObject', { getters: true, virtuals: true });
 ArticalCommentSchema.path('createdAt').get(function (v) {
-  return moment(v).format("YYYY-MM-DD HH:mm:ss");
+  return moment(v).fromNow();
 });
 
 
