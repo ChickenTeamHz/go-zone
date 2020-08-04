@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { MdPriview } from 'md-pre-editor';
-import { useMount } from '@umijs/hooks';
+import { useMount, useUnmount } from '@umijs/hooks';
 import { EyeOutlined, LikeOutlined, MessageOutlined, CalendarOutlined } from '@ant-design/icons'
 import { Input, Button, Card, Tag, message, Avatar, Divider } from 'antd';
 import { scroller, Element as ScrollEle  } from 'react-scroll';
@@ -8,17 +8,19 @@ import { useDva } from '../../utils/hooks';
 import styles from './index.less';
 import GoBack from '../../components/GoBack';
 import CommentsBox from './components/CommentsBox';
+import Loading from '../../components/Loading';
 
 export default function ({
   match: { params: { articalId }},
 }) {
   const { 
     dispatch, 
-    loadings: { loading, commentLoading },
+    loadings: { loading = false, commentLoading = false, cLoading = false },
     data: { blog: { detail = {}, comments: commentsData = [] }},
   } = useDva({
-    uploading: 'blog/fetchArticalDetail',
+    loading: 'blog/fetchArticalDetail',
     commentLoading: 'blog/fetchCreateComment',
+    cLoading: 'blog/fetchArticalComments',
   }, ['blog']);
 
   const [isLike, setIsLike] = useState(false);
@@ -57,6 +59,12 @@ export default function ({
     fetchDetail()
     updateLikes()
     fetchComments()
+  })
+
+  useUnmount(() => {
+    dispatch({
+      type: 'blog/clearDetail',
+    })
   })
 
   const [ comments, setComments ] = useState()
@@ -191,6 +199,7 @@ export default function ({
                         })
                       } 
                         disabled={!comments}
+                        loading={commentLoading}
                       >
                         评论
                       </Button>
@@ -209,6 +218,7 @@ export default function ({
           <div onClick={scrollToComments}><MessageOutlined /> 评论</div>
         </div>
       </div>
+      <Loading spinning={loading || cLoading} />
     </div>
   )
 }

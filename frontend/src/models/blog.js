@@ -1,5 +1,5 @@
 import {
-  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail, fetchUpdateArticalLikes, fetchArticalLikes, fetchCreateComment, fetchArticalComments,
+  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail, fetchUpdateArticalLikes, fetchArticalLikes, fetchCreateComment, fetchArticalComments, fetchDeleteComments,
 } from '../services/api';
 
 export default {
@@ -122,6 +122,14 @@ export default {
         return Promise.reject('获取评论内容成功'); 
       }
       return Promise.reject(response.message || '获取评论内容失败'); 
+    },
+    // 删除评论
+    *fetchDeleteComments({ payload },{ call }) {
+      const response = yield call(fetchDeleteComments,...payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('删除评论成功');
+      }
+      return Promise.reject(response.message || '删除评论失败');
     },
   },
   reducers: {

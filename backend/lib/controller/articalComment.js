@@ -1,5 +1,6 @@
 const {
   ArticalCommentService,
+  ArticalService,
 } = require('~service');
 
 const ApiError = require('~ApiError');
@@ -109,6 +110,29 @@ module.exports = {
  async removes(ctx) {
    try {
     const { commentId } = ctx.params;
+    const {
+      articalId,
+    } = ctx.request.body;
+    const { id: userId } = verifyToken(ctx);
+    const articalRes = await ArticalService.findOne(ctx,{
+      query: {
+        _id: articalId
+      }
+    });
+    const commentRes = await ArticalCommentService.findOne(ctx,{
+      query: {
+        _id: commentId
+      }
+    });
+    if(_.isEmpty(articalRes) || _.isEmpty(commentRes)) {
+      ctx.throw(400,'参数异常');
+    }
+    if(userId !== commentRes.user || userId !== articalRes.user) {
+      throw new ApiError(null, {
+        code: 100000,
+        message: '没有权限删除该条评论！'
+      })
+    }
     const childRes = await ArticalCommentService.find({},{
       query: {
         parentId: commentId,

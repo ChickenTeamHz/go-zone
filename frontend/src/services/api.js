@@ -193,3 +193,11 @@ export async function fetchCreateComment(params) {
 export async function fetchArticalComments(params) {
   return request(`${HOST}/articals-comments?${stringify(params)}`)
 }
+
+// 删除评论
+export async function fetchDeleteComments(id, params) {
+  return request(`${HOST}/artical-comments/${id}`,{
+    method: 'DELETE',
+    body: params,
+  })
+}

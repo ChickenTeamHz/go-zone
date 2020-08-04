@@ -1,9 +1,59 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
-import { Avatar, Input, Button } from 'antd'
+import { Avatar, Input, Button, message, Modal } from 'antd'
 import { MessageOutlined } from '@ant-design/icons'
+import { useDva } from 'utils/hooks'
 import styles from './index.less'
 
+function useCommentDelete (comment) {
+  const { 
+    dispatch,
+    data: { blog: { detail = {} }, user: { currentUser = {}} },
+  } = useDva({}, ['blog','user']);
+  const [showDelete, setShowDelete] = useState(false) 
+  const handleHover = useCallback(() => {
+    if(currentUser.id === comment.userId || detail.id === currentUser.id) {
+      setShowDelete(true)
+    }
+  },[])
+
+  const handleBlur = useCallback(() => {
+    setShowDelete(false)
+  },[])
+
+  const handleDelete = useCallback(()=> {
+    Modal.confirm({
+      title: '确认删除这条评论吗?',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        return dispatch({
+          type: 'blog/fetchDeleteComments',
+          payload: [comment.id, {
+            articalId: detail.id,
+          }],
+        }).then(()=> {
+          message.success('删除成功')
+          dispatch({
+            type: 'blog/fetchArticalComments',
+            payload: {
+              articalId: detail.id,
+            },
+          })
+        })
+      },
+    })
+  },[])
+  return {
+    handleHover,
+    handleBlur,
+    showDelete,
+    handleDelete,
+  }
+}
+
 const CBox = React.memo(({ item, handleComments }) => {
+  const commentDelete = useCommentDelete(item)
+
   const [rId, setRId] = useState(null);
   const handleReply = (id) => {
     setRId(id)
@@ -14,13 +64,16 @@ const CBox = React.memo(({ item, handleComments }) => {
   },[])
 
   return (
-    <div className={styles.box}>
+    <div className={styles.box} onMouseMove={commentDelete.handleHover} onMouseLeave={commentDelete.handleBlur}>
       <Avatar src={item.avatar} />
       <div style={{ marginLeft: 12, width: '100%' }}>
         <div className={styles.name}>{item.nickname}</div>
         <div className={styles.content}>{item.content}</div>
         <div className={styles.operation}>
-          <div className={styles.time}>{item.createdAt}</div>
+          <div style={{ display: 'flex' }}>
+            <div className={styles.time}>{item.createdAt}</div>
+            {commentDelete.showDelete && <div className={styles.delete} onClick={commentDelete.handleDelete}>· 删除</div>}
+          </div>
           <div className={styles.button} onClick={() => handleReply(item.userId)}>
             <MessageOutlined /> 回复
           </div>
@@ -39,6 +92,7 @@ const CBox = React.memo(({ item, handleComments }) => {
 })
 
 const CBoxChild = React.memo(({ item, parentId, handleComments }) => {
+  const commentDelete = useCommentDelete(item)
   const [rId, setRId] = useState(null);
   const handleReply = (id) => {
     setRId(id)
@@ -49,7 +103,12 @@ const CBoxChild = React.memo(({ item, parentId, handleComments }) => {
   },[])
 
   return (
-    <div className={styles.box} style={{ backgroundColor: 'rgba(226, 228, 226,0.2)' }}>
+    <div 
+      className={styles.box} 
+      style={{ backgroundColor: 'rgba(226, 228, 226,0.2)' }} 
+      onMouseMove={commentDelete.handleHover} 
+      onMouseLeave={commentDelete.handleBlur}
+    >
       <Avatar src={item.avatar} />
       <div style={{ marginLeft: 12, width: '100%' }}>
         <div className={styles.name}>{item.nickname}</div>
@@ -57,7 +116,10 @@ const CBoxChild = React.memo(({ item, parentId, handleComments }) => {
           {item.root === 2 ? `回复【${item.replyName}】: ${item.content}`: item.content}
         </div>
         <div className={styles.operation}>
-          <div className={styles.time}>{item.createdAt}</div>
+          <div style={{ display: 'flex' }}>
+            <div className={styles.time}>{item.createdAt}</div>
+            {commentDelete.showDelete && <div className={styles.delete} onClick={commentDelete.handleDelete}>· 删除</div>}
+          </div>
           <div className={styles.button} onClick={() => handleReply(item.userId)}>
             <MessageOutlined /> 回复
           </div>
@@ -79,7 +141,11 @@ const ReplyBox = React.memo(({
 }) => {
   const [comments, setComments] = useState()
   const ref = useRef()
-
+  const {
+    loadings: { loading = false },
+  } = useDva({
+    loading: 'blog/fetchCreateComment',
+  })
   useEffect(() => {
     ref.current.focus()
   },[])
@@ -131,6 +197,7 @@ const ReplyBox = React.memo(({
               hideReply();
             })} 
             disabled={!comments}
+            loading={loading}
           >
             评论
           </Button>
