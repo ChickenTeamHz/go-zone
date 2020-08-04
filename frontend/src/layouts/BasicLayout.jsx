@@ -52,10 +52,11 @@ function BasicLayout(props) {
     router.push('/blog/create')
   }
 
+  const showBlogEdit = pathname !== '/blog/create' && pathname?.indexOf('/blog/edit') === -1
   return (
     <div className={`${styles.content} animated fadeIn slow`}>
       <Logo />
-      {pathname !== '/blog/create' && (
+      {showBlogEdit && (
         <div className={styles.edit} onClick={handleCreateBlog}>
           <FormOutlined /> 写博客
         </div>

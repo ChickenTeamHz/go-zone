@@ -9,7 +9,7 @@ const shortid = require('shortid');
 const moment = require('moment');
 const Schema = mongoose.Schema;
 
-const ArticalLikesSchema = new Schema({
+const ArticleLikesSchema = new Schema({
   _id: {
     type: String,
     default: shortid.generate,
@@ -18,9 +18,9 @@ const ArticalLikesSchema = new Schema({
     type: String,
     ref: 'User',
   },
-  artical: { // 文章id
+  article: { // 文章id
     type: String,
-    ref: 'Artical',
+    ref: 'Article',
   },
   liked: { // 是否点赞
     type: Boolean,
@@ -32,12 +32,12 @@ const ArticalLikesSchema = new Schema({
   },
 });
 
-ArticalLikesSchema.set('toJSON', { getters: true, virtuals: true });
-ArticalLikesSchema.set('toObject', { getters: true, virtuals: true });
-ArticalLikesSchema.path('createdAt').get(function (v) {
+ArticleLikesSchema.set('toJSON', { getters: true, virtuals: true });
+ArticleLikesSchema.set('toObject', { getters: true, virtuals: true });
+ArticleLikesSchema.path('createdAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-const ArticalLikes = mongoose.model("ArticalLikes", ArticalLikesSchema);
+const ArticleLikes = mongoose.model("ArticleLikes", ArticleLikesSchema);
 
-module.exports = ArticalLikes;
+module.exports = ArticleLikes;

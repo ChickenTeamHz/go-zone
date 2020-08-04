@@ -1,13 +1,13 @@
 const {
-  ArticalCommentService,
-  ArticalService,
+  ArticleCommentService,
+  ArticleService,
 } = require('~service');
 
 const ApiError = require('~ApiError');
 const shortid = require('shortid')
 const { verifyToken } = require('~utils/util');
 const _ = require("lodash");
-const ArticalComment = require('~models/ArticalComment');
+const ArticleComment = require('~models/ArticleComment');
 
 module.exports = {
   /**
@@ -16,10 +16,10 @@ module.exports = {
    */
   async getList (ctx) {
     try {
-      const { articalId } = ctx.query;
-      const parentRes = await ArticalCommentService.find({}, {
+      const { articleId } = ctx.query;
+      const parentRes = await ArticleCommentService.find({}, {
         query: {
-          artical: articalId,
+          article: articleId,
           parentId: null,
         },
         populate: ['user'],
@@ -32,10 +32,10 @@ module.exports = {
       }
       let list = []
       for(let item of parentRes) { 
-        const childRes = await ArticalCommentService.find({}, {
+        const childRes = await ArticleCommentService.find({}, {
           query: {
             parentId: item.id,
-            artical: articalId,
+            article: articleId,
           },
           populate: ['user','replyUser'],
         })
@@ -80,17 +80,17 @@ module.exports = {
     try {
       const { id: userId } = verifyToken(ctx);
       const {
-        articalId,
+        articleId,
         content = null,
         parentId = null,
         replyId = null,
         root = 0,
       } = ctx.request.body;
-      if(!articalId || !shortid.isValid(articalId)) {
+      if(!articleId || !shortid.isValid(articleId)) {
         ctx.throw(400,'参数异常');
       }
-      await ArticalCommentService.create({
-        artical: articalId,
+      await ArticleCommentService.create({
+        article: articleId,
         content,
         user: userId,
         parentId,
@@ -111,36 +111,36 @@ module.exports = {
    try {
     const { commentId } = ctx.params;
     const {
-      articalId,
+      articleId,
     } = ctx.request.body;
     const { id: userId } = verifyToken(ctx);
-    const articalRes = await ArticalService.findOne(ctx,{
+    const articleRes = await ArticleService.findOne(ctx,{
       query: {
-        _id: articalId
+        _id: articleId
       }
     });
-    const commentRes = await ArticalCommentService.findOne(ctx,{
+    const commentRes = await ArticleCommentService.findOne(ctx,{
       query: {
         _id: commentId
       }
     });
-    if(_.isEmpty(articalRes) || _.isEmpty(commentRes)) {
+    if(_.isEmpty(articleRes) || _.isEmpty(commentRes)) {
       ctx.throw(400,'参数异常');
     }
-    if(userId !== commentRes.user || userId !== articalRes.user) {
+    if(userId !== commentRes.user || userId !== articleRes.user) {
       throw new ApiError(null, {
         code: 100000,
         message: '没有权限删除该条评论！'
       })
     }
-    const childRes = await ArticalCommentService.find({},{
+    const childRes = await ArticleCommentService.find({},{
       query: {
         parentId: commentId,
       }
     });
     const ids = childRes.map(item => item.id)
     ids.push(commentId)
-    const res = await ArticalCommentService.removes(ctx, ids)
+    const res = await ArticleCommentService.removes(ctx, ids)
     if (res.deletedCount === 0) {
       throw new ApiError(null, {
         code: 100000,

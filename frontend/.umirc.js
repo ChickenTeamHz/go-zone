@@ -39,8 +39,11 @@ export default {
                 path: '/blog/create',
                 component: '../pages/Blog/Create',
               },{
-                path: '/blog/:articalId',
+                path: '/blog/:articleId',
                 component: '../pages/Blog/Detail',
+              },{
+                path: '/blog/edit/:articleId',
+                component: '../pages/Blog/Edit',
               }]
             },
             {

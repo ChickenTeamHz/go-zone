@@ -10,7 +10,7 @@ const moment = require('moment');
 const Schema = mongoose.Schema;
 moment.locale("zh-cn")
 
-const ArticalCommentSchema = new Schema({
+const ArticleCommentSchema = new Schema({
   _id: {
     type: String,
     default: shortid.generate,
@@ -19,9 +19,9 @@ const ArticalCommentSchema = new Schema({
     type: String,
     ref: 'User',
   },
-  artical: { // 文章id
+  article: { // 文章id
     type: String,
-    ref: 'Artical',
+    ref: 'Article',
   },
   content: String, // 评论内容
   parentId: { // 父评论Id
@@ -43,13 +43,13 @@ const ArticalCommentSchema = new Schema({
   }
 });
 
-ArticalCommentSchema.set('toJSON', { getters: true, virtuals: true });
-ArticalCommentSchema.set('toObject', { getters: true, virtuals: true });
-ArticalCommentSchema.path('createdAt').get(function (v) {
+ArticleCommentSchema.set('toJSON', { getters: true, virtuals: true });
+ArticleCommentSchema.set('toObject', { getters: true, virtuals: true });
+ArticleCommentSchema.path('createdAt').get(function (v) {
   return moment(v).fromNow();
 });
 
 
-const ArticalComment = mongoose.model("ArticalComment", ArticalCommentSchema);
+const ArticleComment = mongoose.model("ArticleComment", ArticleCommentSchema);
 
-module.exports = ArticalComment;
+module.exports = ArticleComment;

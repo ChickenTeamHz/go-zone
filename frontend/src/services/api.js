@@ -133,16 +133,16 @@ export async function fetchUploadImg(file) {
 }
 
 // 发布文章
-export async function fetchCreateArtical(params) {
-  return request(`${HOST}/articals`,{
+export async function fetchCreateArticle(params) {
+  return request(`${HOST}/articles`,{
     method: 'POST',
     body: params,
   })
 }
 
 // 保存文章到草稿箱
-export async function fetchSaveArtical(id, params) {
-  return request(`${HOST}/articals/${id}/draft`,{
+export async function fetchSaveArticle(id, params) {
+  return request(`${HOST}/articles/${id}/draft`,{
     method: 'POST',
     body: params,
   })
@@ -159,23 +159,23 @@ export async function fetchCategoryList() {
 }
 
 // 获取文章列表
-export async function fetchArticals(params) {
-  return request(`${HOST}/articals?${stringify(params)}`)
+export async function fetchArticles(params) {
+  return request(`${HOST}/articles?${stringify(params)}`)
 }
 
 // 获取文章信息
-export async function fetchArticalDetail(id, params) {
-  return request(`${HOST}/articals/${id}?${stringify(params)}`)
+export async function fetchArticleDetail(id, params) {
+  return request(`${HOST}/articles/${id}?${stringify(params)}`)
 }
 
 // 获取文章用户点赞情况
-export async function fetchArticalLikes(params) {
-  return request(`${HOST}/articals-likes?${stringify(params)}`)
+export async function fetchArticleLikes(params) {
+  return request(`${HOST}/articles-likes?${stringify(params)}`)
 }
 
 // 点赞
-export async function fetchUpdateArticalLikes(params) {
-  return request(`${HOST}/articals-likes`,{
+export async function fetchUpdateArticleLikes(params) {
+  return request(`${HOST}/articles-likes`,{
     method: 'POST',
     body: params,
   })
@@ -183,20 +183,20 @@ export async function fetchUpdateArticalLikes(params) {
 
 // 评论
 export async function fetchCreateComment(params) {
-  return request(`${HOST}/articals-comments`,{
+  return request(`${HOST}/articles-comments`,{
     method: 'POST',
     body: params,
   })
 }
 
 // 获取评论信息
-export async function fetchArticalComments(params) {
-  return request(`${HOST}/articals-comments?${stringify(params)}`)
+export async function fetchArticleComments(params) {
+  return request(`${HOST}/articles-comments?${stringify(params)}`)
 }
 
 // 删除评论
 export async function fetchDeleteComments(id, params) {
-  return request(`${HOST}/artical-comments/${id}`,{
+  return request(`${HOST}/article-comments/${id}`,{
     method: 'DELETE',
     body: params,
   })

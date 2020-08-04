@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { MdPriview } from 'md-pre-editor';
+import { router } from 'umi';
 import { useMount, useUnmount } from '@umijs/hooks';
 import { EyeOutlined, LikeOutlined, MessageOutlined, CalendarOutlined } from '@ant-design/icons'
 import { Input, Button, Card, Tag, message, Avatar, Divider } from 'antd';
@@ -10,26 +11,28 @@ import GoBack from '../../components/GoBack';
 import CommentsBox from './components/CommentsBox';
 import Loading from '../../components/Loading';
 
+const tagColor = ['magenta','red','volcano', 'orange', 'gold', 'lime', 'green', 'cyan', 'blue', 'geekblue', 'purple']
+
 export default function ({
-  match: { params: { articalId }},
+  match: { params: { articleId }},
 }) {
   const { 
     dispatch, 
     loadings: { loading = false, commentLoading = false, cLoading = false },
     data: { blog: { detail = {}, comments: commentsData = [] }},
   } = useDva({
-    loading: 'blog/fetchArticalDetail',
+    loading: 'blog/fetchArticleDetail',
     commentLoading: 'blog/fetchCreateComment',
-    cLoading: 'blog/fetchArticalComments',
-  }, ['blog']);
+    cLoading: 'blog/fetchArticleComments',
+  }, ['blog', 'user']);
 
   const [isLike, setIsLike] = useState(false);
 
   function updateLikes() {
     dispatch({
-      type: 'blog/fetchArticalLikes',
+      type: 'blog/fetchArticleLikes',
       payload: {
-        articalId,
+        articleId,
       },
     }).then(res => {
       const { liked = false } = res;
@@ -39,8 +42,8 @@ export default function ({
 
   function fetchDetail(hasReading = false) {
     dispatch({
-      type: 'blog/fetchArticalDetail',
-      payload: [articalId, {
+      type: 'blog/fetchArticleDetail',
+      payload: [articleId, {
         hasReading,
       }],
     });
@@ -48,9 +51,9 @@ export default function ({
 
   function fetchComments() {
     dispatch({
-      type: 'blog/fetchArticalComments',
+      type: 'blog/fetchArticleComments',
       payload: {
-        articalId,
+        articleId,
       },
     })
   }
@@ -79,7 +82,7 @@ export default function ({
     return dispatch({
       type: 'blog/fetchCreateComment',
       payload: {
-        articalId,
+        articleId,
         content,
         parentId,
         replyId,
@@ -100,9 +103,9 @@ export default function ({
 
   const handleLikes = () => {
     dispatch({
-      type: 'blog/fetchUpdateArticalLikes',
+      type: 'blog/fetchUpdateArticleLikes',
       payload: {
-        articalId,
+        articleId,
         liked: !isLike,
       },
     }).then(() => {
@@ -122,22 +125,29 @@ export default function ({
     })
   }
 
+  const handleEdit = () => {
+    router.push(`/blog/edit/${articleId}`)
+  }
+
   return (
     <div className="box">
       <div className={styles.detail}>
         <GoBack />
         <Card bordered={false}>
           <div className={`flex ${styles.user}`}>
-            <Avatar src={detail?.user?.avatar} size="large" />
-            <div style={{ marginLeft: 12 }}>
-              <div style={{ fontWeight: 'bold' }}>{detail?.user?.nickname}</div>
-              <div style={{ color: '#999'}}>
-                <span><CalendarOutlined /> {detail.updatedAt}</span>
-                <span style={{ marginLeft: 8 }}><EyeOutlined /> {detail?.reading}</span>
-                <span style={{ marginLeft: 8 }}><LikeOutlined /> {detail?.likes}</span>
-                <span style={{ marginLeft: 8 }}><MessageOutlined /> {detail?.comments}</span>
+            <div className='flex'>
+              <Avatar src={detail?.user?.avatar} size="large" />
+              <div style={{ marginLeft: 12 }}>
+                <div style={{ fontWeight: 'bold' }}>{detail?.user?.nickname}</div>
+                <div style={{ color: '#999'}}>
+                  <span><CalendarOutlined /> {detail.updatedAt}</span>
+                  <span style={{ marginLeft: 8 }}><EyeOutlined /> {detail?.reading}</span>
+                  <span style={{ marginLeft: 8 }}><LikeOutlined /> {detail?.likes}</span>
+                  <span style={{ marginLeft: 8 }}><MessageOutlined /> {detail?.comments}</span>
+                </div>
               </div>
             </div>
+            <div className={styles.editButton} onClick={handleEdit}>编辑</div>
           </div>
           <h1 style={{ textAlign: 'center' }}>{detail?.title}</h1>
           {detail?.coverPathUrl && (
@@ -150,14 +160,15 @@ export default function ({
           <div className={styles.user}>
             <div className='flex'>
               <span style={{ fontWeight: 'bold' }}>分类专栏：</span>
-              <span>222</span>
+              <span>{detail?.articleCategory?.title}</span>
             </div>
             <div className='flex'>
               <span style={{ fontWeight: 'bold' }}>文章标签：</span>
               <span>
-                <Tag color='#2db7f5'>标签一</Tag>
-                <Tag color='#2db7f5' style={{ marginLeft: 4 }}>标签一</Tag>
-              </span>
+                {detail?.tags?.map((tag,index) => (
+                <Tag color={tagColor[index]} style={{ marginRight: 4 }} key={tag.id}>{tag.title}</Tag>
+                ))}
+              </span> 
             </div>
           </div>
           <Divider />

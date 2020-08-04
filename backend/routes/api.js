@@ -3,13 +3,13 @@ const {
   UploadController,
   AlbumController,
   PhotoController,
-  ArticalController,
+  ArticleController,
   TagController,
-  ArticalCategoryController,
-  ArticalLikesController,
-  ArticalCommentController,
+  ArticleCategoryController,
+  ArticleLikesController,
+  ArticleCommentController,
 } = require('~controller');
-const ArticalComment = require('~models/ArticalComment');
+const ArticleComment = require('~models/ArticleComment');
 
 const apiRoute = (router) => {
   router.get('/',(ctx, next)=>{
@@ -32,16 +32,16 @@ const apiRoute = (router) => {
   router.get('/albums/:id/photos',PhotoController.getList);
   router.delete('/albums/:id/photos',PhotoController.remove);
   router.put('/albums/:id/photos',PhotoController.updateMany);
-  router.post('/articals',ArticalController.create);
-  router.post('/articals/:id/draft',ArticalController.save);
+  router.post('/articles',ArticleController.create);
+  router.post('/articles/:articleId/draft',ArticleController.save);
   router.get('/tags',TagController.getList);
-  router.get('/categorys',ArticalCategoryController.getList);
-  router.get('/articals',ArticalController.getList);
-  router.get('/articals/:id',ArticalController.getOne);
-  router.post('/articals-likes',ArticalLikesController.LikeOne);
-  router.get('/articals-likes',ArticalLikesController.isLike);
-  router.post('/articals-comments',ArticalCommentController.comment);
-  router.get('/articals-comments',ArticalCommentController.getList);
-  router.delete('/artical-comments/:commentId',ArticalCommentController.removes)
+  router.get('/categorys',ArticleCategoryController.getList);
+  router.get('/articles',ArticleController.getList);
+  router.get('/articles/:articleId',ArticleController.getOne);
+  router.post('/articles-likes',ArticleLikesController.LikeOne);
+  router.get('/articles-likes',ArticleLikesController.isLike);
+  router.post('/articles-comments',ArticleCommentController.comment);
+  router.get('/articles-comments',ArticleCommentController.getList);
+  router.delete('/article-comments/:commentId',ArticleCommentController.removes)
 }
 module.exports = apiRoute;

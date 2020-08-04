@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Space, List, Avatar, Input } from 'antd';
+import { router } from 'umi';
 import { MessageOutlined, LikeOutlined, CalendarOutlined } from '@ant-design/icons';
 
 import styles from './style.less';
 import { useDva } from '../../utils/hooks';
-import { router } from 'umi';
 
 const { Search } = Input;
 
@@ -13,7 +13,7 @@ export default function() {
     dispatch, 
     loadings: { loading },
     data: { blog: { list = {} }},
-  } = useDva({loading: 'blog/fetchArticals'}, ['blog']);
+  } = useDva({loading: 'blog/fetchArticles'}, ['blog']);
 
   const { items: listData = [], total = 0 } = list;
 
@@ -22,7 +22,7 @@ export default function() {
 
   const getList = () => {
     dispatch({
-      type: 'blog/fetchArticals',
+      type: 'blog/fetchArticles',
       payload: {
         public: true,
         pageNum,

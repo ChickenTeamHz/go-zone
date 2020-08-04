@@ -9,14 +9,14 @@ const shortid = require('shortid');
 const moment = require('moment');
 const Schema = mongoose.Schema;
 
-const Artical2TagSchema = new Schema({
+const Article2TagSchema = new Schema({
   _id: {
     type: String,
     default: shortid.generate,
   },
-  artical: { // 用户id
+  article: { // 用户id
     type: String,
-    ref: 'Artical',
+    ref: 'Article',
   },
   tag: {
     type: String,
@@ -28,12 +28,12 @@ const Artical2TagSchema = new Schema({
   },
 });
 
-Artical2TagSchema.set('toJSON', { getters: true, virtuals: true });
-Artical2TagSchema.set('toObject', { getters: true, virtuals: true });
-Artical2TagSchema.path('createdAt').get(function (v) {
+Article2TagSchema.set('toJSON', { getters: true, virtuals: true });
+Article2TagSchema.set('toObject', { getters: true, virtuals: true });
+Article2TagSchema.path('createdAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-const Artical2Tag = mongoose.model("Artical2Tag", Artical2TagSchema);
+const Article2Tag = mongoose.model("Article2Tag", Article2TagSchema);
 
-module.exports = Artical2Tag;
+module.exports = Article2Tag;

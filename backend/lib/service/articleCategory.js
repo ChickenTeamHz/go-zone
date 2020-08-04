@@ -1,7 +1,7 @@
 
 'use strict';
 const {
-    ArticalCategoryModel
+    ArticleCategoryModel
 } = require('~models');
 const _ = require('lodash')
 const {
@@ -13,7 +13,7 @@ const {
 } = require('../dao/baseDao');
 
 
-class ArticalCategoryService {
+class ArticleCategoryService {
 
     // 查找
     async find(payload, {
@@ -24,7 +24,7 @@ class ArticalCategoryService {
         sort = {},
     } = {}) {
 
-        let listdata = _list(ArticalCategoryModel, payload, {
+        let listdata = _list(ArticleCategoryModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
@@ -40,7 +40,7 @@ class ArticalCategoryService {
         populate = [],
         filters = null
     } = {}) {
-        return _item(ctx, ArticalCategoryModel, {
+        return _item(ctx, ArticleCategoryModel, {
             query,
             populate,
             filters,
@@ -49,23 +49,23 @@ class ArticalCategoryService {
 
     // 创建
     async create(payload) {
-        return _create(ArticalCategoryModel, payload);
+        return _create(ArticleCategoryModel, payload);
     }
 
     // 修改
     async update(ctx, _id, payload, { filters = '' } = {}) {
-        return _update(ctx, ArticalCategoryModel, _id, payload, { options: { select: filters, new: true }});
+        return _update(ctx, ArticleCategoryModel, _id, payload, { options: { select: filters, new: true }});
     }
 
     // 删除
     async removes(ctx, values, key = '_id') {
-        return _removes(ctx, ArticalCategoryModel, values, key);
+        return _removes(ctx, ArticleCategoryModel, values, key);
     }
 
     // 逻辑删除
     async safeDelete(ctx, values) {
-        return _safeDelete(ctx, ArticalCategoryModel, values);
+        return _safeDelete(ctx, ArticleCategoryModel, values);
     }
 }
 
-module.exports = new ArticalCategoryService();
+module.exports = new ArticleCategoryService();

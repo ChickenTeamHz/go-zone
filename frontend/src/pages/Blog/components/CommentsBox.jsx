@@ -29,14 +29,14 @@ function useCommentDelete (comment) {
         return dispatch({
           type: 'blog/fetchDeleteComments',
           payload: [comment.id, {
-            articalId: detail.id,
+            articleId: detail.id,
           }],
         }).then(()=> {
           message.success('删除成功')
           dispatch({
-            type: 'blog/fetchArticalComments',
+            type: 'blog/fetchArticleComments',
             payload: {
-              articalId: detail.id,
+              articleId: detail.id,
             },
           })
         })

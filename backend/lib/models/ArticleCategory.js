@@ -9,7 +9,7 @@ const shortid = require('shortid');
 const moment = require('moment');
 const Schema = mongoose.Schema;
 
-const ArticalCategorySchema = new Schema({
+const ArticleCategorySchema = new Schema({
   _id: {
     type: String,
     default: shortid.generate,
@@ -25,13 +25,13 @@ const ArticalCategorySchema = new Schema({
   },
 });
 
-ArticalCategorySchema.set('toJSON', { getters: true, virtuals: true });
-ArticalCategorySchema.set('toObject', { getters: true, virtuals: true });
-ArticalCategorySchema.path('createdAt').get(function (v) {
+ArticleCategorySchema.set('toJSON', { getters: true, virtuals: true });
+ArticleCategorySchema.set('toObject', { getters: true, virtuals: true });
+ArticleCategorySchema.path('createdAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
 
-const ArticalCategory = mongoose.model("ArticalCategory", ArticalCategorySchema);
+const ArticleCategory = mongoose.model("ArticleCategory", ArticleCategorySchema);
 
-module.exports = ArticalCategory;
+module.exports = ArticleCategory;

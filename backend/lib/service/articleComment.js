@@ -1,7 +1,7 @@
 
 'use strict';
 const {
-    ArticalCommentModel
+    ArticleCommentModel
 } = require('~models');
 const _ = require('lodash')
 const {
@@ -14,7 +14,7 @@ const {
 } = require('../dao/baseDao');
 
 
-class ArticalCommentService {
+class ArticleCommentService {
 
     // 查找
     async find(payload, {
@@ -25,7 +25,7 @@ class ArticalCommentService {
         sort = {},
     } = {}) {
 
-        let listdata = _list(ArticalCommentModel, payload, {
+        let listdata = _list(ArticleCommentModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
@@ -41,7 +41,7 @@ class ArticalCommentService {
         populate = [],
         filters = null
     } = {}) {
-        return _item(ctx, ArticalCommentModel, {
+        return _item(ctx, ArticleCommentModel, {
             query,
             populate,
             filters,
@@ -50,28 +50,28 @@ class ArticalCommentService {
 
     // 创建
     async create(payload) {
-        return _create(ArticalCommentModel, payload);
+        return _create(ArticleCommentModel, payload);
     }
 
     // 修改
     async update(ctx, _id, payload, { filters = '' } = {}) {
-        return _update(ctx, ArticalCommentModel, _id, payload, { options: { select: filters, new: true }});
+        return _update(ctx, ArticleCommentModel, _id, payload, { options: { select: filters, new: true }});
     }
 
     // 删除
     async removes(ctx, values, key = '_id') {
-        return _removes(ctx, ArticalCommentModel, values, key);
+        return _removes(ctx, ArticleCommentModel, values, key);
     }
 
     // 逻辑删除
     async safeDelete(ctx, values) {
-        return _safeDelete(ctx, ArticalCommentModel, values);
+        return _safeDelete(ctx, ArticleCommentModel, values);
     }
 
     // 统计个数
     async count(query = {}) {
-      return _count(ArticalCommentModel, query)
+      return _count(ArticleCommentModel, query)
     }
 }
 
-module.exports = new ArticalCommentService();
+module.exports = new ArticleCommentService();

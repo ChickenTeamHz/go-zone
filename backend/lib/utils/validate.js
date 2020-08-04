@@ -31,7 +31,7 @@ exports.verify = (ctx,controlName, params = null) => {
       case 'album':
         rule = this.albumRule;
         break;
-      case 'artical':
+      case 'article':
         rule = getSomeRule(this.articleRule, params);
         break;
       default:

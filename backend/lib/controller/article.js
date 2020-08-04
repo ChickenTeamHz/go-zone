@@ -1,11 +1,11 @@
 const {
-	ArticalService,
+	ArticleService,
 	PhotoService,
 	TagService,
-	ArticalCategoryService,
-  Artical2TagService,
-  ArticalLikesService,
-  ArticalCommentService,
+	ArticleCategoryService,
+  Article2TagService,
+  ArticleLikesService,
+  ArticleCommentService,
 } = require("~service");
 
 const ApiError = require("~ApiError");
@@ -24,7 +24,7 @@ async function getTagId(item) {
 }
 
 async function getCategoryId(ctx, item, userId) {
-	const categoryRes = await ArticalCategoryService.findOne(ctx, {
+	const categoryRes = await ArticleCategoryService.findOne(ctx, {
 		query: {
 			title: item,
 			user: userId,
@@ -32,7 +32,7 @@ async function getCategoryId(ctx, item, userId) {
 	});
 	let categoryId = null;
 	if (_.isEmpty(categoryRes)) {
-		const newCategory = await ArticalCategoryService.create({
+		const newCategory = await ArticleCategoryService.create({
 			title: item,
 			user: userId,
 		});
@@ -60,7 +60,7 @@ module.exports = {
 			} = ctx.request.body;
 			let { articleId } = ctx.request.body;
 			const { id: userId } = verifyToken(ctx);
-			const errInfo = verify(ctx, "artical", {
+			const errInfo = verify(ctx, "article", {
 				title,
 				content,
 				category,
@@ -88,37 +88,38 @@ module.exports = {
 				}
 			});
 			const categoryId = await getCategoryId(ctx, category, userId);
-			const articalRes = ArticalService.findOne(ctx, {
+			const articleRes = await ArticleService.findOne(ctx, {
 				query: {
-					id: articleId,
+					_id: articleId,
 				},
 			});
-			if (_.isEmpty(articalRes)) {
-				const newArtical = await ArticalService.create({
+			if (_.isEmpty(articleRes)) {
+				const newArticle = await ArticleService.create({
 					user: userId,
-					articalCategory: categoryId,
+					articleCategory: categoryId,
 					title,
 					content,
 					public,
 					coverPath: coverPath || null,
 					publish: true,
 				});
-				articalId = newArtical.id;
+				articleId = newArticle.id;
 			} else {
-				await ArticalService.update(ctx, articalId, {
+				await ArticleService.update(ctx, articleId, {
 					user: userId,
-					articalCategory: categoryId,
+					articleCategory: categoryId,
 					title,
 					content,
 					public,
 					coverPath: coverPath || null,
 					publish: true,
+					updatedAt: Date.now(),
 				});
-      }
+			}
+			await Article2TagService.removes(ctx, articleId, "article");
       for(const item of tagIds) {
-        await Artical2TagService.removes(ctx, articalId, "artical");
-        await Artical2TagService.create({
-          artical: articalId,
+        await Article2TagService.create({
+          article: articleId,
           tag: item,
         });
       }
@@ -135,17 +136,17 @@ module.exports = {
 	async save(ctx) {
 		try {
 			const { content, title, coverPath } = ctx.request.body;
-			const { id } = ctx.params;
+			const { articleId } = ctx.params;
 			const { id: userId } = verifyToken(ctx);
-			const errInfo = verify(ctx, "artical", {
+			const errInfo = verify(ctx, "article", {
 				title,
 				content,
 			});
 			if (!_.isEmpty(errInfo)) {
 				throw new ApiError(null, errInfo);
 			}
-			if (id && id !== "null") {
-				const res = await ArticalService.update(ctx, id, {
+			if (articleId && articleId !== "null") {
+				const res = await ArticleService.update(ctx, articleId, {
 					content,
 					title,
 					coverPath: coverPath || null,
@@ -159,7 +160,7 @@ module.exports = {
 				}
 				ctx.body = {};
 			} else {
-				const res = await ArticalService.create({
+				const res = await ArticleService.create({
 					content,
 					title,
 					coverPath: coverPath || null,
@@ -183,7 +184,7 @@ module.exports = {
 		try {
 			const { public = false, pageNum = 1, pageSize = 10 } = ctx.query;
 			const { id } = verifyToken(ctx);
-			const res = await ArticalService.find(
+			const res = await ArticleService.find(
 				{
 					pageNum,
 					pageSize,
@@ -209,12 +210,12 @@ module.exports = {
       );
       let items = [];
       for(let item of res.items) {
-        const likes = await ArticalLikesService.count({
-					artical: item.id,
+        const likes = await ArticleLikesService.count({
+					article: item.id,
 					liked: true,
         })
-        const comments = await ArticalCommentService.count({
-          artical: item.id,
+        const comments = await ArticleCommentService.count({
+          article: item.id,
         }) 
         items.push({
           ...item.toJSON(),
@@ -239,7 +240,7 @@ module.exports = {
 		try {
 			const { id } = ctx.params;
 			await PhotoService.removes(ctx, id, "album");
-			const res = await ArticalService.removes(ctx, id);
+			const res = await ArticleService.removes(ctx, id);
 			if (res.n === 0) {
 				throw new ApiError(null, {
 					code: 100000,
@@ -270,7 +271,7 @@ module.exports = {
 			if (!_.isEmpty(errInfo)) {
 				throw new ApiError(null, errInfo);
 			}
-			const res = await ArticalService.update(ctx, id, {
+			const res = await ArticleService.update(ctx, id, {
 				name,
 				coverPath,
 			});
@@ -286,41 +287,68 @@ module.exports = {
 	 */
 	async getOne(ctx) {
 		try {
-      const { id } = ctx.params;
+      const { articleId } = ctx.params;
       const { isEdit = false, hasReading = false } = ctx.query
-			const res = await ArticalService.findOne(ctx, {
+			const res = await ArticleService.findOne(ctx, {
 				query: {
-					_id: id,
+					_id: articleId,
         },
         populate: [
           {
             path: "user",
             select: "nickname avatar -_id",
-          },
+					},
+					{
+						path: "articleCategory",
+						select: "title"
+					}
         ],
         filters: "-deleted -publish",
-      });
+			});
+			if(_.isEmpty(res)) {
+				throw new ApiError(null, {
+					code: '100000',
+					message: '没有这条记录！'
+				})
+			}
+			const tagRes = await Article2TagService.find({},{
+				query: {
+					article: articleId,
+				},
+				populate: 'tag',
+			})
+			const tags = tagRes.map(item => {
+				const { tag = {} } = item;
+				return {
+					title: tag.title,
+					id: tag.id,
+				};
+			})
       if(!isEdit) {
-        const likes = await ArticalLikesService.count({
-					artical: id,
+        const likes = await ArticleLikesService.count({
+					article: articleId,
 					liked: true,
         })
-        const comments = await ArticalCommentService.count({
-          artical: id,
+        const comments = await ArticleCommentService.count({
+          article: articleId,
         }) 
         const item = {
           ...res.toJSON(),
           likes,
-          comments,
+					comments,
+					tags,
 				}
 				if(!hasReading) {
-					ArticalService.update(ctx,id, {
+					ArticleService.update(ctx,id, {
 						reading: item.reading + 1
 					})
 				}
         ctx.body = item
       }else {
-        ctx.body = res
+        ctx.body = {
+					tags,
+					...res.toJSON(),
+				}
       }
 		} catch (err) {
 			throw err;

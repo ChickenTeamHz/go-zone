@@ -1,7 +1,7 @@
 
 'use strict';
 const {
-    Artical2TagModel
+    ArticleModel
 } = require('~models');
 const _ = require('lodash')
 const {
@@ -13,7 +13,7 @@ const {
 } = require('../dao/baseDao');
 
 
-class Artical2TagService {
+class ArticleService {
 
     // 查找
     async find(payload, {
@@ -24,7 +24,7 @@ class Artical2TagService {
         sort = {},
     } = {}) {
 
-        let listdata = _list(Artical2TagModel, payload, {
+        let listdata = _list(ArticleModel, payload, {
             query: query,
             searchKeys: searchKeys,
             populate: populate,
@@ -40,7 +40,7 @@ class Artical2TagService {
         populate = [],
         filters = null
     } = {}) {
-        return _item(ctx, Artical2TagModel, {
+        return _item(ctx, ArticleModel, {
             query,
             populate,
             filters,
@@ -49,23 +49,23 @@ class Artical2TagService {
 
     // 创建
     async create(payload) {
-        return _create(Artical2TagModel, payload);
+        return _create(ArticleModel, payload);
     }
 
     // 修改
     async update(ctx, _id, payload, { filters = '' } = {}) {
-        return _update(ctx, Artical2TagModel, _id, payload, { options: { select: filters, new: true }});
+        return _update(ctx, ArticleModel, _id, payload, { options: { select: filters, new: true }});
     }
 
     // 删除
     async removes(ctx, values, key = '_id') {
-        return _removes(ctx, Artical2TagModel, values, key);
+        return _removes(ctx, ArticleModel, values, key);
     }
 
     // 逻辑删除
     async safeDelete(ctx, values) {
-        return _safeDelete(ctx, Artical2TagModel, values);
+        return _safeDelete(ctx, ArticleModel, values);
     }
 }
 
-module.exports = new Artical2TagService();
+module.exports = new ArticleService();

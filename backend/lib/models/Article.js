@@ -10,7 +10,7 @@ const moment = require('moment');
 const qs = require('~utils/upload');
 const Schema = mongoose.Schema;
 
-const ArticalSchema = new Schema({
+const ArticleSchema = new Schema({
   _id: {
     type: String,
     default: shortid.generate,
@@ -19,9 +19,9 @@ const ArticalSchema = new Schema({
     type: String,
     ref: 'User',
   },
-  articalCategory: { // 类别id
+  articleCategory: { // 类别id
     type: String,
-    ref: 'ArticalCategory',
+    ref: 'ArticleCategory',
   },
   title: String, // 标题
   content: String, // 内容
@@ -55,21 +55,21 @@ const ArticalSchema = new Schema({
   },
 });
 
-ArticalSchema.set('toJSON', { getters: true, virtuals: true });
-ArticalSchema.set('toObject', { getters: true, virtuals: true });
+ArticleSchema.set('toJSON', { getters: true, virtuals: true });
+ArticleSchema.set('toObject', { getters: true, virtuals: true });
 
-ArticalSchema.path('createdAt').get(function (v) {
+ArticleSchema.path('createdAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-ArticalSchema.path('updatedAt').get(function (v) {
+ArticleSchema.path('updatedAt').get(function (v) {
   return moment(v).format("YYYY-MM-DD HH:mm:ss");
 });
 
-ArticalSchema.virtual('coverPathUrl').get(function () {
+ArticleSchema.virtual('coverPathUrl').get(function () {
   return this.coverPath ? qs.config.origin + this.coverPath : null;
 });
 
-const Artical = mongoose.model("Artical", ArticalSchema);
+const Article = mongoose.model("Article", ArticleSchema);
 
-module.exports = Artical;
+module.exports = Article;

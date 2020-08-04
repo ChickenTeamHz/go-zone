@@ -1,5 +1,5 @@
 const {
-  ArticalLikesService,
+  ArticleLikesService,
 } = require('~service');
 
 const ApiError = require('~ApiError');
@@ -13,22 +13,22 @@ module.exports = {
    */
   async LikeOne (ctx) {
     try {
-      const { liked, articalId } = ctx.request.body;
+      const { liked, articleId } = ctx.request.body;
       const { id: userId } = verifyToken(ctx);
-      const res = await ArticalLikesService.findOne(ctx,{
+      const res = await ArticleLikesService.findOne(ctx,{
         query: {
           user: userId,
-          artical: articalId,
+          article: articleId,
         },
       });
       if(_.isEmpty(res)) {
-        await ArticalLikesService.create({
+        await ArticleLikesService.create({
           user: userId,
-          artical: articalId,
+          article: articleId,
           liked,
         })
       }else {
-        await ArticalLikesService.update(ctx, res.id, {
+        await ArticleLikesService.update(ctx, res.id, {
           liked,
         })
       }
@@ -44,12 +44,12 @@ module.exports = {
   */
  async isLike(ctx) {
   try {
-    const { articalId } = ctx.query;
+    const { articleId } = ctx.query;
     const { id: userId } = verifyToken(ctx);
-    const res = await ArticalLikesService.findOne(ctx,{
+    const res = await ArticleLikesService.findOne(ctx,{
       query: {
         user: userId,
-        artical: articalId,
+        article: articleId,
       },
     });
     const { liked = false } = res || {}

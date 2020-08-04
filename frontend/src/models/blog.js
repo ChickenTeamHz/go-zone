@@ -1,5 +1,5 @@
 import {
-  fetchUploadImg, fetchCreateArtical, fetchSaveArtical, fetchTagList, fetchCategoryList, fetchArticals, fetchArticalDetail, fetchUpdateArticalLikes, fetchArticalLikes, fetchCreateComment, fetchArticalComments, fetchDeleteComments,
+  fetchUploadImg, fetchCreateArticle, fetchSaveArticle, fetchTagList, fetchCategoryList, fetchArticles, fetchArticleDetail, fetchUpdateArticleLikes, fetchArticleLikes, fetchCreateComment, fetchArticleComments, fetchDeleteComments,
 } from '../services/api';
 
 export default {
@@ -24,16 +24,16 @@ export default {
       return Promise.reject(response.message || '请求失败');
     },
     // 发布文章
-    *fetchCreateArtical({ payload },{ call }) {
-      const response = yield call(fetchCreateArtical,payload);
+    *fetchCreateArticle({ payload },{ call }) {
+      const response = yield call(fetchCreateArticle,payload);
       if(response && response.code === 0) {
         return Promise.resolve('发布成功');
       }
       return Promise.reject(response.message || '请求失败');
     },
     // 保存文章到草稿箱
-    *fetchSaveArtical({ payload },{ call }) {
-      const response = yield call(fetchSaveArtical,...payload);
+    *fetchSaveArticle({ payload },{ call }) {
+      const response = yield call(fetchSaveArticle,...payload);
       if(response && response.code === 0) {
         return Promise.resolve(response.data || '保存成功');
       }
@@ -64,8 +64,8 @@ export default {
       return Promise.reject(response.message || '请求失败');
     },
     // 获取文章列表
-    *fetchArticals({ payload },{ call, put }) {
-      const response = yield call(fetchArticals, payload);
+    *fetchArticles({ payload },{ call, put }) {
+      const response = yield call(fetchArticles, payload);
       if(response && response.code === 0) {
         yield put ({
           type: 'saveList',
@@ -76,28 +76,28 @@ export default {
       return Promise.reject(response.message || '请求失败');
     },
     // 获取文章详情
-    *fetchArticalDetail({ payload },{ call, put }) {
-      const response = yield call(fetchArticalDetail, ...payload);
+    *fetchArticleDetail({ payload },{ call, put }) {
+      const response = yield call(fetchArticleDetail, ...payload);
       if(response && response.code === 0) {
         yield put ({
           type: 'saveDetail',
           payload: response.data || {},
         })
-        return Promise.resolve('请求成功');
+        return Promise.resolve(response.data || {});
       }
       return Promise.reject(response.message || '请求失败');
     },
     // 获取文章用户点赞情况
-    *fetchArticalLikes({ payload },{ call, put }) {
-      const response = yield call(fetchArticalLikes, payload);
+    *fetchArticleLikes({ payload },{ call }) {
+      const response = yield call(fetchArticleLikes, payload);
       if(response && response.code === 0) {
         return Promise.resolve(response.data || {});
       }
       return Promise.reject(response.message || '请求失败');
     },
     // 点赞
-    *fetchUpdateArticalLikes({ payload },{ call }) {
-      const response = yield call(fetchUpdateArticalLikes,payload);
+    *fetchUpdateArticleLikes({ payload },{ call }) {
+      const response = yield call(fetchUpdateArticleLikes,payload);
       if(response && response.code === 0) {
         return Promise.resolve('点赞成功');
       }
@@ -112,8 +112,8 @@ export default {
       return Promise.reject(response.message || '评论失败');
     },
     // 获取评论内容
-    *fetchArticalComments({ payload }, { call, put }) {
-      const response = yield call(fetchArticalComments, payload);
+    *fetchArticleComments({ payload }, { call, put }) {
+      const response = yield call(fetchArticleComments, payload);
       if(response && response.code === 0) {
         yield put({
           type: 'saveComments',

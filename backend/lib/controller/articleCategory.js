@@ -1,5 +1,5 @@
 const {
-  ArticalCategoryService,
+  ArticleCategoryService,
 } = require('~service');
 
 const ApiError = require('~ApiError');
@@ -13,7 +13,7 @@ module.exports = {
   async getList (ctx) {
     try {
       const { id: userId } = verifyToken(ctx);
-      const res = await ArticalCategoryService.find({},{
+      const res = await ArticleCategoryService.find({},{
         query: {
           user: userId,
         },
