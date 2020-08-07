@@ -15,7 +15,12 @@ module.exports = {
   async getList (ctx) {
     try {
       const res = await TagService.find();
-      const tags = res.map(item => item.title)
+      const tags = res.map(item => { 
+        return {
+          title: item.title, 
+          id: item.id
+        }
+      })
       ctx.body = tags;
     }catch(err) {
       throw err;

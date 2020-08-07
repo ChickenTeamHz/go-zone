@@ -170,6 +170,15 @@ export default {
         comments: [],
       }
     },
+    clearList(state) {
+      return {
+        ...state,
+        list:  {
+          items: [],
+          total: 0,
+        },
+      }
+    }
   },
 };
 

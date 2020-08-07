@@ -43,7 +43,7 @@ app.use(async (ctx,next) => {
   }catch(err){
       ms = new Date() - start;
       //记录异常日志
-      // logUtil.logError(ctx, err, ms);
+      logUtil.logError(ctx, err, ms);
   }
 });
 

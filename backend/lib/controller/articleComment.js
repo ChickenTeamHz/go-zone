@@ -127,7 +127,7 @@ module.exports = {
     if(_.isEmpty(articleRes) || _.isEmpty(commentRes)) {
       ctx.throw(400,'参数异常');
     }
-    if(userId !== commentRes.user || userId !== articleRes.user) {
+    if(userId !== commentRes.user && userId !== articleRes.user) {
       throw new ApiError(null, {
         code: 100000,
         message: '没有权限删除该条评论！'

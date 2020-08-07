@@ -92,3 +92,35 @@
     }
   }
 }
+
+.column {
+  .flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .label {
+    color: #b8b8b8;
+    font-weight: 500;
+  }
+  .reset {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+  }
+  :global {
+    .ant-row {
+      align-items: baseline;
+    }
+    .ant-tag-checkable {
+      border: 1px solid #b8b8b8;
+      margin-bottom: 12px;
+    }
+    .ant-tag-checkable-checked {
+      border: 1px solid rgba(0, 0, 0, 0.65);
+      background-color: rgba(0, 0, 0, 0.65);
+    }
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+  }
+}

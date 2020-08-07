@@ -10,6 +10,7 @@ const {
     _update,
     _list,
     _removes,
+    _count,
 } = require('../dao/baseDao');
 
 
@@ -65,6 +66,11 @@ class ArticleCategoryService {
     // 逻辑删除
     async safeDelete(ctx, values) {
         return _safeDelete(ctx, ArticleCategoryModel, values);
+    }
+
+    // 统计个数
+    async count(query = {}) {
+      return _count(ArticleCategoryModel, query)
     }
 }
 

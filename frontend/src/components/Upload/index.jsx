@@ -134,7 +134,7 @@ export default function({
       >
         <Spin spinning={loading} indicator={spinIcon}>
           {imageUrl ? (
-            <img alt="" src={imageUrl} style={{ width, height }} />
+            <img alt="" src={imageUrl} style={{ minWidth: width, minHeight: height, width, height }} />
           ) : (
             uploadImg('上传图片')
           )}

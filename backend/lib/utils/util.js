@@ -54,6 +54,20 @@ function formatBase64File(imgBase,suffix){
   }
 }
 
+// 格式化布尔
+function formatBoolean(str) {
+  if(str && typeof str === 'string') {
+    if(str === 'true') {
+      return true
+    }
+    if(str === 'false') {
+      return false
+    }
+    return Boolean(str)
+  }
+  return Boolean(str)
+}
+
 module.exports = {
   encrypt,
   randomPass,
@@ -61,4 +75,5 @@ module.exports = {
   getFileName,
   formatFile,
   formatBase64File,
+  formatBoolean,
 }

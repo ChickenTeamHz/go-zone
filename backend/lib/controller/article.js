@@ -10,8 +10,9 @@ const {
 
 const ApiError = require("~ApiError");
 const { verify } = require("~utils/validate");
-const { verifyToken } = require("~utils/util");
+const { verifyToken, formatBoolean } = require("~utils/util");
 const _ = require("lodash");
+const { format } = require("path");
 
 async function getTagId(item) {
 	const newTag = await TagService.create({
@@ -21,26 +22,6 @@ async function getTagId(item) {
 		ctx.throw(400, "参数异常");
 	}
 	return newTag.id;
-}
-
-async function getCategoryId(ctx, item, userId) {
-	const categoryRes = await ArticleCategoryService.findOne(ctx, {
-		query: {
-			title: item,
-			user: userId,
-		},
-	});
-	let categoryId = null;
-	if (_.isEmpty(categoryRes)) {
-		const newCategory = await ArticleCategoryService.create({
-			title: item,
-			user: userId,
-		});
-		categoryId = newCategory.id;
-	} else {
-		categoryId = categoryRes.id;
-	}
-	return categoryId;
 }
 
 module.exports = {
@@ -71,6 +52,34 @@ module.exports = {
 				throw new ApiError(null, errInfo);
 			}
 
+			const categoryRes = await ArticleCategoryService.findOne(ctx, {
+				query: {
+					title: category,
+					user: userId,
+				},
+			});
+			let categoryId = null;
+			if (_.isEmpty(categoryRes)) {
+				const categoryCount = await ArticleCategoryService.count({
+					query: {
+						user: userId,
+					},
+				});
+				if(categoryCount >= 10) {
+					throw new ApiError(null, {
+						code: 100000,
+						message: '自定义专栏数量上限！'
+					})
+				}
+				const newCategory = await ArticleCategoryService.create({
+					title: category,
+					user: userId,
+				});
+				categoryId = newCategory.id;
+			} else {
+				categoryId = categoryRes.id;
+			}
+
 			const tagsRes = await TagService.find(
 				{},
 				{
@@ -87,7 +96,6 @@ module.exports = {
 					tagIds.push(getTagId(item));
 				}
 			});
-			const categoryId = await getCategoryId(ctx, category, userId);
 			const articleRes = await ArticleService.findOne(ctx, {
 				query: {
 					_id: articleId,
@@ -166,7 +174,6 @@ module.exports = {
 					coverPath: coverPath || null,
 					user: userId,
 				});
-				console.log(res);
 				ctx.body = {
 					articleId: res.id,
 				};
@@ -182,8 +189,45 @@ module.exports = {
 	 */
 	async getList(ctx) {
 		try {
-			const { public = false, pageNum = 1, pageSize = 10 } = ctx.query;
-			const { id } = verifyToken(ctx);
+			const { 
+				public = false, 
+				pageNum = 1, 
+				pageSize = 10,
+				personal = false,
+				tags = [],
+				category,
+				publish = true,
+			} = ctx.query;
+			const { id: userId } = verifyToken(ctx);
+			const query = {
+				deleted: false,
+				public,
+				publish,
+			}
+			if(personal) {
+        query.user = userId
+			}
+			if((typeof tags === 'string' && tags) || (tags instanceof Array && tags.length > 0)) {
+				const tagRes = await Article2TagService.find({},{
+					query: {
+						tag: {
+								$in: tags
+						}
+					},
+					filters: 'article'
+				})
+				const articals = [...new Set(tagRes.map(item => item.article))]
+        query['_id'] = {
+					$in: articals
+				}
+			}
+			if(category) {
+				query['articleCategory'] = category;
+			}
+			if(formatBoolean(public)) {
+				query.public = true;
+			}
+
 			const res = await ArticleService.find(
 				{
 					pageNum,
@@ -191,11 +235,7 @@ module.exports = {
 					isPaging: true,
 				},
 				{
-					query: {
-						deleted: false,
-						public,
-						publish: true,
-					},
+					query,
 					populate: [
 						{
 							path: "user",
@@ -288,7 +328,9 @@ module.exports = {
 	async getOne(ctx) {
 		try {
       const { articleId } = ctx.params;
-      const { isEdit = false, hasReading = false } = ctx.query
+			let { isEdit = false, hasReading = false } = ctx.query
+			isEdit = formatBoolean(isEdit)
+			hasReading = formatBoolean(hasReading)
 			const res = await ArticleService.findOne(ctx, {
 				query: {
 					_id: articleId,
@@ -296,7 +338,7 @@ module.exports = {
         populate: [
           {
             path: "user",
-            select: "nickname avatar -_id",
+            select: "nickname avatar",
 					},
 					{
 						path: "articleCategory",
@@ -339,7 +381,7 @@ module.exports = {
 					tags,
 				}
 				if(!hasReading) {
-					ArticleService.update(ctx,id, {
+					ArticleService.update(ctx,articleId, {
 						reading: item.reading + 1
 					})
 				}

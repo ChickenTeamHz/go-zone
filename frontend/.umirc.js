@@ -39,11 +39,14 @@ export default {
                 path: '/blog/create',
                 component: '../pages/Blog/Create',
               },{
-                path: '/blog/:articleId',
+                path: '/blog/detail/:articleId',
                 component: '../pages/Blog/Detail',
               },{
                 path: '/blog/edit/:articleId',
                 component: '../pages/Blog/Edit',
+              },{
+                path: '/blog/posts',
+                component: '../pages/Blog/MyColumn',
               }]
             },
             {

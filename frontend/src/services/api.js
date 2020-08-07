@@ -160,7 +160,7 @@ export async function fetchCategoryList() {
 
 // 获取文章列表
 export async function fetchArticles(params) {
-  return request(`${HOST}/articles?${stringify(params)}`)
+  return request(`${HOST}/articles?${stringify(params,{ indices: false })}`)
 }
 
 // 获取文章信息

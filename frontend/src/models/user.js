@@ -1,4 +1,5 @@
 import { router } from 'umi';
+import avatarDefault from 'assets/avatar.jpg';
 import { fetchLogin, fetchRegister, fetchForgetRegister, fecthProfile, fetchUpdateUser, fetchUpdatePassword, fetchUpdateAvatar } from '../services/api';
 import { getPageQuery } from '../utils/utils';
 import { setToken } from '../utils/authToken';
@@ -6,7 +7,9 @@ import { setToken } from '../utils/authToken';
 export default {
   namespace: 'user',
   state: {
-    currentUser: {},
+    currentUser: {
+      avatar: avatarDefault,
+    },
   },
   effects: {
     *fetchLogin({ payload }, { call }) {
@@ -93,9 +96,13 @@ export default {
   },
   reducers: {
     saveCurrentUser(state, { payload }) {
+      const { avatar = avatarDefault } = payload || {}
       return {
         ...state,
-        currentUser: payload || {},
+        currentUser: {
+          ...payload,
+          avatar: avatar || avatarDefault,
+        },
       };
     },
   },
