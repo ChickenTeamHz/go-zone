@@ -10,6 +10,9 @@ export const menuData = [{
   },{
     link: '/blog/likes',
     desc: 'Like',
+  },{
+    link: '/blog/draft',
+    desc: 'Draft',
   }],
 },{
   link: '/album',

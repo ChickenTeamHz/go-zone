@@ -122,9 +122,13 @@ export default function () {
       dispatch({
         type: 'blog/fetchCreateArticle',
         payload,
-      }).then((msg) => {
-        message.success(msg);
-        router.goBack();
+      }).then(({ id }) => {
+        message.success('发布成功');
+        if(id) {
+          router.replace(`/blog/detail/${id}`);
+        }else {
+          router.goBack();
+        }
       });
     });
   };

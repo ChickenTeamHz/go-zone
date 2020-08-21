@@ -43,5 +43,7 @@ const apiRoute = (router) => {
   router.post('/articles-comments',ArticleCommentController.comment);
   router.get('/articles-comments',ArticleCommentController.getList);
   router.delete('/article-comments/:commentId',ArticleCommentController.removes)
+  router.delete('/articles/:articleId',ArticleController.removeOne);
+  router.get('/search/articles',ArticleController.searchList);
 }
 module.exports = apiRoute;

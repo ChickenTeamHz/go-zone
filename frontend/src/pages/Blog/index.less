@@ -94,6 +94,7 @@
 }
 
 .column {
+  padding-bottom: 40px;
   .flex {
     display: flex;
     flex-wrap: wrap;
@@ -121,6 +122,28 @@
     }
     .ant-form-item {
       margin-bottom: 12px;
+    }
+  }
+}
+
+.search {
+  input {
+    height: 65px;
+    background: transparent;
+    border-radius: 55px;
+    padding-left: 25px;
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  button {
+    height: 65px;
+    border-radius: 55px;
+    width: 70px;
+  }
+  :global {
+    .ant-input-group-addon {
+      border-radius: 55px;
     }
   }
 }

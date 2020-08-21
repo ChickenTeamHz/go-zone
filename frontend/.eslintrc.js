@@ -36,7 +36,7 @@ module.exports = {
     'consistent-return': [0], // 要求return语句要么总是指定返回的值，要么不指定
     'comma-dangle': [
       // 是否使用尾随逗号。
-      'warning',
+      1,
       {
         arrays: 'always-multiline',
         objects: 'always-multiline',

@@ -10,6 +10,7 @@ const {
     _update,
     _list,
     _removes,
+    _safeDelete,
 } = require('../dao/baseDao');
 
 

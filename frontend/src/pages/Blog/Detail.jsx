@@ -11,6 +11,8 @@ import GoBack from '../../components/GoBack';
 import CommentsBox from './components/CommentsBox';
 import Loading from '../../components/Loading';
 import { tagColor } from '../../common/enum';
+import avatarDefault from '../../assets/avatar.jpg';
+
 
 export default function ({
   match: {
@@ -141,7 +143,7 @@ export default function ({
         <Card bordered={false}>
           <div className={`flex ${styles.user}`}>
             <div className="flex">
-              <Avatar src={detail?.user?.avatar} size="large" />
+              <Avatar src={detail?.user?.avatar || avatarDefault} size="large" />
               <div style={{ marginLeft: 12 }}>
                 <div style={{ fontWeight: 'bold' }}>{detail?.user?.nickname}</div>
                 <div style={{ color: '#999' }}>
@@ -199,7 +201,7 @@ export default function ({
               <h2>评论区</h2>
               <div className={styles.inputBox}>
                 <div>
-                  <Avatar src={currentUser?.avatar} />
+                  <Avatar src={currentUser?.avatar || avatarDefault} />
                   <Input.TextArea
                     placeholder="输入评论..."
                     style={{ marginLeft: 12, resize: 'none' }}

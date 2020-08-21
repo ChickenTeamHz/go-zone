@@ -1,5 +1,5 @@
 import {
-  fetchUploadImg, fetchCreateArticle, fetchSaveArticle, fetchTagList, fetchCategoryList, fetchArticles, fetchArticleDetail, fetchUpdateArticleLikes, fetchArticleLikes, fetchCreateComment, fetchArticleComments, fetchDeleteComments,
+  fetchUploadImg, fetchCreateArticle, fetchSaveArticle, fetchTagList, fetchCategoryList, fetchArticles, fetchArticleDetail, fetchUpdateArticleLikes, fetchArticleLikes, fetchCreateComment, fetchArticleComments, fetchDeleteComments, fetchDeleteArticals, fetchSearchArticles,
 } from '../services/api';
 
 export default {
@@ -27,7 +27,7 @@ export default {
     *fetchCreateArticle({ payload },{ call }) {
       const response = yield call(fetchCreateArticle,payload);
       if(response && response.code === 0) {
-        return Promise.resolve('发布成功');
+        return Promise.resolve(response.data || {});
       }
       return Promise.reject(response.message || '请求失败');
     },
@@ -131,6 +131,24 @@ export default {
       }
       return Promise.reject(response.message || '删除评论失败');
     },
+    *fetchDeleteArticals({ payload },{ call }) {
+      const response = yield call(fetchDeleteArticals,payload);
+      if(response && response.code === 0) {
+        return Promise.resolve('删除文章成功');
+      }
+      return Promise.reject(response.message || '删除文章失败');
+    },
+    *fetchSearchArticles({ payload },{ call, put }) {
+      const response = yield call(fetchSearchArticles, payload);
+      if(response && response.code === 0) {
+        yield put ({
+          type: 'saveList',
+          payload: response.data || {},
+        })
+        return Promise.resolve('请求成功');
+      }
+      return Promise.reject(response.message || '请求失败');
+    },
   },
   reducers: {
     saveList(state, { payload }) {
@@ -178,7 +196,7 @@ export default {
           total: 0,
         },
       }
-    }
+    },
   },
 };
 

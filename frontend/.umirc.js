@@ -29,7 +29,11 @@ export default {
           path: '/',
           component: '../layouts/BasicLayout',
           routes: [
-            { path: '/', component: '../pages/Home' },
+            {
+              path: '/',
+              redirect: '/home',
+            },
+            { path: '/home', component: '../pages/Home' },
             {
               path: '/blog',
               routes: [{
@@ -47,6 +51,15 @@ export default {
               },{
                 path: '/blog/posts',
                 component: '../pages/Blog/MyColumn',
+              },{
+                path: '/blog/likes',
+                component: '../pages/Blog/Likes',
+              },{
+                path: '/blog/draft',
+                component: '../pages/Blog/Draft',
+              },{
+                path: '/blog/search',
+                component: '../pages/Blog/Search',
               }]
             },
             {

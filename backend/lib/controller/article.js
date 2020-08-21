@@ -89,13 +89,14 @@ module.exports = {
 				}
 			);
 			let tagIds = tagsRes.map(item => item.id);
-			tags.forEach(item => {
+			for(const item of tags) {
 				const i = tagsRes.findIndex(v => v.title === item);
 				if (i === -1) {
 					// 不存在则新建
-					tagIds.push(getTagId(item));
+					const tagItem = await getTagId(item)
+					tagIds.push(tagItem);
 				}
-			});
+			}
 			const articleRes = await ArticleService.findOne(ctx, {
 				query: {
 					_id: articleId,
@@ -123,15 +124,17 @@ module.exports = {
 					publish: true,
 					updatedAt: Date.now(),
 				});
+				await Article2TagService.removes(ctx, articleId, "article");
 			}
-			await Article2TagService.removes(ctx, articleId, "article");
       for(const item of tagIds) {
         await Article2TagService.create({
           article: articleId,
           tag: item,
         });
       }
-			ctx.body = {};
+			ctx.body = {
+				id: articleId,
+			};
 		} catch (err) {
 			throw err;
 		}
@@ -193,10 +196,11 @@ module.exports = {
 				public = false, 
 				pageNum = 1, 
 				pageSize = 10,
-				personal = false,
+				personal = false, // 是否个人
 				tags = [],
 				category,
-				publish = true,
+				publish = true, // 是否发布
+				liked = false,
 			} = ctx.query;
 			const { id: userId } = verifyToken(ctx);
 			const query = {
@@ -207,6 +211,20 @@ module.exports = {
 			if(personal) {
         query.user = userId
 			}
+			const likeRes = await ArticleLikesService.find({},{
+				query: {
+					user: userId,
+					liked: true,
+				},
+				filters: 'article'
+			})
+			const articlesLiked = [...new Set(likeRes.map(item => item.article))];
+			if(formatBoolean(liked)) {
+				query['_id'] = {
+					$in: articlesLiked
+				}
+			}
+
 			if((typeof tags === 'string' && tags) || (tags instanceof Array && tags.length > 0)) {
 				const tagRes = await Article2TagService.find({},{
 					query: {
@@ -216,9 +234,15 @@ module.exports = {
 					},
 					filters: 'article'
 				})
-				const articals = [...new Set(tagRes.map(item => item.article))]
+				const articles = [...new Set(tagRes.map(item => item.article))]
         query['_id'] = {
-					$in: articals
+					$in: articles
+				}
+				if(formatBoolean(liked)) {
+					const joinArticals = articles.filter(v => articlesLiked.includes(v));
+					query['_id'] = {
+						$in: joinArticals
+					}
 				}
 			}
 			if(category) {
@@ -227,7 +251,6 @@ module.exports = {
 			if(formatBoolean(public)) {
 				query.public = true;
 			}
-
 			const res = await ArticleService.find(
 				{
 					pageNum,
@@ -239,7 +262,7 @@ module.exports = {
 					populate: [
 						{
 							path: "user",
-							select: "nickname avatar -_id",
+							select: "nickname avatar _id",
 						},
 					],
 					filters: "-deleted -publish",
@@ -278,16 +301,15 @@ module.exports = {
 	 */
 	async removeOne(ctx) {
 		try {
-			const { id } = ctx.params;
-			await PhotoService.removes(ctx, id, "album");
-			const res = await ArticleService.removes(ctx, id);
+			const { articleId } = ctx.params;
+			const res = await ArticleService.safeDelete(ctx, articleId);
 			if (res.n === 0) {
 				throw new ApiError(null, {
 					code: 100000,
 					message: "没有找到需要删除的记录！",
 				});
 			}
-			if (res.deletedCount === 0) {
+			if (res.nModified === 0) {
 				throw new ApiError(null, {
 					code: 100000,
 					message: "删除记录失败！",
@@ -396,4 +418,92 @@ module.exports = {
 			throw err;
 		}
 	},
+	/**
+	 * 获取文章列表（搜索）
+	 * @param {*}} ctx
+	 */
+	async searchList(ctx) {
+		try {
+			const { 
+				pageNum = 1, 
+				pageSize = 10,
+        search,
+			} = ctx.query;
+			const query = {
+				deleted: false,
+				publish: true,
+				public: true,
+			}
+			const reg = new RegExp(search,'i');
+      const tagRes = await TagService.find({}, {
+				query: {
+					title: {
+            $regex: reg,
+					}
+				}
+			});
+			const tagIds = tagRes.map(item => item.id);
+			const articleRes = await Article2TagService.find({}, {
+				query: {
+					tag: {
+						$in: tagIds,
+					},
+				},
+				filters: 'article'
+			});
+			const articleIds = [...new Set(articleRes.map(item => item.article))];
+			query['$or'] = [{
+				_id: {
+					$in: articleIds,
+				},
+			},{
+				title: {
+					$regex: reg,
+				}
+			}]
+			
+			const res = await ArticleService.find(
+				{
+					pageNum,
+					pageSize,
+					isPaging: true,
+				},
+				{
+					query,
+					populate: [
+						{
+							path: "user",
+							select: "nickname avatar _id",
+						},
+					],
+					filters: "-deleted -publish",
+					sort: {
+						updatedAt: -1,
+					}
+				}
+      );
+      let items = [];
+      for(let item of res.items) {
+        const likes = await ArticleLikesService.count({
+					article: item.id,
+					liked: true,
+        })
+        const comments = await ArticleCommentService.count({
+          article: item.id,
+        }) 
+        items.push({
+          ...item.toJSON(),
+          likes,
+          comments,
+        })
+      }
+			ctx.body = {
+        total: res.pageInfo.totalItems,
+        items,
+      };
+		} catch (err) {
+			throw err;
+		}
+	},
+
 };

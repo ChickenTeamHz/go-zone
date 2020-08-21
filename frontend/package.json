@@ -24,11 +24,13 @@
     "lrz": "^4.9.40",
     "md-pre-editor": "^1.0.2",
     "qs": "^6.9.3",
+    "query-string": "^6.13.1",
     "react": "^16.8.6",
     "react-cropper": "^1.3.0",
     "react-dom": "^16.8.6",
     "react-scroll": "^1.7.16",
     "umi-request": "^1.2.19",
+    "use-query-params": "^1.1.6",
     "viewerjs": "^1.5.0"
   },
   "devDependencies": {

@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import { Card, Form, Divider, Tag, Switch, Select, Collapse, Button } from 'antd';
 import { useMount, useUnmount } from '@umijs/hooks';
-import { ReloadOutlined } from '@ant-design/icons';
+import { ReloadOutlined, HeartOutlined } from '@ant-design/icons';
 import {
   useQueryParams,
   NumberParam,
   ArrayParam,
-  StringParam,
   withDefault,
   BooleanParam,
 } from 'use-query-params';
@@ -15,7 +14,6 @@ import { tagColor } from '../../common/enum';
 import { useDva } from '../../utils/hooks';
 import BlogList from '../../components/BlogList';
 
-const { CheckableTag } = Tag;
 const { Panel } = Collapse;
 
 function TagRender({ label, closable, onClose, value }, data) {
@@ -32,34 +30,12 @@ function TagRender({ label, closable, onClose, value }, data) {
   );
 }
 
-function CategoryTags({ data = [], value, onChange = () => {} }) {
-  const handleChange = (checked, item) => {
-    if (checked) {
-      onChange(item.id);
-    }
-  };
-
-  return (
-    <div className={styles.flex}>
-      {data.map((item) => (
-        <CheckableTag
-          key={item.id}
-          checked={item.id === value}
-          onChange={(c) => handleChange(c, item)}
-        >
-          {item.title}
-        </CheckableTag>
-      ))}
-    </div>
-  );
-}
-
 export default function () {
   const {
     dispatch,
     loadings: { loading },
     data: {
-      blog: { tags = [], categorys = [] },
+      blog: { tags = [] },
     },
   } = useDva({ loading: 'blog/fetchArticles' }, ['blog']);
   const paginationRef = useRef();
@@ -67,9 +43,8 @@ export default function () {
   const [query, setQuery] = useQueryParams({
     pageNum: withDefault(NumberParam, 1),
     pageSize: withDefault(NumberParam, 10),
-    category: StringParam,
     tags: withDefault(ArrayParam, []),
-    public: withDefault(BooleanParam, false),
+    public: withDefault(BooleanParam, true),
   });
 
   const getList = (firstLoad = false, resetP = false) => {
@@ -78,7 +53,6 @@ export default function () {
     if (firstLoad) {
       values = {
         tags: query.tags,
-        category: query.category,
         public: query.public,
       };
       form.setFieldsValue(values);
@@ -95,7 +69,7 @@ export default function () {
       };
     }
     const payload = {
-      public: false,
+      public: true,
       ...paginationValues,
       ...values,
     };
@@ -104,7 +78,7 @@ export default function () {
       type: 'blog/fetchArticles',
       payload: {
         ...payload,
-        personal: true,
+        liked: true,
       },
     });
   };
@@ -134,7 +108,6 @@ export default function () {
   const showReset = () => {
     const values = {
       tags: query.tags,
-      category: query.category,
       public: query.public,
     };
     let show = false;
@@ -143,7 +116,7 @@ export default function () {
       if (
         (item instanceof Array && item.length > 0) ||
         (typeof item === 'string' && item) ||
-        item === true
+        item === false
       ) {
         show = true;
         break;
@@ -154,7 +127,15 @@ export default function () {
 
   return (
     <div className="box" style={{ maxWidth: 1000, margin: 'auto' }}>
-      <Card bordered={false} className={styles.column} title="我的专栏">
+      <Card
+        bordered={false}
+        className={styles.column}
+        title={
+          <div>
+            我赞过的 <HeartOutlined style={{ color: '#eb2f96' }} />
+          </div>
+        }
+      >
         <Collapse defaultActiveKey={['1']} ghost>
           <Panel key="1" header="筛选区域" style={{ position: 'relative' }}>
             {showReset() && (
@@ -170,9 +151,6 @@ export default function () {
               }}
               form={form}
             >
-              <Form.Item name="category" label="分类专栏">
-                <CategoryTags data={categorys} />
-              </Form.Item>
               <Form.Item label="文章标签" name="tags">
                 <Select
                   mode="multiple"
@@ -192,12 +170,7 @@ export default function () {
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item
-                label="是否公开"
-                name="public"
-                valuePropName="checked"
-                initialValue={false}
-              >
+              <Form.Item label="是否公开" name="public" valuePropName="checked" initialValue>
                 <Switch checkedChildren="是" unCheckedChildren="否" />
               </Form.Item>
             </Form>
@@ -215,6 +188,7 @@ export default function () {
           ref={paginationRef}
           needQuery
           moreOperate
+          emptyText="还没有支持的文章哦~"
         />
       </Card>
     </div>

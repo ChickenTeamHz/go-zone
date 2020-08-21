@@ -174,6 +174,7 @@ export default function() {
           return Promise.reject('');
         }
       }
+      setPopVisible(false);
       return Promise.resolve();
     }
     if(popVisible){

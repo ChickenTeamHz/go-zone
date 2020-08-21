@@ -201,3 +201,15 @@ export async function fetchDeleteComments(id, params) {
     body: params,
   })
 }
+
+// 删除文章
+export async function fetchDeleteArticals(id) {
+  return request(`${HOST}/articles/${id}`,{
+    method: 'DELETE',
+  })
+}
+
+// 查询文章列表
+export async function fetchSearchArticles(params) {
+  return request(`${HOST}/search/articles?${stringify(params,{ indices: false })}`)
+}
