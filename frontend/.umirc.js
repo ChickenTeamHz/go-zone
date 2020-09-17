@@ -142,5 +142,5 @@ export default {
           eslintPath: require.resolve('eslint'),
           useEslintrc: true,
         }))
-  }
+  },
 }

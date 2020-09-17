@@ -4,6 +4,7 @@ import React,{ useEffect } from 'react';
 import styles from './UserLayout.less';
 import Logo from '../components/Logo';
 import { clearToken } from '../utils/authToken';
+import Footer from '../components/Footer';
 
 export default function UserLayout(props){
 
@@ -20,6 +21,7 @@ export default function UserLayout(props){
       <div className={styles.main}>
         <div>{children}</div>
       </div>
+      <Footer />
     </div>
   );
 };

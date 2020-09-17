@@ -11,6 +11,7 @@ import { menuData } from '../common/menu';
 import Logo from '../components/Logo';
 import { useDva } from '../utils/hooks';
 import avatarDefault from '../assets/avatar.jpg';
+import Footer from '../components/Footer';
 
 function LearnMore() {
   const { state: visible, toggle } = useToggle(false);
@@ -85,6 +86,7 @@ function BasicLayout(props) {
         <QueryParamProvider history={props.history}>{children}</QueryParamProvider>
       </div>
       {scrollEle.top > 0 ? <ToTop /> : null}
+      <Footer style={{ bottom: -84 }} />
     </div>
   );
 }
