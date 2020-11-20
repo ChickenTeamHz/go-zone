@@ -4,6 +4,7 @@ import { resolve } from "path";
 
 export default {
   treeShaking: true,
+  hash: true,
   routes: [
     {
       path: '/user',
