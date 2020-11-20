@@ -58,115 +58,6 @@ function useCommentDelete(comment) {
   };
 }
 
-const CBox = React.memo(({ item, handleComments }) => {
-  const commentDelete = useCommentDelete(item);
-
-  const [rId, setRId] = useState(null);
-  const handleReply = (id) => {
-    setRId(id);
-  };
-
-  const hideReply = useCallback(() => {
-    setRId(null);
-  }, []);
-
-  return (
-    <div
-      className={styles.box}
-      onMouseMove={commentDelete.handleHover}
-      onMouseLeave={commentDelete.handleBlur}
-    >
-      <Avatar src={item.avatar || avatarDefault} />
-      <div style={{ marginLeft: 12, width: '100%' }}>
-        <div className={styles.name}>{item.nickname}</div>
-        <div className={styles.content}>{item.content}</div>
-        <div className={styles.operation}>
-          <div style={{ display: 'flex' }}>
-            <div className={styles.time}>{item.createdAt}</div>
-            {commentDelete.showDelete && (
-              <div className={styles.delete} onClick={commentDelete.handleDelete}>
-                · 删除
-              </div>
-            )}
-          </div>
-          <div className={styles.button} onClick={() => handleReply(item.userId)}>
-            <MessageOutlined /> 回复
-          </div>
-        </div>
-        {item.userId === rId && (
-          <ReplyBox
-            item={item}
-            hideReply={hideReply}
-            parentId={item.id}
-            handleComments={handleComments}
-          />
-        )}
-        <div style={{ marginBottom: 12 }}>
-          {item?.children?.map((child) => (
-            <CBoxChild
-              item={child}
-              key={child.id}
-              parentId={item.id}
-              handleComments={handleComments}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-const CBoxChild = React.memo(({ item, parentId, handleComments }) => {
-  const commentDelete = useCommentDelete(item);
-  const [rId, setRId] = useState(null);
-  const handleReply = (id) => {
-    setRId(id);
-  };
-
-  const hideReply = useCallback(() => {
-    setRId(null);
-  }, []);
-
-  return (
-    <div
-      className={styles.box}
-      style={{ backgroundColor: 'rgba(226, 228, 226,0.2)' }}
-      onMouseMove={commentDelete.handleHover}
-      onMouseLeave={commentDelete.handleBlur}
-    >
-      <Avatar src={item.avatar || avatarDefault} />
-      <div style={{ marginLeft: 12, width: '100%' }}>
-        <div className={styles.name}>{item.nickname}</div>
-        <div className={styles.content}>
-          {item.root === 2 ? `回复【${item.replyName}】: ${item.content}` : item.content}
-        </div>
-        <div className={styles.operation}>
-          <div style={{ display: 'flex' }}>
-            <div className={styles.time}>{item.createdAt}</div>
-            {commentDelete.showDelete && (
-              <div className={styles.delete} onClick={commentDelete.handleDelete}>
-                · 删除
-              </div>
-            )}
-          </div>
-          <div className={styles.button} onClick={() => handleReply(item.userId)}>
-            <MessageOutlined /> 回复
-          </div>
-        </div>
-        {item.userId === rId && (
-          <ReplyBox
-            item={item}
-            hideReply={hideReply}
-            isChild
-            parentId={parentId}
-            handleComments={handleComments}
-          />
-        )}
-      </div>
-    </div>
-  );
-});
-
 const ReplyBox = React.memo(
   ({ item, hideReply = () => {}, isChild = false, parentId = null, handleComments = () => {} }) => {
     const [comments, setComments] = useState();
@@ -246,6 +137,116 @@ const ReplyBox = React.memo(
     );
   },
 );
+
+const CBoxChild = React.memo(({ item, parentId, handleComments }) => {
+  const commentDelete = useCommentDelete(item);
+  const [rId, setRId] = useState(null);
+  const handleReply = (id) => {
+    setRId(id);
+  };
+
+  const hideReply = useCallback(() => {
+    setRId(null);
+  }, []);
+
+  return (
+    <div
+      className={styles.box}
+      style={{ backgroundColor: 'rgba(226, 228, 226,0.2)' }}
+      onMouseMove={commentDelete.handleHover}
+      onMouseLeave={commentDelete.handleBlur}
+    >
+      <Avatar src={item.avatar || avatarDefault} />
+      <div style={{ marginLeft: 12, width: '100%' }}>
+        <div className={styles.name}>{item.nickname}</div>
+        <div className={styles.content}>
+          {item.root === 2 ? `回复【${item.replyName}】: ${item.content}` : item.content}
+        </div>
+        <div className={styles.operation}>
+          <div style={{ display: 'flex' }}>
+            <div className={styles.time}>{item.createdAt}</div>
+            {commentDelete.showDelete && (
+              <div className={styles.delete} onClick={commentDelete.handleDelete}>
+                · 删除
+              </div>
+            )}
+          </div>
+          <div className={styles.button} onClick={() => handleReply(item.userId)}>
+            <MessageOutlined /> 回复
+          </div>
+        </div>
+        {item.userId === rId && (
+          <ReplyBox
+            item={item}
+            hideReply={hideReply}
+            isChild
+            parentId={parentId}
+            handleComments={handleComments}
+          />
+        )}
+      </div>
+    </div>
+  );
+});
+
+const CBox = React.memo(({ item, handleComments }) => {
+  const commentDelete = useCommentDelete(item);
+
+  const [rId, setRId] = useState(null);
+  const handleReply = (id) => {
+    setRId(id);
+  };
+
+  const hideReply = useCallback(() => {
+    setRId(null);
+  }, []);
+
+  return (
+    <div
+      className={styles.box}
+      onMouseMove={commentDelete.handleHover}
+      onMouseLeave={commentDelete.handleBlur}
+    >
+      <Avatar src={item.avatar || avatarDefault} />
+      <div style={{ marginLeft: 12, width: '100%' }}>
+        <div className={styles.name}>{item.nickname}</div>
+        <div className={styles.content}>{item.content}</div>
+        <div className={styles.operation}>
+          <div style={{ display: 'flex' }}>
+            <div className={styles.time}>{item.createdAt}</div>
+            {commentDelete.showDelete && (
+              <div className={styles.delete} onClick={commentDelete.handleDelete}>
+                · 删除
+              </div>
+            )}
+          </div>
+          <div className={styles.button} onClick={() => handleReply(item.userId)}>
+            <MessageOutlined /> 回复
+          </div>
+        </div>
+        {item.userId === rId && (
+          <ReplyBox
+            item={item}
+            hideReply={hideReply}
+            parentId={item.id}
+            handleComments={handleComments}
+          />
+        )}
+        <div style={{ marginBottom: 12 }}>
+          {item?.children?.map((child) => (
+            <CBoxChild
+              item={child}
+              key={child.id}
+              parentId={item.id}
+              handleComments={handleComments}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+});
+
 
 export default function ({ commentsData = [], handleComments = () => {} }) {
   return (

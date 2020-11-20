@@ -22,7 +22,7 @@
     "dva": "^2.6.0-beta.6",
     "lodash": "^4.17.15",
     "lrz": "^4.9.40",
-    "md-pre-editor": "^1.0.3",
+    "md-pre-editor": "^1.0.4",
     "qs": "^6.9.3",
     "query-string": "^6.13.1",
     "react": "^16.8.6",
