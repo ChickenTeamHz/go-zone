@@ -7,7 +7,14 @@ export default function ({ style }) {
   return (
     <div className={styles.footer} style={style}>
       <div className={styles.copyright}>
-        Copyright © 2020-2022 葉大树のHome. All rights reserved. 浙ICP备2020033168号
+        Copyright © 2020-2022 葉大树のHome. All rights reserved.{' '}
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="http://beian.miit.gov.cn"
+        >
+          浙ICP备2020033168号
+        </a>
       </div>
       <div className={styles.head}>
         <div className={styles.beian}>
